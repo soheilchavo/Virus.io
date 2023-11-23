@@ -4,7 +4,7 @@ void setup() {
 }
 
 void draw() {
-  background(255,0,0);
+  background(128,0,0);
   text("hello",width/2,height/2);
   
 }
