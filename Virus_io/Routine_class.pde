@@ -10,6 +10,12 @@ class Goal {
   boolean variable_goal;
   PVector[] variable_locations;
   
+  Goal(PVector l, float s, float e){
+    this.location = l;
+    this.start_time = s;
+    this.end_time = e;
+  }
+  
   void set_goals(){
     if(this.variable_goal){
       this.location = variable_locations[int(random(0, variable_locations.length-1))];
