@@ -21,7 +21,7 @@ class Goal {
       this.location = variable_locations[int(random(0, variable_locations.length-1))];
     }
     else if(this.day_based_goal){
-      this.location = day_based_locations[str(is_weekend)];
+      this.location = day_based_locations[int(is_weekend)];
     }
   }
   

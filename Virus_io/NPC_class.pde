@@ -19,23 +19,18 @@ class NPC{
     this.name = get_random_name();
     this.age = get_random_age(o);
     
-    this.immunitiy = get_immunity(this.age);
+    this.immunity = get_immunity(this.age);
     
     this.initialize_normal_routine();
-    this.initialize_sick_routine();
     
   }
   
-  void find_closest_building(BuildingType btype){
-  
+  Building find_closest_building(BuildingType btype){
+    return buildings[0];
   }
   
   void initialize_normal_routine(){
-    this.routine = new Routine(this, new Goal[ new Goal(this.home.location) ]);
-  }
-  
-  void initialize_sick_routine(){
-    
+    this.routine = new Routine(this, new Goal[] { new Goal(this.home.location, 0, 0) });
   }
   
 }
