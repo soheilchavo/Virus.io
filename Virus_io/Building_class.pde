@@ -23,5 +23,3 @@ class Home extends Building{
     super(l, BuildingType.Home, new float[] {1,1});
   }
 }
-
-enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };

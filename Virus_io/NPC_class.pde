@@ -15,7 +15,6 @@ class NPC{
   PVector location;
   
   NPC(Occupation o){
-  
     this.occupation = o;
     
     this.name = getRandomName();
@@ -23,9 +22,10 @@ class NPC{
     
     this.immunity = getImmunity(this.age);
     
+    this.home = (Home)getRandomTypedBuilding(BuildingType.Home);
+    
     this.initializeNormalRoutine();
     this.initializeSickRoutine();
-    
   }
   
   void initializeNormalRoutine(){

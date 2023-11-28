@@ -12,11 +12,16 @@ Building[] buildings;
 
 boolean simOngoing = false;
 
-float hospital_rate = 0.5;
-float work_place_rate = 0.5;
-float social_place_rate = 0.5;
-float school_rate = 0.5;
-float home_to_workplace_rate = 0.5;
+enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
+BuildingType[] b_type_order = new BuildingType[] { 
+  BuildingType.Home, 
+  BuildingType.Hospital, 
+  BuildingType.Workplace,
+  BuildingType.School,
+  BuildingType.Park,
+  BuildingType.Eatery,
+};
+float[] building_rates = new float[] {0.5,0.5,0.5,0.5,0.5};
 
 int num_people;
 NPC[] People;
@@ -46,18 +51,21 @@ void draw() {
 }
 
 void startSim(){
-  
   generateBuildings();
   generatePeople();
-  
-  //Calculate the number of people
-  
-  People = new NPC[num_people];
 }
 
 void generateBuildings() {}
 
-void generatePeople(){}
+void generatePeople(){
+  num_people = int(city_size*0.75);
+  People = new NPC[num_people];
+  
+  for(int i = 0; i < num_people; i++){
+    People[i] = new NPC(getRandomOccupation());
+  }
+  
+}
 
 void startVirus(){}
 
