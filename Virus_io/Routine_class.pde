@@ -16,7 +16,7 @@ class Goal {
     this.end_time = e;
   }
   
-  void set_goals(){
+  void setGoals(){
     if(this.variable_goal){
       this.location = variable_locations[int(random(0, variable_locations.length-1))];
     }
@@ -37,7 +37,7 @@ class Routine {
     this.goals = g;
   }
   
-  PVector get_current_goal(){
+  PVector getCurrentGoal(){
     
     Goal target_goal = this.goals[0];
     

@@ -12,25 +12,28 @@ class NPC{
   
   Home home;
   
+  PVector location;
+  
   NPC(Occupation o){
   
     this.occupation = o;
     
-    this.name = get_random_name();
-    this.age = get_random_age(o);
+    this.name = getRandomName();
+    this.age = getRandomAge(o);
     
-    this.immunity = get_immunity(this.age);
+    this.immunity = getImmunity(this.age);
     
-    this.initialize_normal_routine();
+    this.initializeNormalRoutine();
+    this.initializeSickRoutine();
     
   }
   
-  Building find_closest_building(BuildingType btype){
-    return buildings[0];
-  }
-  
-  void initialize_normal_routine(){
+  void initializeNormalRoutine(){
     this.routine = new Routine(this, new Goal[] { new Goal(this.home.location, 0, 0) });
+  }
+  
+  void initializeSickRoutine(){
+    sick_routine = new Routine(this, new Goal[] { new Goal(findClosestBuilding(this.location, BuildingType.Hospital).location, 0, 0) });
   }
   
 }

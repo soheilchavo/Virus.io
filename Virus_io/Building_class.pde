@@ -1,26 +1,26 @@
 class Building {
   //FIELDS
-  float size;
+  float[] size;
   PVector location;
   BuildingType type;
   
   //CONSTRUCTOR
-  Building(PVector l, BuildingType t, float s){
+  Building(PVector l, BuildingType t, float[] s){
     this.location = l;
     this.type = t;
     this.size = s;
   }
   
   //METHODS
-  void createBuilding() {
+  void drawBuilding() {
     fill(255);
-    square(width/2,height/2,this.size);
+    rect(this.location.x, this.location.y, this.location.x + this.size[0]*grid_size, this.location.x + this.size[1]*grid_size);
   }
 }
 
 class Home extends Building{
   Home(PVector l){
-    super(l, BuildingType.Home);
+    super(l, BuildingType.Home, new float[] {1,1});
   }
 }
 
