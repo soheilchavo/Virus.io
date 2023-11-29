@@ -1,4 +1,4 @@
-int city_size = 40;
+int city_size = 50;
 float grid_size;
 
 float time_of_day = 0;
@@ -8,9 +8,11 @@ boolean is_weekend;
 float sim_speed = 1;
 int age_deviation = 5;
 
-Building[] buildings;
+int cell_padding = 2;
 
-boolean simOngoing = false;
+ArrayList<Building> buildings = new ArrayList<Building>();
+
+boolean simOngoing = true;
 
 enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
 BuildingType[] b_type_order = new BuildingType[] { 
@@ -21,7 +23,7 @@ BuildingType[] b_type_order = new BuildingType[] {
   BuildingType.Park,
   BuildingType.Eatery,
 };
-float[] building_rates = new float[] {0.5,0.5,0.5,0.5,0.5};
+float[] building_rates = new float[] {0.2,0.3,0.4,0.5,0.1};
 
 int num_people;
 NPC[] People;
@@ -38,6 +40,15 @@ void draw() {
   background(128);
 
   if(simOngoing){
+    
+    for(Building b: buildings){
+      b.drawBuilding();
+    }
+    
+    for(NPC p: People){
+      p.drawNPC();
+    }
+    
     time_of_day += 0.01*sim_speed;
     
     if(time_of_day-floor(time_of_day) >= 0.6){
@@ -55,7 +66,31 @@ void startSim(){
   generatePeople();
 }
 
-void generateBuildings() {}
+void generateBuildings() {
+
+  int curr_x = cell_padding;
+  int curr_y = cell_padding;
+  
+  while(curr_y + cell_padding < city_size-cell_padding){
+    
+    curr_x = cell_padding;
+    int largest_y = 0;
+    
+    while(curr_x + cell_padding < city_size-cell_padding){
+    
+      Building b = createRandomBuilding(new PVector(curr_x, curr_y));
+      if(b.size[0] + curr_x + cell_padding < city_size){
+        largest_y = (int) max(largest_y, b.size[1]);
+        buildings.add(b);
+      }
+      
+      curr_x += b.size[0] + cell_padding;
+      
+    }
+    println(largest_y);
+    curr_y += largest_y + cell_padding;
+  }
+}
 
 void generatePeople(){
   num_people = int(city_size*0.75);
@@ -64,7 +99,6 @@ void generatePeople(){
   for(int i = 0; i < num_people; i++){
     People[i] = new NPC(getRandomOccupation());
   }
-  
 }
 
 void startVirus(){}
