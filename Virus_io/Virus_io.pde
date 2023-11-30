@@ -7,7 +7,7 @@ float time_of_day = 0;
 int day = 0;
 boolean is_weekend;
 
-float sim_speed = 1;
+float sim_speed = 2;
 int age_deviation = 5;
 
 int cell_padding = 2;
@@ -17,7 +17,9 @@ ArrayList<Building> buildings = new ArrayList<Building>();
 boolean simOngoing = true;
 
 enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
-float[] building_rates = new float[] {0.1, 0.13, 0.4, 0.2, 0.1};
+float[] building_rates = new float[] {0.4, 0.13, 0.4, 0.2, 0.1};
+
+float npc_speed = 0.1;
 
 BuildingType[] b_type_order = new BuildingType[] { 
   BuildingType.Home, 
@@ -53,6 +55,9 @@ void draw() {
       p.drawNPC();
     }
     
+    fill(0);
+    textSize(12);
+    text("time of day (military): " + str(time_of_day), 5,11);
     time_of_day += 0.01*sim_speed;
     
     if(time_of_day-floor(time_of_day) >= 0.6){
@@ -114,6 +119,8 @@ void generatePeople(){
 void startVirus(){}
 
 void switchDay(){
+  time_of_day = 0;
+  
   day += 1;
   if(day > 6){
     day = 0;

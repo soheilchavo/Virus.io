@@ -15,6 +15,7 @@ class NPC{
   PVector location;
   
   NPC(Occupation o){
+    
     this.occupation = o;
     
     this.name = getRandomName();
@@ -23,19 +24,23 @@ class NPC{
     this.immunity = getImmunity(this.age);
     
     this.home = (Home)getRandomTypedBuilding(BuildingType.Home);
-    this.location = home.location;
+    this.location = home.location.copy();
     
-    this.initializeNormalRoutine();
+    this.routine = o.initializeRoutine(this.home.location, this);
     this.initializeSickRoutine();
   }
   
-  void drawNPC() {
-    fill(color(0,255,0));
-    circle(this.location.x*grid_size, this.location.y*grid_size, 7);
+  void calculate_position(){
+    Goal c_goal = this.routine.getCurrentGoal(time_of_day);
+    float t = npc_speed*min(1, (time_of_day-c_goal.start_time)/(c_goal.duration/4));
+    this.location.lerp(c_goal.location, t);
   }
   
-  void initializeNormalRoutine(){
-    this.routine = new Routine(this, new Goal[] { new Goal(this.home.location, 0, 0) });
+  void drawNPC() {
+    this.calculate_position();
+    
+    fill(color(0,255,0));
+    circle(this.location.x*grid_size, this.location.y*grid_size, 7);
   }
   
   void initializeSickRoutine(){

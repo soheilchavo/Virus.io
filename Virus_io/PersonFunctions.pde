@@ -1,6 +1,6 @@
 String getRandomName(){
   String[] random_names = loadStrings("Names.txt");
-  return random_names[round(random(0, random_names.length))];
+  return random_names[round(random(0, random_names.length-1))];
 }
 
 int weightedRandom(float[] rates){
@@ -127,7 +127,6 @@ Building findClosestBuilding(PVector p, BuildingType btype){
       }
     }
   }
-  
   return closest_b;
 }
 
