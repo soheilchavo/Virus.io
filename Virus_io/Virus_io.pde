@@ -1,3 +1,5 @@
+import g4p_controls.*;
+
 int city_size = 50;
 float grid_size;
 
