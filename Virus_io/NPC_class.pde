@@ -40,7 +40,14 @@ class NPC{
     this.calculate_position();
     
     fill(color(239,202,168));
+    if(this.occupation.occupation_name == "Homeless")
+      fill(color(0,0,255));
+    
     circle(this.location.x*grid_size, this.location.y*grid_size, 7);
+    
+    fill(0);
+    text(this.occupation.occupation_name, this.location.x*grid_size, this.location.y*grid_size - 8); 
+  
   }
   
   void initializeSickRoutine(){
