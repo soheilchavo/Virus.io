@@ -12,8 +12,8 @@ class Goal {
   boolean variable_goal;
   PVector[] variable_locations;
   
-  Goal(PVector l, float s, float e){
-    this.location = new PVector(l.x + random(-cell_padding, cell_padding), l.y + random(-cell_padding, cell_padding) );
+  Goal(PVector l, float s, float e, float[] size){
+    this.location = new PVector(l.x + (size[0]/2) + random(-cell_padding/2, cell_padding/2), l.y + (size[1]/2) + random(-cell_padding/2, cell_padding/2) );
     this.start_time = s;
     this.end_time = e;
     
