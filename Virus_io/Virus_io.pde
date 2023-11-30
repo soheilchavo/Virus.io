@@ -17,7 +17,7 @@ ArrayList<Building> buildings = new ArrayList<Building>();
 boolean simOngoing = true;
 
 enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
-float[] building_rates = new float[] {0.4, 0.13, 0.4, 0.2, 0.1};
+float[] building_rates = new float[] {0.4, 0.13, 0.2, 0.2, 0.1};
 
 float npc_speed = 0.1;
 
