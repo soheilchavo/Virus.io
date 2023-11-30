@@ -1,3 +1,5 @@
+import g4p_controls.*;
+
 int city_size = 50;
 float grid_size;
 
@@ -15,6 +17,8 @@ ArrayList<Building> buildings = new ArrayList<Building>();
 boolean simOngoing = true;
 
 enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
+float[] building_rates = new float[] {0.1, 0.13, 0.4, 0.2, 0.1};
+
 BuildingType[] b_type_order = new BuildingType[] { 
   BuildingType.Home, 
   BuildingType.Hospital, 
@@ -23,7 +27,7 @@ BuildingType[] b_type_order = new BuildingType[] {
   BuildingType.Park,
   BuildingType.Eatery,
 };
-float[] building_rates = new float[] {0.2,0.3,0.4,0.5,0.1};
+
 
 int num_people;
 NPC[] People;
@@ -71,6 +75,8 @@ void generateBuildings() {
   int curr_x = cell_padding;
   int curr_y = cell_padding;
   
+  ArrayList<Building> new_buildings = createRandomBuildings();
+  
   while(curr_y + cell_padding < city_size-cell_padding){
     
     curr_x = cell_padding;
@@ -78,17 +84,21 @@ void generateBuildings() {
     
     while(curr_x + cell_padding < city_size-cell_padding){
     
-      Building b = createRandomBuilding(new PVector(curr_x, curr_y));
-      if(b.size[0] + curr_x + cell_padding < city_size){
+      int index = round(random(new_buildings.size()-1));
+      Building b = new_buildings.get(index);
+      new_buildings.remove(index);
+      
+      b.location = new PVector(curr_x, curr_y);
+      
+      if(curr_x + b.size[0] + cell_padding < city_size){
         largest_y = (int) max(largest_y, b.size[1]);
         buildings.add(b);
       }
       
-      curr_x += b.size[0] + cell_padding;
-      
+      curr_x += b.size[0]+cell_padding*2;
     }
-    println(largest_y);
-    curr_y += largest_y + cell_padding;
+    
+    curr_y += largest_y + cell_padding*2;
   }
 }
 

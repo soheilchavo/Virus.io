@@ -16,8 +16,12 @@ class Building {
   
   //METHODS
   void drawBuilding() {
+    //println(this.type, this.size[0], this.size[1]);
+    
     fill(this.col);
     rect(this.location.x*grid_size, this.location.y*grid_size, this.location.x + this.size[0]*grid_size, this.location.x + this.size[1]*grid_size);
+    fill(0);
+    text(this.type.name(), this.location.x*grid_size, this.location.y*grid_size); 
   }
 }
 
@@ -41,7 +45,7 @@ class Eatery extends Building{
 
 class Park extends Building{
   Park(PVector l){
-    super(l, BuildingType.Park, new float[] {1,8}, color(22,233,33));
+    super(l, BuildingType.Park, new float[] {5,5}, color(22,233,33));
   }
 }
 class School extends Building{

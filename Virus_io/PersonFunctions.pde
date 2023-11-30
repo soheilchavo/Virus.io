@@ -3,31 +3,72 @@ String getRandomName(){
   return random_names[round(random(0, random_names.length))];
 }
 
-int weightedRandom(float[] weights){
-  float r = random(1);
+int weightedRandom(float[] rates){
   
-  for(int i = 0; i < weights.length; i++){
-    if(weights[i] >= r)
-      return i;
-  }
+  return round(random(0,rates.length));
   
-  return 0;
+  //float r = random(1);
+  
+  //float sum = 0;
+  //for(float f: rates){
+  //  sum += f;
+  //}
+  
+  //HashMap<Float, Integer> weighthash = new HashMap<Float, Integer>();
+  //float[] weights = new float[rates.length];
+  
+  //for(int i = 0; i < rates.length; i++){
+  //  float weight = rates[i]/sum;
+  //  weighthash.put(weight, i);
+  //  weights[i] = weight;
+  //}
+  
+  //sort(weights);
+  
+  //for(int i = 0; i < weights.length; i++){
+  //  if(i == weights.length-1 || (weights[i] <= r && weights[i+1] > r))
+  //    return weighthash.get(weights[i]);
+  //}
+  
+  //return 0;
 }
 
-Building createRandomBuilding(PVector l){
-  int random_index = weightedRandom(building_rates);
-  BuildingType b_type = b_type_order[random_index];
+float sumOfRates(){
+  float sum = 0;
   
-  HashMap<BuildingType, Building> type_to_object_hash = new HashMap<BuildingType, Building>();
+  for(float f: building_rates){
+    sum += f;
+  }
   
-  type_to_object_hash.put(BuildingType.Hospital, new Hospital(l));
-  type_to_object_hash.put(BuildingType.School, new School(l));
-  type_to_object_hash.put(BuildingType.Eatery, new Eatery(l));
-  type_to_object_hash.put(BuildingType.Workplace, new Workplace(l));
-  type_to_object_hash.put(BuildingType.Park, new Park(l));
-  type_to_object_hash.put(BuildingType.Home, new Home(l));
+  return sum;
+}
+
+ArrayList<Building> createRandomBuildings(){
   
-  return type_to_object_hash.get(b_type);
+  ArrayList<Building> new_b = new ArrayList<Building>();
+  
+  for(int t = 0; t < b_type_order.length-1; t++){
+    
+    BuildingType type = b_type_order[t];
+    
+    for(int i = 0; i < round((building_rates[t]/sumOfRates())*(city_size/1.5)); i++){
+      
+      HashMap<BuildingType, Building> type_to_object_hash = new HashMap<BuildingType, Building>();
+      
+      type_to_object_hash.put(BuildingType.Hospital, new Hospital(new PVector(0,0)));
+      type_to_object_hash.put(BuildingType.School, new School(new PVector(0,0)));
+      type_to_object_hash.put(BuildingType.Eatery, new Eatery(new PVector(0,0)));
+      type_to_object_hash.put(BuildingType.Workplace, new Workplace(new PVector(0,0)));
+      type_to_object_hash.put(BuildingType.Park, new Park(new PVector(0,0)));
+      type_to_object_hash.put(BuildingType.Home, new Home(new PVector(0,0)));
+      
+      new_b.add(type_to_object_hash.get(type));
+      
+    }
+    
+  }
+  
+  return new_b;
 }
 
 Occupation getRandomOccupation(){
