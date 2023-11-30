@@ -34,9 +34,16 @@ BuildingType[] b_type_order = new BuildingType[] {
 int num_people;
 NPC[] People;
 
+PImage photo;
+
 void setup() {
   size(600,600);
   grid_size = width/city_size;
+  
+  //for(Building b: buildings) {
+
+  //}
+  
   
   startSim();
 }
@@ -49,6 +56,7 @@ void draw() {
     
     for(Building b: buildings){
       b.drawBuilding();
+      photo = loadImage(b.sprite);
     }
     
     for(NPC p: People){
