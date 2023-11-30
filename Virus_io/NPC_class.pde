@@ -39,7 +39,7 @@ class NPC{
   void drawNPC() {
     this.calculate_position();
     
-    fill(color(0,255,0));
+    fill(color(239,202,168));
     circle(this.location.x*grid_size, this.location.y*grid_size, 7);
   }
   
