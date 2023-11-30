@@ -40,10 +40,6 @@ void setup() {
   size(600,600);
   grid_size = width/city_size;
   
-  //for(Building b: buildings) {
-
-  //}
-  
   
   startSim();
 }
@@ -56,7 +52,7 @@ void draw() {
     
     for(Building b: buildings){
       b.drawBuilding();
-      photo = loadImage(b.sprite);
+      //photo = loadImage(b.sprite);
     }
     
     for(NPC p: People){

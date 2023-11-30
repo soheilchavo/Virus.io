@@ -3,7 +3,7 @@ class Building {
   float[] size;
   PVector location;
   BuildingType type;
-  String sprite = new String sprite;
+  //String sprite = new String sprite;
   
   color col;
   
@@ -13,14 +13,14 @@ class Building {
     this.type = t;
     this.size = s;
     this.col = c;
-    this.sprite = p;
+    //this.sprite = p;
   }
   
   //METHODS
   void drawBuilding() {
     //println(this.type, this.size[0], this.size[1]);
     
-    image(photo, this.location.x*grid_size, this.location.y*grid_size);
+    //image(photo, this.location.x*grid_size, this.location.y*grid_size);
     fill(this.col);
     rect(this.location.x*grid_size, this.location.y*grid_size, this.location.x + this.size[0]*grid_size, this.location.x + this.size[1]*grid_size);
     fill(0);
