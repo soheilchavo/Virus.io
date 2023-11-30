@@ -44,7 +44,9 @@ class NPC{
   }
   
   void initializeSickRoutine(){
-    sick_routine = new Routine(this, new Goal[] { new Goal(findClosestBuilding(this.location, BuildingType.Hospital).location, 0, 0) });
+    Building b = (Hospital) findClosestBuilding(this.home.location, BuildingType.Hospital);
+    
+    sick_routine = new Routine(this,new Goal[] { new Goal(b.location, 0, 0, b.size)});
   }
   
 }

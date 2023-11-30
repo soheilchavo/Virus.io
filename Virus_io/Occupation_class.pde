@@ -16,7 +16,7 @@ class Occupation{
   }
   
   Routine initializeRoutine(PVector h, NPC p){
-    return new Routine(p, new Goal[] { new Goal(h, 0, 24) });
+    return new Routine(p, new Goal[] { new Goal(h, 0, 24, p.home.size) });
   }
   
   Occupation(){}
@@ -29,10 +29,12 @@ class Doctor extends Occupation{
   }
   
   Routine initializeRoutine(PVector h, NPC p){
+    Building b = findClosestBuilding(p.home.location, BuildingType.Hospital);
+    
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 7), 
-      new Goal(findClosestBuilding(p.home.location, BuildingType.Hospital).location, 7, 17), 
-      new Goal(h, 17, 24) });
+      new Goal(h, 0, 7, b.size), 
+      new Goal(b.location, 7, 17, b.size), 
+      new Goal(h, 17, 24, b.size) });
   }
 }
 
@@ -42,10 +44,12 @@ class Teacher extends Occupation{
   }
   
   Routine initializeRoutine(PVector h, NPC p){
+    Building b = findClosestBuilding(p.home.location, BuildingType.School);
+    
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 8), 
-      new Goal(findClosestBuilding(p.home.location, BuildingType.School).location, 8, 14), 
-      new Goal(h, 14, 24) });
+      new Goal(h, 0, 8, b.size), 
+      new Goal(b.location, 8, 14, b.size), 
+      new Goal(h, 14, 24, b.size) });
   }
 }
 
@@ -55,10 +59,12 @@ class Student extends Occupation{
   }
   
   Routine initializeRoutine(PVector h, NPC p){
+    Building b = findClosestBuilding(p.home.location, BuildingType.School);
+    
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 8), 
-      new Goal(findClosestBuilding(p.home.location, BuildingType.School).location, 8, 14), 
-      new Goal(h, 14, 24) });
+      new Goal(h, 0, 8, b.size), 
+      new Goal(b.location, 8, 14, b.size), 
+      new Goal(h, 14, 24, b.size) });
   }
 }
 
@@ -68,10 +74,12 @@ class Waiter extends Occupation{
   }
   
   Routine initializeRoutine(PVector h, NPC p){
+    Building b = findClosestBuilding(p.home.location, BuildingType.Eatery);
+    
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 8), 
-      new Goal(findClosestBuilding(p.home.location, BuildingType.Eatery).location, 8, 14), 
-      new Goal(h, 14, 24) });
+      new Goal(h, 0, 8, b.size), 
+      new Goal(b.location, 8, 14, b.size), 
+      new Goal(h, 14, 24, b.size) });
   }
 }
 
@@ -81,10 +89,12 @@ class Worker extends Occupation{
   }
   
   Routine initializeRoutine(PVector h, NPC p){
+    Building b = findClosestBuilding(p.home.location, BuildingType.Workplace);
+    
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 8), 
-      new Goal(findClosestBuilding(p.home.location, BuildingType.Workplace).location, 8, 14), 
-      new Goal(h, 14, 24) });
+      new Goal(h, 0, 8, b.size), 
+      new Goal(b.location, 8, 14, b.size), 
+      new Goal(h, 14, 24, b.size) });
   }
 }
 
@@ -94,6 +104,8 @@ class Homeless extends Occupation{
   }
   
   Routine initializeRoutine(PVector h, NPC p){
-    return new Routine(p, new Goal[] { new Goal(findClosestBuilding(p.home.location, BuildingType.Park).location, 0, 24)});
+    Building b = findClosestBuilding(p.home.location, BuildingType.Park);
+    
+    return new Routine(p, new Goal[] { new Goal(b.location, 0, 24, b.size)});
   }
 }
