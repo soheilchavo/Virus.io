@@ -37,6 +37,7 @@ class NPC{
   }
   
   void drawNPC() {
+    
     this.calculate_position();
     
     fill(color(239,202,168));

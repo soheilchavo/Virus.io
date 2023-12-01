@@ -1,27 +1,33 @@
 import g4p_controls.*;
 
 int city_size = 50;
+
+float grid_relative_size;
 float grid_size;
+
+float shift_sensitivity = 10;
+float zoom_sensitivity = 0.04;
 
 float time_of_day = 0;
 int day = 0;
 boolean is_weekend;
 
-float sim_speed = 1.3;
+float sim_speed = 8;
 int age_deviation = 5;
 
 int cell_padding = 2;
-float npc_size = 14;
 
-float hover_margin = 2;
-boolean hovering_over_npc = false;
+float npc_set_size;
+float npc_size;
+
+float hover_margin = 0;
 
 ArrayList<Building> buildings = new ArrayList<Building>();
 
 boolean simOngoing = true;
 
 enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
-float[] building_rates = new float[] {0.4, 0.13, 0.2, 0.2, 0.1};
+float[] building_rates = new float[] {0.4, 0.13, 0.2, 0.1, 0.6};
 
 float npc_speed = 0.1;
 
@@ -38,13 +44,19 @@ BuildingType[] b_type_order = new BuildingType[] {
 int num_people;
 NPC[] people;
 
+float zoom = 1;
+float x_offset = 0;
+float y_offset = 0;
+
 PImage photo;
+
+String[] days = new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
 void setup() {
   size(600,600);
-  grid_size = width/city_size;
+  grid_relative_size = width/city_size;
   
-  
+  npc_set_size = city_size*0.28;
   startSim();
 }
 
@@ -53,6 +65,12 @@ void draw() {
   background(128);
 
   if(simOngoing){
+    
+    npc_size = npc_set_size*1;
+    grid_size = grid_relative_size*(1);
+    
+    scale(zoom);
+    translate(x_offset, y_offset);
     
     for(Building b: buildings){
       b.drawBuilding();
@@ -65,9 +83,11 @@ void draw() {
     
     draw_hover_text();
     
+    resetMatrix();
+    
     fill(0);
     textSize(12);
-    text("day " + day + ", is weekend: " + str(is_weekend) + ", time of day (military): " + str(time_of_day), 5,11);
+    text(days[day] + ", time of day: " + str(time_of_day), 5,11);
     time_of_day += 0.01*sim_speed;
     
     if(time_of_day-floor(time_of_day) >= 0.6){
@@ -91,9 +111,7 @@ void generateBuildings() {
   int curr_y = cell_padding;
   
   ArrayList<Building> new_buildings = new ArrayList<Building>();
-  while(new_buildings.size() == 0){
-    new_buildings = createRandomBuildings();
-  }
+  new_buildings = createRandomBuildings();
   
   while(curr_y + cell_padding < city_size-cell_padding){
     
@@ -101,22 +119,19 @@ void generateBuildings() {
     int largest_y = 0;
     
     while(curr_x + cell_padding < city_size-cell_padding){
-    
-      try{
-        int index = round(random(new_buildings.size()-1));
-        Building b = new_buildings.get(index);
-        new_buildings.remove(index);
-        
-        b.location = new PVector(curr_x, curr_y);
-        
-        if(curr_x + b.size[0] + cell_padding < city_size){
-          largest_y = (int) max(largest_y, b.size[1]);
-          buildings.add(b);
-        }
-        
-        curr_x += b.size[0]+cell_padding*2;
+  
+      int index = round(random(new_buildings.size()-1));
+      Building b = new_buildings.get(index);
+      new_buildings.remove(index);
+      
+      b.location = new PVector(curr_x, curr_y);
+      
+      if(curr_x + b.size[0] + cell_padding < city_size){
+        largest_y = (int) max(largest_y, b.size[1]);
+        buildings.add(b);
       }
-      catch(Exception e) {  }
+      
+      curr_x += b.size[0]+cell_padding*2;
       
     }
     
@@ -146,4 +161,38 @@ void switchDay(){
   if(day >= 5){
     is_weekend = true;
   }
+  
+  for(NPC person: people){
+    person.routine.setGoals();
+  }
 }
+
+float clamp(float val, float min, float max)
+{
+  if (val < min) {
+    return min;
+  }
+  if (val > max) {
+    return max;
+  }
+  return val;
+}
+
+void mouseWheel(MouseEvent event)
+{
+  zoom = clamp(zoom - event.getCount()*zoom_sensitivity, 0.1, 4);
+}
+
+void keyPressed(){
+  if(key == 'a')
+    x_offset += shift_sensitivity;
+  
+  if(key == 'd')
+    x_offset -= shift_sensitivity;
+  
+  if(key == 'w')
+    y_offset += shift_sensitivity;
+  
+  if(key == 's')
+    y_offset -= shift_sensitivity;
+}  

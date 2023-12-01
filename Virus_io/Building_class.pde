@@ -21,8 +21,9 @@ class Building {
     //println(this.type, this.size[0], this.size[1]);
     
     //image(photo, this.location.x*grid_size, this.location.y*grid_size);
+    
     fill(this.col);
-    rect(this.location.x*grid_size, this.location.y*grid_size, this.location.x + this.size[0]*grid_size, this.location.x + this.size[1]*grid_size);
+    rect(this.location.x*grid_size, this.location.y*grid_size, this.location.x + this.size[0]*grid_size, this.location.y + this.size[1]*grid_size);
     fill(0);
     text(this.type.name(), this.location.x*grid_size, this.location.y*grid_size); 
    

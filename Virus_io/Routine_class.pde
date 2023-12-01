@@ -13,14 +13,31 @@ class Goal {
   PVector[] variable_locations;
   
   Goal(PVector l, float s, float e, float[] size){
-    this.location = new PVector(l.x + (size[0]/2) + random(0, cell_padding/2), l.y + (size[1]/2) + random(0, cell_padding/2) );
+    this.location = new PVector(
+      l.x + random(0, size[0]), 
+      l.y + random(0, size[1]) );
+      
     this.start_time = s;
     this.end_time = e;
     
     this.duration = e-s;
   }
   
-  void setGoals(){
+  Goal(boolean d_goal, PVector[] d_goals, PVector[] v_goals, float s, float e){
+    
+    if(d_goal){
+      this.day_based_locations = d_goals;
+    }
+    
+    else{
+      this.variable_locations = v_goals;
+    }
+    
+    this.start_time = s;
+    this.end_time = e;
+  }
+  
+  void setGoal(){
     if(this.variable_goal){
       this.location = variable_locations[int(random(0, variable_locations.length-1))];
     }
@@ -48,6 +65,11 @@ class Routine {
     }
   }
   
+  void setGoals(){
+    for(Goal g: this.goals){
+      g.setGoal();
+    }
+  }
   
   Goal getCurrentGoal(float t){
     

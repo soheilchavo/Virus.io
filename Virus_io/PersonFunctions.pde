@@ -6,11 +6,14 @@ String getRandomName(){
 void draw_hover_text(){
 
   for(NPC person: people){
-    if(person.isMouseHoveredOver()){
+    if(true){
+      textSize(7);
+      
+      String textstr = person.name + ", " + person.age + " year old " + person.occupation.occupation_name;
+      
       fill(0);
-      textSize(16);
-      text(person.name + ", " + person.age + " year old " + person.occupation.occupation_name, person.location.x*grid_size, person.location.y*grid_size - 8); 
-      return;
+      text(textstr, person.location.x*grid_size, person.location.y*grid_size); 
+      //return;
     }
   }
   
@@ -61,7 +64,7 @@ ArrayList<Building> createRandomBuildings(){
   ArrayList<Building> new_b = new ArrayList<Building>();
   
   for(int t = 0; t < b_type_order.length-1; t++){
-    
+    println("t:" + t);
     BuildingType type = b_type_order[t];
     
     for(int i = 0; i < round((building_rates[t]/sumOfRates())*(city_size/1.5)); i++){
