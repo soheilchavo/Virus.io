@@ -62,9 +62,9 @@ class Student extends Occupation{
     Building b = findClosestBuilding(p.home.location, BuildingType.School);
     
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 8, b.size), 
-      new Goal(b.location, 8, 14, b.size), 
-      new Goal(h, 14, 24, b.size) });
+      new Goal(h, 0, 9, b.size), 
+      new Goal(b.location, 9, 13, b.size), 
+      new Goal(h, 13, 24, b.size) });
   }
 }
 
@@ -100,7 +100,7 @@ class Worker extends Occupation{
 
 class Homeless extends Occupation{
   Homeless(){
-    super("Homeless", 0, 24, 45);
+    super("Unhoused Person", 0, 24, 45);
   }
   
   Routine initializeRoutine(PVector h, NPC p){

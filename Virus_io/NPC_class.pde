@@ -43,11 +43,21 @@ class NPC{
     if(this.occupation.occupation_name == "Homeless")
       fill(color(0,0,255));
     
-    circle(this.location.x*grid_size, this.location.y*grid_size, 7);
-    
-    fill(0);
-    text(this.occupation.occupation_name, this.location.x*grid_size, this.location.y*grid_size - 8); 
+    circle(this.location.x*grid_size, this.location.y*grid_size, npc_size);
+  }
   
+  boolean isMouseHoveredOver(){
+  
+    float x_1 = this.location.x*grid_size - hover_margin;
+    float x_2 = this.location.x*grid_size + npc_size + hover_margin;
+    float y_1 = this.location.y*grid_size - hover_margin;
+    float y_2 = this.location.y*grid_size + npc_size + hover_margin;
+    
+    if(mouseX > x_1 && mouseX < x_2 && mouseY > y_1 && mouseY < y_2)
+      return true;
+    
+    return false;
+    
   }
   
   void initializeSickRoutine(){

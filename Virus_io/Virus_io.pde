@@ -7,10 +7,14 @@ float time_of_day = 0;
 int day = 0;
 boolean is_weekend;
 
-float sim_speed = 2;
+float sim_speed = 1.3;
 int age_deviation = 5;
 
 int cell_padding = 2;
+float npc_size = 14;
+
+float hover_margin = 2;
+boolean hovering_over_npc = false;
 
 ArrayList<Building> buildings = new ArrayList<Building>();
 
@@ -32,7 +36,7 @@ BuildingType[] b_type_order = new BuildingType[] {
 
 
 int num_people;
-NPC[] People;
+NPC[] people;
 
 PImage photo;
 
@@ -55,13 +59,15 @@ void draw() {
       //photo = loadImage(b.sprite);
     }
     
-    for(NPC p: People){
+    for(NPC p: people){
       p.drawNPC();
     }
     
+    draw_hover_text();
+    
     fill(0);
     textSize(12);
-    text("time of day (military): " + str(time_of_day), 5,11);
+    text("day " + day + ", is weekend: " + str(is_weekend) + ", time of day (military): " + str(time_of_day), 5,11);
     time_of_day += 0.01*sim_speed;
     
     if(time_of_day-floor(time_of_day) >= 0.6){
@@ -84,7 +90,10 @@ void generateBuildings() {
   int curr_x = cell_padding;
   int curr_y = cell_padding;
   
-  ArrayList<Building> new_buildings = createRandomBuildings();
+  ArrayList<Building> new_buildings = new ArrayList<Building>();
+  while(new_buildings.size() == 0){
+    new_buildings = createRandomBuildings();
+  }
   
   while(curr_y + cell_padding < city_size-cell_padding){
     
@@ -93,18 +102,22 @@ void generateBuildings() {
     
     while(curr_x + cell_padding < city_size-cell_padding){
     
-      int index = round(random(new_buildings.size()-1));
-      Building b = new_buildings.get(index);
-      new_buildings.remove(index);
-      
-      b.location = new PVector(curr_x, curr_y);
-      
-      if(curr_x + b.size[0] + cell_padding < city_size){
-        largest_y = (int) max(largest_y, b.size[1]);
-        buildings.add(b);
+      try{
+        int index = round(random(new_buildings.size()-1));
+        Building b = new_buildings.get(index);
+        new_buildings.remove(index);
+        
+        b.location = new PVector(curr_x, curr_y);
+        
+        if(curr_x + b.size[0] + cell_padding < city_size){
+          largest_y = (int) max(largest_y, b.size[1]);
+          buildings.add(b);
+        }
+        
+        curr_x += b.size[0]+cell_padding*2;
       }
+      catch(Exception e) {  }
       
-      curr_x += b.size[0]+cell_padding*2;
     }
     
     curr_y += largest_y + cell_padding*2;
@@ -113,10 +126,10 @@ void generateBuildings() {
 
 void generatePeople(){
   num_people = int(city_size*0.75);
-  People = new NPC[num_people];
+  people = new NPC[num_people];
   
   for(int i = 0; i < num_people; i++){
-    People[i] = new NPC(getRandomOccupation());
+    people[i] = new NPC(getRandomOccupation());
   }
 }
 

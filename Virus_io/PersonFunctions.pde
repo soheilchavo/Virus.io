@@ -3,6 +3,19 @@ String getRandomName(){
   return random_names[round(random(0, random_names.length-1))];
 }
 
+void draw_hover_text(){
+
+  for(NPC person: people){
+    if(person.isMouseHoveredOver()){
+      fill(0);
+      textSize(16);
+      text(person.name + ", " + person.age + " year old " + person.occupation.occupation_name, person.location.x*grid_size, person.location.y*grid_size - 8); 
+      return;
+    }
+  }
+  
+}
+
 int weightedRandom(float[] rates){
   
   return round(random(0,rates.length));
