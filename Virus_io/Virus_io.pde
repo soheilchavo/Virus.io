@@ -12,7 +12,7 @@ float time_of_day = 0;
 int day = 0;
 boolean is_weekend;
 
-float sim_speed = 8;
+float sim_speed = 1;
 int age_deviation = 5;
 
 int cell_padding = 2;
