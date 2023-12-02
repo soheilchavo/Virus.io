@@ -22,30 +22,29 @@ class Building {
     
     //image(photo, this.location.x*grid_size, this.location.y*grid_size);
     
-    float mod_grid_size = grid_size+this.location.x*grid_size_correction;
     fill(this.col);
-    rect(this.location.x*mod_grid_size, this.location.y*mod_grid_size, this.location.x + this.size[0]*mod_grid_size, this.location.y + this.size[1]*mod_grid_size);
+    rect(this.location.x*grid_size, this.location.y*grid_size, this.size[0]*grid_size, this.size[1]*grid_size);
     fill(0);
-    text(this.type.name(), this.location.x*mod_grid_size, this.location.y*mod_grid_size); 
+    text(this.type.name(), this.location.x*grid_size, this.location.y*grid_size); 
    
   }
 }
 
 class Home extends Building{
   Home(PVector l){
-    super(l, BuildingType.Home, new float[] {1,1}, color(130,115,73), "home sprite.png");
+    super(l, BuildingType.Home, new float[] {5,5}, color(130,115,73), "home sprite.png");
   }
 }
 
 class Hospital extends Building{
   Hospital(PVector l){
-    super(l, BuildingType.Hospital, new float[] {4,4}, color(255,0,0), "hospital sprite.png");
+    super(l, BuildingType.Hospital, new float[] {8,8}, color(255,0,0), "hospital sprite.png");
   }
 }
 
 class Eatery extends Building{
   Eatery(PVector l){
-    super(l, BuildingType.Eatery, new float[] {3,2}, color(177,122,155), "eatery sprite.png");
+    super(l, BuildingType.Eatery, new float[] {6,3}, color(177,122,155), "eatery sprite.png");
   }
 }
 
@@ -56,11 +55,11 @@ class Park extends Building{
 }
 class School extends Building{
   School(PVector l){
-    super(l, BuildingType.School, new float[] {7,6}, color(72,122,171), "school sprite.png");
+    super(l, BuildingType.School, new float[] {9,6}, color(72,122,171), "school sprite.png");
   }
 }
 class Workplace extends Building{
   Workplace(PVector l){
-    super(l, BuildingType.Workplace, new float[] {4,3}, color(156,171,73), "workplace sprite.png");
+    super(l, BuildingType.Workplace, new float[] {7,6}, color(156,171,73), "workplace sprite.png");
   }
 }

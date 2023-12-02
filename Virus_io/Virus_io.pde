@@ -28,11 +28,9 @@ ArrayList<Building> buildings = new ArrayList<Building>();
 
 
 enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
-float[] building_rates = new float[] {0.4, 0.13, 0.2, 0.1, 0.3, 0.2};
+float[] building_rates = new float[] {0.8, 0.13, 0.2, 0.1, 0.3, 0.2};
 
 float npc_speed = 0.1;
-
-float grid_size_correction = 0.03;
 
 BuildingType[] b_type_order = new BuildingType[] { 
   BuildingType.Home, 
@@ -57,7 +55,6 @@ String[] days = new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Fr
 
 void setup() {
   size(600,600);
-  
   startSim();
 }
 
