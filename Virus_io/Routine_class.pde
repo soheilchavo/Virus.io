@@ -13,9 +13,11 @@ class Goal {
   PVector[] variable_locations;
   
   Goal(PVector l, float s, float e, float[] size){
+    
+    float npc_space = npc_size/grid_size;
     this.location = new PVector(
-      l.x + random(0, size[0]), 
-      l.y + random(0, size[1]) );
+      l.x + random(npc_space, size[0]-npc_space), 
+      l.y +  random(npc_space, size[1]-npc_space) );
       
     this.start_time = s;
     this.end_time = e;

@@ -22,10 +22,11 @@ class Building {
     
     //image(photo, this.location.x*grid_size, this.location.y*grid_size);
     
+    float mod_grid_size = grid_size+this.location.x*grid_size_correction;
     fill(this.col);
-    rect(this.location.x*grid_size, this.location.y*grid_size, this.location.x + this.size[0]*grid_size, this.location.y + this.size[1]*grid_size);
+    rect(this.location.x*mod_grid_size, this.location.y*mod_grid_size, this.location.x + this.size[0]*mod_grid_size, this.location.y + this.size[1]*mod_grid_size);
     fill(0);
-    text(this.type.name(), this.location.x*grid_size, this.location.y*grid_size); 
+    text(this.type.name(), this.location.x*mod_grid_size, this.location.y*mod_grid_size); 
    
   }
 }
@@ -44,7 +45,7 @@ class Hospital extends Building{
 
 class Eatery extends Building{
   Eatery(PVector l){
-    super(l, BuildingType.Eatery, new float[] {3,2}, color(0,255,22), "eatery sprite.png");
+    super(l, BuildingType.Eatery, new float[] {3,2}, color(177,122,155), "eatery sprite.png");
   }
 }
 

@@ -1,12 +1,19 @@
 import g4p_controls.*;
 
-int city_size = 50;
+boolean simOngoing = true;
 
-float grid_relative_size;
-float grid_size;
+int city_size = 9;
+float grid_size = 19;
+float npc_size = 12;
 
 float shift_sensitivity = 10;
 float zoom_sensitivity = 0.04;
+float mouse_sensitivity = 1.3;
+
+//person compared to citysize^2
+float population_density = pow((city_size/4),2);
+
+float hover_margin = 2;
 
 float time_of_day = 0;
 int day = 0;
@@ -17,19 +24,15 @@ int age_deviation = 5;
 
 int cell_padding = 2;
 
-float npc_set_size;
-float npc_size;
-
-float hover_margin = 0;
-
 ArrayList<Building> buildings = new ArrayList<Building>();
 
-boolean simOngoing = true;
 
 enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
-float[] building_rates = new float[] {0.4, 0.13, 0.2, 0.1, 0.6};
+float[] building_rates = new float[] {0.4, 0.13, 0.2, 0.1, 0.3, 0.2};
 
 float npc_speed = 0.1;
+
+float grid_size_correction = 0.03;
 
 BuildingType[] b_type_order = new BuildingType[] { 
   BuildingType.Home, 
@@ -54,9 +57,7 @@ String[] days = new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Fr
 
 void setup() {
   size(600,600);
-  grid_relative_size = width/city_size;
   
-  npc_set_size = city_size*0.28;
   startSim();
 }
 
@@ -65,9 +66,6 @@ void draw() {
   background(128);
 
   if(simOngoing){
-    
-    npc_size = npc_set_size*1;
-    grid_size = grid_relative_size*(1);
     
     scale(zoom);
     translate(x_offset, y_offset);
@@ -113,25 +111,26 @@ void generateBuildings() {
   ArrayList<Building> new_buildings = new ArrayList<Building>();
   new_buildings = createRandomBuildings();
   
-  while(curr_y + cell_padding < city_size-cell_padding){
+  for(int y = 0; y < city_size; y++){
     
     curr_x = cell_padding;
     int largest_y = 0;
     
-    while(curr_x + cell_padding < city_size-cell_padding){
+    for(int x = 0; x < city_size; x++){
   
       int index = round(random(new_buildings.size()-1));
-      Building b = new_buildings.get(index);
-      new_buildings.remove(index);
       
-      b.location = new PVector(curr_x, curr_y);
-      
-      if(curr_x + b.size[0] + cell_padding < city_size){
+      if(index != 0){
+        Building b = new_buildings.get(index);
+        new_buildings.remove(index);
+        
+        b.location = new PVector(curr_x, curr_y);
+        
         largest_y = (int) max(largest_y, b.size[1]);
         buildings.add(b);
+        
+        curr_x += b.size[0]+cell_padding*2;
       }
-      
-      curr_x += b.size[0]+cell_padding*2;
       
     }
     
@@ -140,7 +139,7 @@ void generateBuildings() {
 }
 
 void generatePeople(){
-  num_people = int(city_size*0.75);
+  num_people = int(city_size*city_size*population_density);
   people = new NPC[num_people];
   
   for(int i = 0; i < num_people; i++){
@@ -181,6 +180,11 @@ float clamp(float val, float min, float max)
 void mouseWheel(MouseEvent event)
 {
   zoom = clamp(zoom - event.getCount()*zoom_sensitivity, 0.1, 4);
+}
+
+void mouseDragged(MouseEvent event){
+  x_offset += (-pmouseX+mouseX)*mouse_sensitivity;
+  y_offset += (-pmouseY+mouseY)*mouse_sensitivity;
 }
 
 void keyPressed(){
