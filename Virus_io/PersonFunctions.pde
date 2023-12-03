@@ -15,39 +15,44 @@ void draw_hover_text() {
 
       fill(0);
       text(textstr, person.location.x*grid_size, person.location.y*grid_size);
-      //return;
     }
   }
 }
 
 int weightedRandom(float[] rates) {
 
-  return round(random(0, rates.length-1));
-
-  //float r = random(1);
-
   //float sum = 0;
-  //for(float f: rates){
+  //for(float f: rates)
   //  sum += f;
+  
+  //float[] percentages = new float[rates.length+1];
+  //percentages[0] = 0;
+  
+  //for(int i = 1; i < rates.length; i++)
+  //  percentages[i] = rates[i]/sum;
+  
+  //for(int i = 1; i < percentages.length; i++){
+  //   percentages[i] += percentages[i-1];
+  //   println(percentages[i]);
   //}
-
-  //HashMap<Float, Integer> weighthash = new HashMap<Float, Integer>();
-  //float[] weights = new float[rates.length];
-
-  //for(int i = 0; i < rates.length; i++){
-  //  float weight = rates[i]/sum;
-  //  weighthash.put(weight, i);
-  //  weights[i] = weight;
+  
+  //float r = random(0,1);
+  
+  //for(int i = 0; i < percentages.length; i++){
+    
+  //  if(r > percentages[percentages.length-2])
+  //    println(i, "\t", percentages[i]);
+    
+  //  if(i == percentages.length-1){
+  //    return i-2;
+  //  }
+  //  if(percentages[i] > r && r < percentages[i+1]){
+  //    return i-1;
+  //  }
+    
   //}
-
-  //sort(weights);
-
-  //for(int i = 0; i < weights.length; i++){
-  //  if(i == weights.length-1 || (weights[i] <= r && weights[i+1] > r))
-  //    return weighthash.get(weights[i]);
-  //}
-
-  //return 0;
+  
+  return round(random(rates.length-1));
 }
 
 float sumOfRates() {

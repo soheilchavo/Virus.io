@@ -1,23 +1,23 @@
 class Goal {
 
   PVector location;
+  Building target_building;
   float start_time;
   float end_time;
   
   float duration;
   
-  boolean day_based_goal;
-  PVector[] day_based_locations;
-  
   boolean variable_goal;
-  PVector[] variable_locations;
+  Building[] variable_buildings;
   
-  Goal(PVector l, float s, float e, float[] size){
+  Goal(Building b, float s, float e){
     
     this.location = new PVector(
-      l.x + size[0]/3 + random(-size[0]/4, size[0]/4), 
-      l.y + size[1]/3 +  random(-size[1]/4, size[1]/4)
+      b.location.x + b.size[0]/3 + random(-b.size[0]/4, b.size[0]/4), 
+      b.location.y + b.size[1]/3 +  random(-b.size[1]/4, b.size[1]/4)
     );
+    
+    this.target_building = b;
     
     this.start_time = s;
     this.end_time = e;
@@ -25,26 +25,20 @@ class Goal {
     this.duration = e-s;
   }
   
-  Goal(boolean d_goal, PVector[] d_goals, PVector[] v_goals, float s, float e){
-    
-    if(d_goal){
-      this.day_based_locations = d_goals;
-    }
-    
-    else{
-      this.variable_locations = v_goals;
-    }
-    
+  Goal(Building[] v_goals, float s, float e){
+    this.variable_buildings = v_goals;
+    this.variable_goal = true;
     this.start_time = s;
     this.end_time = e;
   }
   
   void setGoal(){
     if(this.variable_goal){
-      this.location = variable_locations[int(random(0, variable_locations.length-1))];
-    }
-    else if(this.day_based_goal){
-      this.location = day_based_locations[int(is_weekend)];
+      Building b = variable_buildings[round(random(0, variable_buildings.length-1))];
+      this.location = new PVector(
+        b.location.x + b.size[0]/3 + random(-b.size[0]/4, b.size[0]/4), 
+        b.location.y + b.size[1]/3 +  random(-b.size[1]/4, b.size[1]/4)
+      );
     }
   }
   
@@ -87,4 +81,18 @@ class Routine {
   
   }
   
+}
+
+Routine createWeekendRoutine(Building home, NPC p){
+  
+  Building eatery = findClosestBuilding(p.home.location, BuildingType.Eatery);
+  Building park = findClosestBuilding(p.home.location, BuildingType.Park);
+  
+  return new Routine(p, new Goal[] { 
+    new Goal(home, 0, 11), 
+    new Goal(new Building[] { home, eatery, park }, 11, 13), 
+    new Goal(new Building[] { home, eatery, park }, 13, 16),
+    new Goal(new Building[] { home, eatery, park }, 16, 18),
+    new Goal(new Building[] { home, eatery, park }, 18, 19),
+    new Goal(home, 19, 24)});
 }

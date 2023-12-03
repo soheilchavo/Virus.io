@@ -15,8 +15,8 @@ class Occupation{
     this.avg_age = a;
   }
   
-  Routine initializeRoutine(PVector h, NPC p){
-    return new Routine(p, new Goal[] { new Goal(h, 0, 24, p.home.size) });
+  Routine initializeRoutine(Building h, NPC p){
+    return new Routine(p, new Goal[] { new Goal(h, 0, 24) });
   }
   
   Occupation(){}
@@ -28,13 +28,13 @@ class Doctor extends Occupation{
     super("Doctor", 9, 17, 34);
   }
   
-  Routine initializeRoutine(PVector h, NPC p){
+  Routine initializeRoutine(Building h, NPC p){
     Building b = findClosestBuilding(p.home.location, BuildingType.Hospital);
     
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 7, b.size), 
-      new Goal(b.location, 7, 17, b.size), 
-      new Goal(h, 17, 24, b.size) });
+      new Goal(h, 0, 7), 
+      new Goal(b, 7, 17), 
+      new Goal(h, 17, 24) });
   }
 }
 
@@ -43,13 +43,17 @@ class Teacher extends Occupation{
     super("Teacher", 8, 14, 30);
   }
   
-  Routine initializeRoutine(PVector h, NPC p){
+  Routine initializeRoutine(Building h, NPC p){
     Building b = findClosestBuilding(p.home.location, BuildingType.School);
+    Building park = findClosestBuilding(p.home.location, BuildingType.Park);
+    Building eatery = findClosestBuilding(p.home.location, BuildingType.Eatery);
     
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 8, b.size), 
-      new Goal(b.location, 8, 14, b.size), 
-      new Goal(h, 14, 24, b.size) });
+      new Goal(h, 0, 8), 
+      new Goal(b, 8, 14), 
+      new Goal(new Building[] {h,park, eatery}, 14, 17),
+      new Goal(new Building[] {h,park,eatery}, 17, 19),
+      new Goal(h, 19, 24) });
   }
 }
 
@@ -58,13 +62,16 @@ class Student extends Occupation{
     super("Student", 8, 14, 13);
   }
   
-  Routine initializeRoutine(PVector h, NPC p){
+  Routine initializeRoutine(Building h, NPC p){
     Building b = findClosestBuilding(p.home.location, BuildingType.School);
+    Building park = findClosestBuilding(p.home.location, BuildingType.Park);
+    Building eatery = findClosestBuilding(p.home.location, BuildingType.Eatery);
     
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 9, b.size), 
-      new Goal(b.location, 9, 13, b.size), 
-      new Goal(h, 13, 24, b.size) });
+      new Goal(h, 0, 8), 
+      new Goal(b, 8, 14), 
+      new Goal(new Building[] {h,park,eatery}, 14, 22),
+      new Goal(h, 22, 24) });
   }
 }
 
@@ -73,13 +80,15 @@ class Waiter extends Occupation{
     super("Waiter", 12, 22, 22);
   }
   
-  Routine initializeRoutine(PVector h, NPC p){
+  Routine initializeRoutine(Building h, NPC p){
     Building b = findClosestBuilding(p.home.location, BuildingType.Eatery);
+    Building park = findClosestBuilding(p.home.location, BuildingType.Park);
     
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 8, b.size), 
-      new Goal(b.location, 8, 14, b.size), 
-      new Goal(h, 14, 24, b.size) });
+      new Goal(h, 0, 7), 
+      new Goal(new Building[] {h,park}, 7, 9),
+      new Goal(b, 9, 22), 
+      new Goal(h, 22, 24) });
   }
 }
 
@@ -88,13 +97,16 @@ class Worker extends Occupation{
     super("Worker", 9, 22, 36);
   }
   
-  Routine initializeRoutine(PVector h, NPC p){
+  Routine initializeRoutine(Building h, NPC p){
     Building b = findClosestBuilding(p.home.location, BuildingType.Workplace);
+    Building park = findClosestBuilding(p.home.location, BuildingType.Park);
+    Building eatery = findClosestBuilding(p.home.location, BuildingType.Eatery);
     
     return new Routine(p, new Goal[] { 
-      new Goal(h, 0, 8, b.size), 
-      new Goal(b.location, 8, 14, b.size), 
-      new Goal(h, 14, 24, b.size) });
+      new Goal(h, 0, 9), 
+      new Goal(b, 9, 17), 
+      new Goal(new Building[] {h,park,eatery}, 17, 21),
+      new Goal(h, 21, 24) });
   }
 }
 
@@ -103,9 +115,13 @@ class Homeless extends Occupation{
     super("Unhoused Person", 0, 24, 45);
   }
   
-  Routine initializeRoutine(PVector h, NPC p){
+  Routine initializeRoutine(Building h, NPC p){
     Building b = findClosestBuilding(p.home.location, BuildingType.Park);
+    Building eatery = findClosestBuilding(p.home.location, BuildingType.Eatery);
     
-    return new Routine(p, new Goal[] { new Goal(b.location, 0, 24, b.size)});
+    return new Routine(p, new Goal[] { 
+      new Goal(b, 0, 14), 
+      new Goal(new Building[] {b,eatery}, 14, 22),
+      new Goal(b, 22, 24) });
   }
 }

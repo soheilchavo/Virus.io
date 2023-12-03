@@ -1,6 +1,7 @@
 import g4p_controls.*;
 
 boolean simOngoing = true;
+float sim_speed = 3;
 
 int city_size = 9;
 float grid_size = 19;
@@ -10,16 +11,14 @@ float shift_sensitivity = 10;
 float zoom_sensitivity = 0.04;
 float mouse_sensitivity = 1.3;
 
-//person compared to citysize^2
 float population_density = pow((city_size/4),2);
 
 float hover_margin = 2;
 
 float time_of_day = 0;
-int day = 0;
+int day = 5;
 boolean is_weekend;
 
-float sim_speed = 1;
 int age_deviation = 5;
 
 int cell_padding = 2;
@@ -56,6 +55,7 @@ String[] days = new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Fr
 void setup() {
   size(600,600);
   startSim();
+  switchDay();
 }
 
 void draw() {
@@ -160,6 +160,7 @@ void switchDay(){
   
   for(NPC person: people){
     person.routine.setGoals();
+    person.weekend_routine.setGoals();
   }
 }
 
