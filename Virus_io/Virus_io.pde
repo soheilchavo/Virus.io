@@ -63,13 +63,20 @@ void draw() {
   background(128);
 
   if(simOngoing){
+    pushMatrix();
     
+    // Center the zooming
+    float centerX = width / 2.0;
+    float centerY = height / 2.0;
+    translate(centerX, centerY);
     scale(zoom);
+    translate(-centerX, -centerY);
+    
     translate(x_offset, y_offset);
     
     for(Building b: buildings){
       b.drawBuilding();
-      //photo = loadImage(b.sprite);
+      
     }
     
     for(NPC p: people){
@@ -78,7 +85,7 @@ void draw() {
     
     draw_hover_text();
     
-    resetMatrix();
+    popMatrix();
     
     fill(0);
     textSize(12);
