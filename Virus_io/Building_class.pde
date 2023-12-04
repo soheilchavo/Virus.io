@@ -21,7 +21,7 @@ class Building {
     
     tint(255,255);
     if(this.npc_in_building())
-      tint(255,120);
+      tint(255,60);
     
     image(this.sprite, this.location.x*grid_size, this.location.y*grid_size, this.size[0]*grid_size, this.size[1]*grid_size);
    

@@ -1,9 +1,9 @@
 import g4p_controls.*;
 
 boolean simOngoing = true;
-float sim_speed = 3;
+float sim_speed = 2;
 
-int city_size = 9;
+int city_size = 6;
 float grid_size = 19;
 float npc_size = 12;
 
@@ -11,7 +11,7 @@ float shift_sensitivity = 10;
 float zoom_sensitivity = 0.04;
 float mouse_sensitivity = 1.3;
 
-float population_density = pow((city_size/4),2);
+float population_density = pow((city_size),2)/10;
 
 float hover_margin = 2;
 
@@ -37,7 +37,7 @@ BuildingType[] b_type_order = new BuildingType[] {
   BuildingType.Workplace,
   BuildingType.School,
   BuildingType.Park,
-  BuildingType.Eatery,
+  BuildingType.Eatery
 };
 
 
@@ -52,7 +52,12 @@ PImage photo;
 
 String[] days = new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
-ArrayList<ArrayList<PathNode>> nodes = new ArrayList<ArrayList<PathNode>>();
+ArrayList<PathNode> path_nodes = new ArrayList<PathNode>();
+
+boolean draw_pathfinding = true;
+boolean draw_people = true;
+boolean draw_buildings = true;
+
 
 void setup() {
   size(600,600);
@@ -76,13 +81,23 @@ void draw() {
     
     translate(x_offset, y_offset);
     
-    for(Building b: buildings){
-      b.drawBuilding();
-      
+    if(draw_buildings){
+      for(Building b: buildings){
+        b.drawBuilding();
+        
+      }
     }
     
-    for(NPC p: people){
-      p.drawNPC();
+    if(draw_people){
+      for(NPC p: people){
+        p.drawNPC();
+      }
+    }
+    
+    if(draw_pathfinding){
+      for(PathNode p: path_nodes){
+        p.draw_node();
+      }
     }
     
     draw_hover_text();
@@ -117,6 +132,8 @@ void generateBuildings() {
   ArrayList<Building> new_buildings = new ArrayList<Building>();
   new_buildings = createRandomBuildings();
   
+  int[] largest_ys = new int[city_size];
+  
   for(int y = 0; y < city_size; y++){
     
     curr_x = cell_padding;
@@ -139,8 +156,45 @@ void generateBuildings() {
       }
       
     }
+    
+    largest_ys[y] = largest_y;
     curr_y += largest_y + cell_padding*2;
   }
+  
+  
+  int row_value = -1;
+  //Draw nodes per building (up, down, right, left)
+  for(int i = 0; i < buildings.size(); i++){
+    
+    curr_y = largest_ys[floor(i/city_size)];
+    Building b = buildings.get(i);
+    
+    float pad = cell_padding/2;
+    
+    PVector[] path_locations = new PVector[] {
+      new PVector(b.location.x-pad, b.location.y-pad),
+      new PVector(b.location.x+b.size[0]+pad, b.location.y-pad),
+      new PVector(b.location.x-pad, b.location.y+curr_y+pad),
+      new PVector(b.location.x+b.size[0]+pad, b.location.y+curr_y+pad)
+    };
+    
+    for(int j = 0; j < path_locations.length; j++){
+      PathNode p = new PathNode(path_locations[j]);
+      if(!is_duplicate_node(p))
+        path_nodes.add(p);
+    }
+  }
+  
+  //Connect Neighbours
+
+  for(PathNode p: path_nodes){
+    for(PathNode c: path_nodes){
+      float slope =  abs((c.location.y-p.location.y)/(c.location.x-p.location.x));
+      if(c.location.dist(p.location) < grid_size*0.6 && (slope < 0.3 || slope > 80))
+        p.neighbours.add(c);
+    }
+  }
+  
 }
 
 void generatePeople(){
