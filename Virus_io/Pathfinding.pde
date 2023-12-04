@@ -28,4 +28,11 @@ boolean is_duplicate_node(PathNode p){
   return false;
 }
 
-//PathNode[] create_path(PathNode a, PathNode b){}
+ArrayList<PathNode> create_path(PathNode a, PathNode b){
+
+  ArrayList<PathNode> ordered_nodes = new ArrayList<PathNode>();
+  
+  ordered_nodes.add(a);
+  
+  
+}
