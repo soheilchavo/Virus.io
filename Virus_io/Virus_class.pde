@@ -1,0 +1,3 @@
+class Virus {
+  float spreadRate, 
+}
