@@ -14,7 +14,7 @@ void draw_hover_text() {
       String textstr = person.name + ", " + person.age + " year old " + person.occupation.occupation_name;
 
       fill(0);
-      text(textstr, person.location.x*grid_size, person.location.y*grid_size);
+      //text(textstr, person.location.x*grid_size, person.location.y*grid_size);
     }
   }
 }
