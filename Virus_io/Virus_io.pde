@@ -52,6 +52,8 @@ PImage photo;
 
 String[] days = new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
+ArrayList<ArrayList<PathNode>> nodes = new ArrayList<ArrayList<PathNode>>();
+
 void setup() {
   size(600,600);
   startSim();
@@ -60,7 +62,7 @@ void setup() {
 
 void draw() {
   
-  background(128);
+  background(120);
 
   if(simOngoing){
     pushMatrix();
@@ -137,7 +139,6 @@ void generateBuildings() {
       }
       
     }
-    
     curr_y += largest_y + cell_padding*2;
   }
 }

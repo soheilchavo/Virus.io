@@ -18,10 +18,26 @@ class Building {
   
   //METHODS
   void drawBuilding() {
-    image(sprite, this.location.x*grid_size, this.location.y*grid_size, this.size[0]*grid_size, this.size[1]*grid_size);
+    
+    tint(255,255);
+    if(this.npc_in_building())
+      tint(255,120);
+    
+    image(this.sprite, this.location.x*grid_size, this.location.y*grid_size, this.size[0]*grid_size, this.size[1]*grid_size);
     fill(0);
     text(this.type.name(), this.location.x*grid_size, this.location.y*grid_size); 
    
+  }
+  
+  boolean npc_in_building(){
+    for(NPC p: people){
+      if(p.location.x > this.location.x && 
+         p.location.x < this.location.x+size[0] &&
+         p.location.y > this.location.y && 
+         p.location.y < this.location.y+size[1])
+         return true;
+    }
+    return false;
   }
 }
 
