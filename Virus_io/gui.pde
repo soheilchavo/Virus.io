@@ -38,6 +38,10 @@ public void parkRateSliderChanged(GSlider source, GEvent event) { //_CODE_:parkR
   println("parkRateSlider - GSlider >> GEvent." + event + " @ " + millis());
 } //_CODE_:parkRateSlider:890325:
 
+public void citySizeSliderChanged(GSlider source, GEvent event) { //_CODE_:citySizeSlider:359799:
+  println("citySizeSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:citySizeSlider:359799:
+
 
 
 // Create all the GUI controls. 
@@ -116,6 +120,23 @@ public void createGUI(){
   parkRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   parkRateSlider.setOpaque(true);
   parkRateSlider.addEventHandler(this, "parkRateSliderChanged");
+  citySizeName = new GLabel(window1, 200, 0, 80, 20);
+  citySizeName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  citySizeName.setText("City size");
+  citySizeName.setOpaque(false);
+  citySizeSlider = new GSlider(window1, 200, 20, 150, 50, 10.0);
+  citySizeSlider.setShowValue(true);
+  citySizeSlider.setShowLimits(true);
+  citySizeSlider.setLimits(5.0, 0.0, 10.0);
+  citySizeSlider.setNbrTicks(10);
+  citySizeSlider.setShowTicks(true);
+  citySizeSlider.setNumberFormat(G4P.DECIMAL, 2);
+  citySizeSlider.setOpaque(true);
+  citySizeSlider.addEventHandler(this, "citySizeSliderChanged");
+  label1 = new GLabel(window1, 179, 172, 80, 20);
+  label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  label1.setText("My label");
+  label1.setOpaque(false);
   window1.loop();
 }
 
@@ -132,3 +153,6 @@ GLabel eateryRateName;
 GSlider eateryRateSlider; 
 GLabel parkRateName; 
 GSlider parkRateSlider; 
+GLabel citySizeName; 
+GSlider citySizeSlider; 
+GLabel label1; 
