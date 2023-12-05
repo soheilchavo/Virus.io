@@ -1,9 +1,9 @@
 import g4p_controls.*;
 
 boolean simOngoing = true;
-float sim_speed = 2;
+float sim_speed = 5;
 
-int city_size = 6;
+int city_size = 12;
 float grid_size = 19;
 float npc_size = 12;
 
@@ -16,7 +16,7 @@ float population_density = pow((city_size),2)/10;
 float hover_margin = 2;
 
 float time_of_day = 0;
-int day = 5;
+int day = 0;
 boolean is_weekend;
 
 int age_deviation = 5;
@@ -29,7 +29,7 @@ ArrayList<Building> buildings = new ArrayList<Building>();
 enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
 float[] building_rates = new float[] {0.8, 0.13, 0.2, 0.1, 0.3, 0.2};
 
-float npc_speed = 0.1;
+float npc_speed = 0.07;
 
 BuildingType[] b_type_order = new BuildingType[] { 
   BuildingType.Home, 
@@ -79,8 +79,13 @@ void draw() {
     translate(centerX, centerY);
     scale(zoom);
     translate(-centerX, -centerY);
-    
     translate(x_offset, y_offset);
+    
+    if(draw_pathfinding){
+      for(PathNode p: path_nodes){
+        p.draw_node();
+      }
+    }
     
     if(draw_buildings){
       for(Building b: buildings){
@@ -92,12 +97,6 @@ void draw() {
     if(draw_people){
       for(NPC p: people){
         p.drawNPC();
-      }
-    }
-    
-    if(draw_pathfinding){
-      for(PathNode p: path_nodes){
-        p.draw_node();
       }
     }
     

@@ -16,10 +16,8 @@ class NPC{
   
   PVector location;
   
-  ArrayList<PathNode> goal_path;
-  int node_goal;
-  
-  boolean travelling = false;
+  PathNode current_path_node;
+  PathNode target_node = null;
   
   NPC(Occupation o){
     
@@ -45,27 +43,32 @@ class NPC{
     if(is_weekend)
       c_goal = this.weekend_routine.getCurrentGoal(time_of_day);
     
-    if(find_closest_node(this.location) != find_closest_node(c_goal.location) && !travelling){
-      //println("travelling");
-      travelling = true;
-      this.goal_path = find_path(find_closest_node(this.location), find_closest_node(c_goal.location));
-      this.node_goal = 0;
-    }  
-    
     PVector goal_location = c_goal.location;
-    //println(this.goal_path.size());
-    //if(travelling){
-    //  goal_location = this.goal_path.get(node_goal).location;
+    
+    this.current_path_node = find_closest_node(this.location);
+    PathNode goal_node = find_closest_node(goal_location);
+    
+    if((goal_node != this.current_path_node)){
       
-    //  if(this.location == goal_location){
-    //    if(this.node_goal == this.goal_path.size()-1){
-    //      travelling = false;
-    //    }
-    //    else{
-    //      this.node_goal++;
-    //    }
-    //  }
-    //}
+      if(this.target_node == null || this.target_node == this.current_path_node){
+        
+        PathNode closest_cell = this.current_path_node.neighbours.get(0);
+        float closest_dist = edge_distance(closest_cell, goal_node);
+        
+        for(PathNode n: this.current_path_node.neighbours){
+          float d = edge_distance(goal_node, n);
+          
+          if(d < closest_dist){
+            closest_cell = n;
+            closest_dist = d;
+          }
+        }
+        
+        this.target_node = closest_cell;
+      }
+      
+      goal_location = this.target_node.location;
+    }
     
     float t = npc_speed*min(1, (time_of_day-c_goal.start_time)/(c_goal.duration/4));
     this.location.lerp(goal_location, t);
