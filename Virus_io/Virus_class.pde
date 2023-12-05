@@ -1,3 +1,3 @@
-class Virus {
-  float spreadRate, 
-}
+//class Virus {
+//  float spreadRate, 
+//}

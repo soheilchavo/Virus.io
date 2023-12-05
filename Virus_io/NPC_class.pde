@@ -16,6 +16,11 @@ class NPC{
   
   PVector location;
   
+  ArrayList<PathNode> goal_path;
+  int node_goal;
+  
+  boolean travelling = false;
+  
   NPC(Occupation o){
     
     this.occupation = o;
@@ -39,9 +44,31 @@ class NPC{
     Goal c_goal = this.routine.getCurrentGoal(time_of_day);
     if(is_weekend)
       c_goal = this.weekend_routine.getCurrentGoal(time_of_day);
+    
+    if(find_closest_node(this.location) != find_closest_node(c_goal.location) && !travelling){
+      //println("travelling");
+      travelling = true;
+      this.goal_path = find_path(find_closest_node(this.location), find_closest_node(c_goal.location));
+      this.node_goal = 0;
+    }  
+    
+    PVector goal_location = c_goal.location;
+    //println(this.goal_path.size());
+    //if(travelling){
+    //  goal_location = this.goal_path.get(node_goal).location;
       
+    //  if(this.location == goal_location){
+    //    if(this.node_goal == this.goal_path.size()-1){
+    //      travelling = false;
+    //    }
+    //    else{
+    //      this.node_goal++;
+    //    }
+    //  }
+    //}
+    
     float t = npc_speed*min(1, (time_of_day-c_goal.start_time)/(c_goal.duration/4));
-    this.location.lerp(c_goal.location, t);
+    this.location.lerp(goal_location, t);
   }
   
   void drawNPC() {
