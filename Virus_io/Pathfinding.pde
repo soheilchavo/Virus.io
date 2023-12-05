@@ -91,3 +91,13 @@ ArrayList<PathNode> find_path(PathNode a, PathNode b){
   return path;
   
 }
+
+boolean is_node_in_arraylist(PathNode p, ArrayList<PathNode> pa){
+  
+  for(PathNode i: pa)
+    if(p == i)
+      return true;
+      
+   return false;
+  
+}

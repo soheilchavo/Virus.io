@@ -1,9 +1,9 @@
 import g4p_controls.*;
 
 boolean simOngoing = true;
-float sim_speed = 5;
+float sim_speed = 0.5;
 
-int city_size = 12;
+int city_size = 5;
 float grid_size = 19;
 float npc_size = 12;
 
@@ -69,7 +69,7 @@ void setup() {
 void draw() {
   
   background(120);
-
+  
   if(simOngoing){
     pushMatrix();
     
@@ -162,7 +162,6 @@ void generateBuildings() {
   }
   
   
-  int row_value = -1;
   //Draw nodes per building (up, down, right, left)
   for(int i = 0; i < buildings.size(); i++){
     
@@ -175,7 +174,7 @@ void generateBuildings() {
       new PVector(b.location.x-pad, b.location.y-pad),
       new PVector(b.location.x+b.size[0]+pad, b.location.y-pad),
       new PVector(b.location.x-pad, b.location.y+curr_y+pad),
-      new PVector(b.location.x+b.size[0]+pad, b.location.y+curr_y+pad)
+      new PVector(b.location.x+b.size[0]+pad, b.location.y+curr_y+pad),
     };
     
     for(int j = 0; j < path_locations.length; j++){
@@ -243,8 +242,8 @@ void mouseWheel(MouseEvent event)
 }
 
 void mouseDragged(MouseEvent event){
-  x_offset += (-pmouseX+mouseX)*mouse_sensitivity;
-  y_offset += (-pmouseY+mouseY)*mouse_sensitivity;
+  x_offset += (-pmouseX+mouseX)*mouse_sensitivity*(1/zoom);
+  y_offset += (-pmouseY+mouseY)*mouse_sensitivity*(1/zoom);
 }
 
 void keyPressed(){
