@@ -61,6 +61,7 @@ boolean draw_buildings = true;
 
 void setup() {
   size(600,600);
+  createGUI();
   startSim();
   switchDay();
 }

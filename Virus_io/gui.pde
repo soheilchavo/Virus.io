@@ -14,9 +14,29 @@
  * =========================================================
  */
 
-synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:window1:687465:
+synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:window1:691222:
   appc.background(230);
-} //_CODE_:window1:687465:
+} //_CODE_:window1:691222:
+
+public void slider1_change1(GSlider source, GEvent event) { //_CODE_:hospitalRateSlider:438463:
+  println("hospitalRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:hospitalRateSlider:438463:
+
+public void workplaceRateSliderChnaged(GSlider source, GEvent event) { //_CODE_:workplaceRateSlider:991023:
+  println("workplaceRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:workplaceRateSlider:991023:
+
+public void schoolRateSliderChanged(GSlider source, GEvent event) { //_CODE_:schoolRateSlider:537797:
+  println("schoolRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:schoolRateSlider:537797:
+
+public void eateryRateSliderChanged(GSlider source, GEvent event) { //_CODE_:eateryRateSlider:668242:
+  println("eateryRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:eateryRateSlider:668242:
+
+public void parkRateSliderChanged(GSlider source, GEvent event) { //_CODE_:parkRateSlider:890325:
+  println("parkRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:parkRateSlider:890325:
 
 
 
@@ -27,18 +47,88 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "Window title", 0, 0, 300, 600, JAVA2D);
+  window1 = GWindow.getWindow(this, "Window title", 0, 0, 480, 480, JAVA2D);
   window1.noLoop();
   window1.setActionOnClose(G4P.KEEP_OPEN);
   window1.addDrawHandler(this, "win_draw1");
-  label1 = new GLabel(window1, 0, 0, 80, 20);
-  label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  label1.setText("My label");
-  label1.setOpaque(false);
+  hospitalRateName = new GLabel(window1, 0, 0, 80, 20);
+  hospitalRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  hospitalRateName.setText("Hospital rate");
+  hospitalRateName.setOpaque(true);
+  hospitalRateSlider = new GSlider(window1, 0, 20, 150, 50, 10.0);
+  hospitalRateSlider.setShowValue(true);
+  hospitalRateSlider.setShowLimits(true);
+  hospitalRateSlider.setLimits(5.0, 0.0, 10.0);
+  hospitalRateSlider.setNbrTicks(10);
+  hospitalRateSlider.setShowTicks(true);
+  hospitalRateSlider.setNumberFormat(G4P.DECIMAL, 2);
+  hospitalRateSlider.setOpaque(true);
+  hospitalRateSlider.addEventHandler(this, "slider1_change1");
+  workplaceRateName = new GLabel(window1, 0, 70, 90, 20);
+  workplaceRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  workplaceRateName.setText("Workplace rate");
+  workplaceRateName.setOpaque(false);
+  workplaceRateSlider = new GSlider(window1, 0, 90, 150, 50, 10.0);
+  workplaceRateSlider.setShowValue(true);
+  workplaceRateSlider.setShowLimits(true);
+  workplaceRateSlider.setLimits(5.0, 0.0, 10.0);
+  workplaceRateSlider.setNbrTicks(10);
+  workplaceRateSlider.setShowTicks(true);
+  workplaceRateSlider.setNumberFormat(G4P.DECIMAL, 2);
+  workplaceRateSlider.setOpaque(true);
+  workplaceRateSlider.addEventHandler(this, "workplaceRateSliderChnaged");
+  schoolRateName = new GLabel(window1, 0, 140, 80, 20);
+  schoolRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  schoolRateName.setText("School rate");
+  schoolRateName.setOpaque(false);
+  schoolRateSlider = new GSlider(window1, 0, 160, 150, 50, 10.0);
+  schoolRateSlider.setShowValue(true);
+  schoolRateSlider.setShowLimits(true);
+  schoolRateSlider.setLimits(5.0, 0.0, 10.0);
+  schoolRateSlider.setNbrTicks(10);
+  schoolRateSlider.setShowTicks(true);
+  schoolRateSlider.setNumberFormat(G4P.DECIMAL, 2);
+  schoolRateSlider.setOpaque(true);
+  schoolRateSlider.addEventHandler(this, "schoolRateSliderChanged");
+  eateryRateName = new GLabel(window1, 0, 210, 80, 20);
+  eateryRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  eateryRateName.setText("Eatery Rate");
+  eateryRateName.setOpaque(false);
+  eateryRateSlider = new GSlider(window1, 0, 230, 150, 50, 10.0);
+  eateryRateSlider.setShowValue(true);
+  eateryRateSlider.setShowLimits(true);
+  eateryRateSlider.setLimits(5.0, 0.0, 10.0);
+  eateryRateSlider.setNbrTicks(10);
+  eateryRateSlider.setShowTicks(true);
+  eateryRateSlider.setNumberFormat(G4P.DECIMAL, 2);
+  eateryRateSlider.setOpaque(true);
+  eateryRateSlider.addEventHandler(this, "eateryRateSliderChanged");
+  parkRateName = new GLabel(window1, 0, 280, 80, 20);
+  parkRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  parkRateName.setText("Park rate");
+  parkRateName.setOpaque(false);
+  parkRateSlider = new GSlider(window1, 0, 300, 150, 50, 10.0);
+  parkRateSlider.setShowValue(true);
+  parkRateSlider.setShowLimits(true);
+  parkRateSlider.setLimits(5.0, 0.0, 10.0);
+  parkRateSlider.setNbrTicks(10);
+  parkRateSlider.setShowTicks(true);
+  parkRateSlider.setNumberFormat(G4P.DECIMAL, 2);
+  parkRateSlider.setOpaque(true);
+  parkRateSlider.addEventHandler(this, "parkRateSliderChanged");
   window1.loop();
 }
 
 // Variable declarations 
 // autogenerated do not edit
 GWindow window1;
-GLabel label1; 
+GLabel hospitalRateName; 
+GSlider hospitalRateSlider; 
+GLabel workplaceRateName; 
+GSlider workplaceRateSlider; 
+GLabel schoolRateName; 
+GSlider schoolRateSlider; 
+GLabel eateryRateName; 
+GSlider eateryRateSlider; 
+GLabel parkRateName; 
+GSlider parkRateSlider; 
