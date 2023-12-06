@@ -1,6 +1,7 @@
 import g4p_controls.*;
 
 boolean simOngoing = true;
+boolean paused = false;
 float sim_speed = 0.5;
 
 int city_size = 5;
@@ -67,7 +68,7 @@ void setup() {
 }
 
 void draw() {
-  
+ if(paused == false){
   background(120);
   
   if(simOngoing){
@@ -117,6 +118,7 @@ void draw() {
       switchDay();
     }
   }
+ }
 }
 
 void startSim(){

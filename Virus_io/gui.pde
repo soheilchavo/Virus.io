@@ -19,23 +19,23 @@ synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:windo
 } //_CODE_:window1:691222:
 
 public void hospitalRateSliderChanged(GSlider source, GEvent event) { //_CODE_:hospitalRateSlider:438463:
-  println("hospitalRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+  building_rates[1] = hospitalRateSlider.getValueF();
 } //_CODE_:hospitalRateSlider:438463:
 
-public void workplaceRateSliderChnaged(GSlider source, GEvent event) { //_CODE_:workplaceRateSlider:991023:
-  println("workplaceRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+public void workplaceRateSliderChanged(GSlider source, GEvent event) { //_CODE_:workplaceRateSlider:991023:
+  building_rates[2] = workplaceRateSlider.getValueF();
 } //_CODE_:workplaceRateSlider:991023:
 
 public void schoolRateSliderChanged(GSlider source, GEvent event) { //_CODE_:schoolRateSlider:537797:
-  println("schoolRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+  building_rates[3] = schoolRateSlider.getValueF();
 } //_CODE_:schoolRateSlider:537797:
 
 public void eateryRateSliderChanged(GSlider source, GEvent event) { //_CODE_:eateryRateSlider:668242:
-  println("eateryRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+  building_rates[5] = eateryRateSlider.getValueF();
 } //_CODE_:eateryRateSlider:668242:
 
 public void parkRateSliderChanged(GSlider source, GEvent event) { //_CODE_:parkRateSlider:890325:
-  println("parkRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+  building_rates[4] = parkRateSlider.getValueF();
 } //_CODE_:parkRateSlider:890325:
 
 public void citySizeSliderChanged(GSlider source, GEvent event) { //_CODE_:citySizeSlider:359799:
@@ -59,7 +59,7 @@ public void timeRateSliderChanged(GSlider source, GEvent event) { //_CODE_:timeR
 } //_CODE_:timeRateSlider:628616:
 
 public void houseRateSliderChanged(GSlider source, GEvent event) { //_CODE_:houseRateSlider:255692:
-  println("houseRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+  building_rates[0] = houseRateSlider.getValueF();
 } //_CODE_:houseRateSlider:255692:
 
 public void npcSliderChanged(GSlider source, GEvent event) { //_CODE_:npcSizeSlider:944321:
@@ -90,13 +90,18 @@ public void showBuildingOffButtonClicked(GButton source, GEvent event) { //_CODE
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
 } //_CODE_:showBuildingOffButton:630229:
 
-public void button1_click1(GButton source, GEvent event) { //_CODE_:button1:276996:
-  println("button1 - GButton >> GEvent." + event + " @ " + millis());
-} //_CODE_:button1:276996:
+public void simStartButtonClicked(GButton source, GEvent event) { //_CODE_:simStartButton:276996:
+  startSim();
+} //_CODE_:simStartButton:276996:
 
-public void button2_click1(GButton source, GEvent event) { //_CODE_:button2:467458:
-  println("button2 - GButton >> GEvent." + event + " @ " + millis());
-} //_CODE_:button2:467458:
+public void simPauseButtonClicked(GButton source, GEvent event) { //_CODE_:simPauseButton:467458:
+  paused = !paused;
+  if(paused)
+    simPauseButton.setText("resume");
+  else
+    simPauseButton.setText("pause");
+  
+} //_CODE_:simPauseButton:467458:
 
 public void button3_click1(GButton source, GEvent event) { //_CODE_:button3:547459:
   println("button3 - GButton >> GEvent." + event + " @ " + millis());
@@ -140,7 +145,7 @@ public void createGUI(){
   workplaceRateSlider.setShowTicks(true);
   workplaceRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   workplaceRateSlider.setOpaque(true);
-  workplaceRateSlider.addEventHandler(this, "workplaceRateSliderChnaged");
+  workplaceRateSlider.addEventHandler(this, "workplaceRateSliderChanged");
   schoolRateName = new GLabel(window1, 0, 140, 66, 20);
   schoolRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   schoolRateName.setText("School rate");
@@ -200,7 +205,7 @@ public void createGUI(){
   immunityRateSlider = new GSlider(window1, 400, 20, 150, 50, 10.0);
   immunityRateSlider.setShowValue(true);
   immunityRateSlider.setShowLimits(true);
-  immunityRateSlider.setLimits(5.0, 0.0, 10.0);
+  immunityRateSlider.setLimits(5.0, 0.0, 100.0);
   immunityRateSlider.setNbrTicks(10);
   immunityRateSlider.setShowTicks(true);
   immunityRateSlider.setNumberFormat(G4P.DECIMAL, 2);
@@ -239,7 +244,7 @@ public void createGUI(){
   timeRateSlider = new GSlider(window1, 200, 300, 150, 50, 10.0);
   timeRateSlider.setShowValue(true);
   timeRateSlider.setShowLimits(true);
-  timeRateSlider.setLimits(5.0, 0.0, 10.0);
+  timeRateSlider.setLimits(5.0, 0.01, 10.0);
   timeRateSlider.setNbrTicks(10);
   timeRateSlider.setShowTicks(true);
   timeRateSlider.setNumberFormat(G4P.DECIMAL, 2);
@@ -325,14 +330,14 @@ public void createGUI(){
   simulationCode.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   simulationCode.setText("simulation");
   simulationCode.setOpaque(false);
-  button1 = new GButton(window1, 405, 360, 43, 20);
-  button1.setText("start");
-  button1.setLocalColorScheme(GCScheme.GREEN_SCHEME);
-  button1.addEventHandler(this, "button1_click1");
-  button2 = new GButton(window1, 454, 360, 43, 20);
-  button2.setText("pause");
-  button2.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
-  button2.addEventHandler(this, "button2_click1");
+  simStartButton = new GButton(window1, 405, 360, 43, 20);
+  simStartButton.setText("start");
+  simStartButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  simStartButton.addEventHandler(this, "simStartButtonClicked");
+  simPauseButton = new GButton(window1, 454, 360, 43, 20);
+  simPauseButton.setText("pause");
+  simPauseButton.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  simPauseButton.addEventHandler(this, "simPauseButtonClicked");
   button3 = new GButton(window1, 504, 360, 43, 20);
   button3.setText("reset");
   button3.setLocalColorScheme(GCScheme.RED_SCHEME);
@@ -378,6 +383,6 @@ GLabel label1;
 GButton showBuildingsOnButton; 
 GButton showBuildingOffButton; 
 GLabel simulationCode; 
-GButton button1; 
-GButton button2; 
+GButton simStartButton; 
+GButton simPauseButton; 
 GButton button3; 

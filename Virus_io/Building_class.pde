@@ -59,7 +59,7 @@ class Eatery extends Building{
 
 class Park extends Building{
   Park(PVector l){
-    super(l, BuildingType.Park, new float[] {7,5.5}, color(22,233,33), "park.png");
+    super(l, BuildingType.Park, new float[] {8,6}, color(22,233,33), "park.png");
   }
 }
 class School extends Building{
