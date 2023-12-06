@@ -9,7 +9,7 @@ class NPC{
   Routine weekend_routine;
   Routine sick_routine;
   
-  boolean is_sick;
+  boolean infected;
   float immunity;
   
   Home home;
@@ -41,8 +41,12 @@ class NPC{
   void calculate_position(){
     
     Goal c_goal = this.routine.getCurrentGoal(time_of_day);
+    
     if(is_weekend)
       c_goal = this.weekend_routine.getCurrentGoal(time_of_day);
+      
+    if(this.infected)
+      c_goal = this.sick_routine.getCurrentGoal(time_of_day);
     
     PVector goal_location = c_goal.location;
     
@@ -80,8 +84,12 @@ class NPC{
     this.calculate_position();
     
     fill(color(239,202,168));
+    
     if(this.occupation.occupation_name == "Homeless")
       fill(color(0,0,255));
+    
+    if(this.infected)
+      fill(color(255,0,0));
     
     circle(this.location.x*grid_size, this.location.y*grid_size, npc_size);
   }

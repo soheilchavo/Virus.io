@@ -208,8 +208,6 @@ void generatePeople(){
   }
 }
 
-void startVirus(){}
-
 void switchDay(){
   time_of_day = 0;
   
