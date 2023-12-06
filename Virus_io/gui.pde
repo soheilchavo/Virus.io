@@ -18,7 +18,7 @@ synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:windo
   appc.background(230);
 } //_CODE_:window1:691222:
 
-public void slider1_change1(GSlider source, GEvent event) { //_CODE_:hospitalRateSlider:438463:
+public void hospitalRateSliderChanged(GSlider source, GEvent event) { //_CODE_:hospitalRateSlider:438463:
   println("hospitalRateSlider - GSlider >> GEvent." + event + " @ " + millis());
 } //_CODE_:hospitalRateSlider:438463:
 
@@ -90,6 +90,18 @@ public void showBuildingOffButtonClicked(GButton source, GEvent event) { //_CODE
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
 } //_CODE_:showBuildingOffButton:630229:
 
+public void button1_click1(GButton source, GEvent event) { //_CODE_:button1:276996:
+  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:button1:276996:
+
+public void button2_click1(GButton source, GEvent event) { //_CODE_:button2:467458:
+  println("button2 - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:button2:467458:
+
+public void button3_click1(GButton source, GEvent event) { //_CODE_:button3:547459:
+  println("button3 - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:button3:547459:
+
 
 
 // Create all the GUI controls. 
@@ -99,7 +111,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "Window title", 0, 0, 550, 480, JAVA2D);
+  window1 = GWindow.getWindow(this, "Window title", 0, 0, 550, 430, JAVA2D);
   window1.noLoop();
   window1.setActionOnClose(G4P.KEEP_OPEN);
   window1.addDrawHandler(this, "win_draw1");
@@ -115,7 +127,7 @@ public void createGUI(){
   hospitalRateSlider.setShowTicks(true);
   hospitalRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   hospitalRateSlider.setOpaque(true);
-  hospitalRateSlider.addEventHandler(this, "slider1_change1");
+  hospitalRateSlider.addEventHandler(this, "hospitalRateSliderChanged");
   workplaceRateName = new GLabel(window1, 0, 70, 90, 20);
   workplaceRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   workplaceRateName.setText("Workplace rate");
@@ -129,7 +141,7 @@ public void createGUI(){
   workplaceRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   workplaceRateSlider.setOpaque(true);
   workplaceRateSlider.addEventHandler(this, "workplaceRateSliderChnaged");
-  schoolRateName = new GLabel(window1, 0, 140, 80, 20);
+  schoolRateName = new GLabel(window1, 0, 140, 66, 20);
   schoolRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   schoolRateName.setText("School rate");
   schoolRateName.setOpaque(false);
@@ -142,7 +154,7 @@ public void createGUI(){
   schoolRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   schoolRateSlider.setOpaque(true);
   schoolRateSlider.addEventHandler(this, "schoolRateSliderChanged");
-  eateryRateName = new GLabel(window1, 0, 210, 80, 20);
+  eateryRateName = new GLabel(window1, 0, 210, 69, 20);
   eateryRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   eateryRateName.setText("Eatery Rate");
   eateryRateName.setOpaque(false);
@@ -155,7 +167,7 @@ public void createGUI(){
   eateryRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   eateryRateSlider.setOpaque(true);
   eateryRateSlider.addEventHandler(this, "eateryRateSliderChanged");
-  parkRateName = new GLabel(window1, 0, 280, 80, 20);
+  parkRateName = new GLabel(window1, 0, 280, 55, 20);
   parkRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   parkRateName.setText("Park rate");
   parkRateName.setOpaque(false);
@@ -168,7 +180,7 @@ public void createGUI(){
   parkRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   parkRateSlider.setOpaque(true);
   parkRateSlider.addEventHandler(this, "parkRateSliderChanged");
-  citySizeName = new GLabel(window1, 200, 0, 80, 20);
+  citySizeName = new GLabel(window1, 200, 0, 51, 20);
   citySizeName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   citySizeName.setText("City size");
   citySizeName.setOpaque(false);
@@ -183,7 +195,7 @@ public void createGUI(){
   citySizeSlider.addEventHandler(this, "citySizeSliderChanged");
   immunityRateName = new GLabel(window1, 400, 0, 80, 20);
   immunityRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  immunityRateName.setText("immunite %");
+  immunityRateName.setText("immunity %");
   immunityRateName.setOpaque(true);
   immunityRateSlider = new GSlider(window1, 400, 20, 150, 50, 10.0);
   immunityRateSlider.setShowValue(true);
@@ -194,7 +206,7 @@ public void createGUI(){
   immunityRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   immunityRateSlider.setOpaque(true);
   immunityRateSlider.addEventHandler(this, "immunityRateSliderChanged");
-  populationDensityName = new GLabel(window1, 400, 70, 108, 20);
+  populationDensityName = new GLabel(window1, 400, 70, 104, 20);
   populationDensityName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   populationDensityName.setText("population density");
   populationDensityName.setOpaque(false);
@@ -207,7 +219,7 @@ public void createGUI(){
   populationDensitySlider.setNumberFormat(G4P.DECIMAL, 2);
   populationDensitySlider.setOpaque(true);
   populationDensitySlider.addEventHandler(this, "populationDensitySliderChanged");
-  gridSizeName = new GLabel(window1, 201, 70, 80, 20);
+  gridSizeName = new GLabel(window1, 200, 70, 52, 20);
   gridSizeName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   gridSizeName.setText("grid size");
   gridSizeName.setOpaque(false);
@@ -220,9 +232,9 @@ public void createGUI(){
   gridSizeSlider.setNumberFormat(G4P.DECIMAL, 2);
   gridSizeSlider.setOpaque(true);
   gridSizeSlider.addEventHandler(this, "gridSizeSliderChanged");
-  timeRateName = new GLabel(window1, 200, 280, 80, 20);
+  timeRateName = new GLabel(window1, 200, 280, 82, 20);
   timeRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  timeRateName.setText("speed of time");
+  timeRateName.setText("time multiplier");
   timeRateName.setOpaque(false);
   timeRateSlider = new GSlider(window1, 200, 300, 150, 50, 10.0);
   timeRateSlider.setShowValue(true);
@@ -233,11 +245,11 @@ public void createGUI(){
   timeRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   timeRateSlider.setOpaque(true);
   timeRateSlider.addEventHandler(this, "timeRateSliderChanged");
-  npcSizeName = new GLabel(window1, 200, 140, 80, 20);
+  npcSizeName = new GLabel(window1, 200, 140, 55, 20);
   npcSizeName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   npcSizeName.setText("NPC size");
   npcSizeName.setOpaque(false);
-  houseRateName = new GLabel(window1, 0, 350, 80, 20);
+  houseRateName = new GLabel(window1, 0, 350, 65, 20);
   houseRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   houseRateName.setText("House rate");
   houseRateName.setOpaque(false);
@@ -259,7 +271,7 @@ public void createGUI(){
   npcSizeSlider.setNumberFormat(G4P.DECIMAL, 2);
   npcSizeSlider.setOpaque(true);
   npcSizeSlider.addEventHandler(this, "npcSliderChanged");
-  npcSpeedName = new GLabel(window1, 200, 210, 80, 20);
+  npcSpeedName = new GLabel(window1, 200, 210, 68, 20);
   npcSpeedName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   npcSpeedName.setText("NPC speed");
   npcSpeedName.setOpaque(false);
@@ -291,10 +303,11 @@ public void createGUI(){
   showPathfindName.setOpaque(false);
   showPathfindOnButton = new GButton(window1, 420, 240, 40, 20);
   showPathfindOnButton.setText("on");
-  showPathfindOnButton.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  showPathfindOnButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   showPathfindOnButton.addEventHandler(this, "showPathfindOnButtonClicked");
   showPathfindOffButton = new GButton(window1, 490, 240, 40, 20);
   showPathfindOffButton.setText("off");
+  showPathfindOffButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   showPathfindOffButton.addEventHandler(this, "showPathfindOffButtonClicked");
   label1 = new GLabel(window1, 427, 270, 96, 20);
   label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
@@ -302,11 +315,28 @@ public void createGUI(){
   label1.setOpaque(false);
   showBuildingsOnButton = new GButton(window1, 420, 300, 40, 20);
   showBuildingsOnButton.setText("on");
-  showBuildingsOnButton.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  showBuildingsOnButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   showBuildingsOnButton.addEventHandler(this, "showBuildingsOnButtonClicked");
   showBuildingOffButton = new GButton(window1, 490, 300, 40, 20);
   showBuildingOffButton.setText("off");
+  showBuildingOffButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   showBuildingOffButton.addEventHandler(this, "showBuildingOffButtonClicked");
+  simulationCode = new GLabel(window1, 435, 330, 80, 20);
+  simulationCode.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  simulationCode.setText("simulation");
+  simulationCode.setOpaque(false);
+  button1 = new GButton(window1, 405, 360, 43, 20);
+  button1.setText("start");
+  button1.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  button1.addEventHandler(this, "button1_click1");
+  button2 = new GButton(window1, 454, 360, 43, 20);
+  button2.setText("pause");
+  button2.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  button2.addEventHandler(this, "button2_click1");
+  button3 = new GButton(window1, 504, 360, 43, 20);
+  button3.setText("reset");
+  button3.setLocalColorScheme(GCScheme.RED_SCHEME);
+  button3.addEventHandler(this, "button3_click1");
   window1.loop();
 }
 
@@ -347,3 +377,7 @@ GButton showPathfindOffButton;
 GLabel label1; 
 GButton showBuildingsOnButton; 
 GButton showBuildingOffButton; 
+GLabel simulationCode; 
+GButton button1; 
+GButton button2; 
+GButton button3; 
