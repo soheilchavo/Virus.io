@@ -39,7 +39,7 @@ public void parkRateSliderChanged(GSlider source, GEvent event) { //_CODE_:parkR
 } //_CODE_:parkRateSlider:890325:
 
 public void citySizeSliderChanged(GSlider source, GEvent event) { //_CODE_:citySizeSlider:359799:
-  println("citySizeSlider - GSlider >> GEvent." + event + " @ " + millis());
+  city_size = citySizeSlider.getValueI();
 } //_CODE_:citySizeSlider:359799:
 
 public void immunityRateSliderChanged(GSlider source, GEvent event) { //_CODE_:immunityRateSlider:986202:
