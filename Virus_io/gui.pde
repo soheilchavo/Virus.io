@@ -92,6 +92,7 @@ public void showBuildingOffButtonClicked(GButton source, GEvent event) { //_CODE
 
 public void simStartButtonClicked(GButton source, GEvent event) { //_CODE_:simStartButton:276996:
   startSim();
+  switchDay();
 } //_CODE_:simStartButton:276996:
 
 public void simPauseButtonClicked(GButton source, GEvent event) { //_CODE_:simPauseButton:467458:

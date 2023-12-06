@@ -5,16 +5,29 @@ String getRandomName() {
   return name;
 }
 
+PVector get_global_mouse_coords(){
+  
+  float mouse_x = (mouseX-x_offset)/zoom;
+  float mouse_y = (mouseY-y_offset)/zoom;
+
+  return new PVector(mouse_x, mouse_y);
+  
+}
+
 void draw_hover_text() {
 
+  PVector mouse_coords = get_global_mouse_coords();
+  
   for (NPC person : people) {
-    if (true) {
+    if(mouse_coords.x > person.location.x && mouse_coords.x < person.location.x+npc_size &&
+      mouse_coords.y > person.location.y && mouse_coords.y < person.location.y+npc_size) {
+        
       textSize(7);
 
       String textstr = person.name + ", " + person.age + " year old " + person.occupation.occupation_name;
-
+      
       fill(0);
-      //text(textstr, person.location.x*grid_size, person.location.y*grid_size);
+      text(textstr, person.location.x*grid_size, person.location.y*grid_size);
     }
   }
 }

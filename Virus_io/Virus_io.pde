@@ -1,6 +1,6 @@
 import g4p_controls.*;
 
-boolean simOngoing = true;
+boolean simOngoing = false;
 boolean paused = false;
 float sim_speed = 0.5;
 
@@ -55,7 +55,7 @@ String[] days = new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Fr
 
 ArrayList<PathNode> path_nodes = new ArrayList<PathNode>();
 
-boolean draw_pathfinding = true;
+boolean draw_pathfinding = false;
 boolean draw_people = true;
 boolean draw_buildings = true;
 
@@ -63,8 +63,6 @@ boolean draw_buildings = true;
 void setup() {
   size(600,600);
   createGUI();
-  startSim();
-  switchDay();
 }
 
 void draw() {
@@ -72,6 +70,7 @@ void draw() {
   background(120);
   
   if(simOngoing){
+    
     pushMatrix();
     
     // Center the zooming
@@ -117,6 +116,7 @@ void draw() {
     if(time_of_day >= 24){
       switchDay();
     }
+    
   }
  }
 }
@@ -124,6 +124,7 @@ void draw() {
 void startSim(){
   generateBuildings();
   generatePeople();
+  simOngoing = true;
 }
 
 void generateBuildings() {
@@ -246,6 +247,9 @@ void mouseWheel(MouseEvent event)
 void mouseDragged(MouseEvent event){
   x_offset += (-pmouseX+mouseX)*mouse_sensitivity*(1/zoom);
   y_offset += (-pmouseY+mouseY)*mouse_sensitivity*(1/zoom);
+  
+  x_offset = clamp(x_offset, -500, 500);
+  y_offset = clamp(y_offset, -500, 500);
 }
 
 void keyPressed(){
@@ -260,4 +264,7 @@ void keyPressed(){
   
   if(key == 's')
     y_offset -= shift_sensitivity;
+    
+  x_offset = clamp(x_offset, -500, 500);
+  y_offset = clamp(y_offset, -500, 500);
 }  
