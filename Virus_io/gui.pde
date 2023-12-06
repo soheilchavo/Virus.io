@@ -42,6 +42,54 @@ public void citySizeSliderChanged(GSlider source, GEvent event) { //_CODE_:cityS
   println("citySizeSlider - GSlider >> GEvent." + event + " @ " + millis());
 } //_CODE_:citySizeSlider:359799:
 
+public void immunityRateSliderChanged(GSlider source, GEvent event) { //_CODE_:immunityRateSlider:986202:
+  println("immunityRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:immunityRateSlider:986202:
+
+public void populationDensitySliderChanged(GSlider source, GEvent event) { //_CODE_:populationDensitySlider:846523:
+  println("populationDensitySlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:populationDensitySlider:846523:
+
+public void gridSizeSliderChanged(GSlider source, GEvent event) { //_CODE_:gridSizeSlider:873935:
+  println("gridSizeSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:gridSizeSlider:873935:
+
+public void timeRateSliderChanged(GSlider source, GEvent event) { //_CODE_:timeRateSlider:628616:
+  println("timeRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:timeRateSlider:628616:
+
+public void houseRateSliderChanged(GSlider source, GEvent event) { //_CODE_:houseRateSlider:255692:
+  println("houseRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:houseRateSlider:255692:
+
+public void npcSliderChanged(GSlider source, GEvent event) { //_CODE_:npcSizeSlider:944321:
+  println("npcSizeSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:npcSizeSlider:944321:
+
+public void npcSpeedSliderChanged(GSlider source, GEvent event) { //_CODE_:npcSpeedSlider:400537:
+  println("npcSpeedSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:npcSpeedSlider:400537:
+
+public void ageDeviationSliderChanged(GSlider source, GEvent event) { //_CODE_:ageDeviationSlider:274232:
+  println("ageDeviationSlider - GSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:ageDeviationSlider:274232:
+
+public void showPathfindOnButtonClicked(GButton source, GEvent event) { //_CODE_:showPathfindOnButton:442527:
+  println("pathfindOnButton - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:showPathfindOnButton:442527:
+
+public void showPathfindOffButtonClicked(GButton source, GEvent event) { //_CODE_:showPathfindOffButton:375236:
+  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:showPathfindOffButton:375236:
+
+public void showBuildingsOnButtonClicked(GButton source, GEvent event) { //_CODE_:showBuildingsOnButton:978553:
+  println("showBuildingsOnButton - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:showBuildingsOnButton:978553:
+
+public void showBuildingOffButtonClicked(GButton source, GEvent event) { //_CODE_:showBuildingOffButton:630229:
+  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:showBuildingOffButton:630229:
+
 
 
 // Create all the GUI controls. 
@@ -51,7 +99,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "Window title", 0, 0, 480, 480, JAVA2D);
+  window1 = GWindow.getWindow(this, "Window title", 0, 0, 550, 480, JAVA2D);
   window1.noLoop();
   window1.setActionOnClose(G4P.KEEP_OPEN);
   window1.addDrawHandler(this, "win_draw1");
@@ -133,10 +181,132 @@ public void createGUI(){
   citySizeSlider.setNumberFormat(G4P.DECIMAL, 2);
   citySizeSlider.setOpaque(true);
   citySizeSlider.addEventHandler(this, "citySizeSliderChanged");
-  label1 = new GLabel(window1, 179, 172, 80, 20);
+  immunityRateName = new GLabel(window1, 400, 0, 80, 20);
+  immunityRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  immunityRateName.setText("immunite %");
+  immunityRateName.setOpaque(true);
+  immunityRateSlider = new GSlider(window1, 400, 20, 150, 50, 10.0);
+  immunityRateSlider.setShowValue(true);
+  immunityRateSlider.setShowLimits(true);
+  immunityRateSlider.setLimits(5.0, 0.0, 10.0);
+  immunityRateSlider.setNbrTicks(10);
+  immunityRateSlider.setShowTicks(true);
+  immunityRateSlider.setNumberFormat(G4P.DECIMAL, 2);
+  immunityRateSlider.setOpaque(true);
+  immunityRateSlider.addEventHandler(this, "immunityRateSliderChanged");
+  populationDensityName = new GLabel(window1, 400, 70, 108, 20);
+  populationDensityName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  populationDensityName.setText("population density");
+  populationDensityName.setOpaque(false);
+  populationDensitySlider = new GSlider(window1, 400, 90, 150, 50, 10.0);
+  populationDensitySlider.setShowValue(true);
+  populationDensitySlider.setShowLimits(true);
+  populationDensitySlider.setLimits(5.0, 0.0, 10.0);
+  populationDensitySlider.setNbrTicks(10);
+  populationDensitySlider.setShowTicks(true);
+  populationDensitySlider.setNumberFormat(G4P.DECIMAL, 2);
+  populationDensitySlider.setOpaque(true);
+  populationDensitySlider.addEventHandler(this, "populationDensitySliderChanged");
+  gridSizeName = new GLabel(window1, 201, 70, 80, 20);
+  gridSizeName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  gridSizeName.setText("grid size");
+  gridSizeName.setOpaque(false);
+  gridSizeSlider = new GSlider(window1, 200, 90, 150, 50, 10.0);
+  gridSizeSlider.setShowValue(true);
+  gridSizeSlider.setShowLimits(true);
+  gridSizeSlider.setLimits(5.0, 0.0, 10.0);
+  gridSizeSlider.setNbrTicks(10);
+  gridSizeSlider.setShowTicks(true);
+  gridSizeSlider.setNumberFormat(G4P.DECIMAL, 2);
+  gridSizeSlider.setOpaque(true);
+  gridSizeSlider.addEventHandler(this, "gridSizeSliderChanged");
+  timeRateName = new GLabel(window1, 200, 280, 80, 20);
+  timeRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  timeRateName.setText("speed of time");
+  timeRateName.setOpaque(false);
+  timeRateSlider = new GSlider(window1, 200, 300, 150, 50, 10.0);
+  timeRateSlider.setShowValue(true);
+  timeRateSlider.setShowLimits(true);
+  timeRateSlider.setLimits(5.0, 0.0, 10.0);
+  timeRateSlider.setNbrTicks(10);
+  timeRateSlider.setShowTicks(true);
+  timeRateSlider.setNumberFormat(G4P.DECIMAL, 2);
+  timeRateSlider.setOpaque(true);
+  timeRateSlider.addEventHandler(this, "timeRateSliderChanged");
+  npcSizeName = new GLabel(window1, 200, 140, 80, 20);
+  npcSizeName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  npcSizeName.setText("NPC size");
+  npcSizeName.setOpaque(false);
+  houseRateName = new GLabel(window1, 0, 350, 80, 20);
+  houseRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  houseRateName.setText("House rate");
+  houseRateName.setOpaque(false);
+  houseRateSlider = new GSlider(window1, 0, 370, 150, 50, 10.0);
+  houseRateSlider.setShowValue(true);
+  houseRateSlider.setShowLimits(true);
+  houseRateSlider.setLimits(5.0, 0.0, 10.0);
+  houseRateSlider.setNbrTicks(10);
+  houseRateSlider.setShowTicks(true);
+  houseRateSlider.setNumberFormat(G4P.DECIMAL, 2);
+  houseRateSlider.setOpaque(true);
+  houseRateSlider.addEventHandler(this, "houseRateSliderChanged");
+  npcSizeSlider = new GSlider(window1, 200, 160, 150, 50, 10.0);
+  npcSizeSlider.setShowValue(true);
+  npcSizeSlider.setShowLimits(true);
+  npcSizeSlider.setLimits(5.0, 0.0, 10.0);
+  npcSizeSlider.setNbrTicks(10);
+  npcSizeSlider.setShowTicks(true);
+  npcSizeSlider.setNumberFormat(G4P.DECIMAL, 2);
+  npcSizeSlider.setOpaque(true);
+  npcSizeSlider.addEventHandler(this, "npcSliderChanged");
+  npcSpeedName = new GLabel(window1, 200, 210, 80, 20);
+  npcSpeedName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  npcSpeedName.setText("NPC speed");
+  npcSpeedName.setOpaque(false);
+  npcSpeedSlider = new GSlider(window1, 200, 230, 150, 50, 10.0);
+  npcSpeedSlider.setShowValue(true);
+  npcSpeedSlider.setShowLimits(true);
+  npcSpeedSlider.setLimits(5.0, 0.0, 10.0);
+  npcSpeedSlider.setNbrTicks(10);
+  npcSpeedSlider.setShowTicks(true);
+  npcSpeedSlider.setNumberFormat(G4P.DECIMAL, 2);
+  npcSpeedSlider.setOpaque(true);
+  npcSpeedSlider.addEventHandler(this, "npcSpeedSliderChanged");
+  ageDeviationName = new GLabel(window1, 200, 350, 80, 20);
+  ageDeviationName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  ageDeviationName.setText("Age deviation");
+  ageDeviationName.setOpaque(false);
+  ageDeviationSlider = new GSlider(window1, 200, 370, 150, 50, 10.0);
+  ageDeviationSlider.setShowValue(true);
+  ageDeviationSlider.setShowLimits(true);
+  ageDeviationSlider.setLimits(5.0, 0.0, 10.0);
+  ageDeviationSlider.setNbrTicks(10);
+  ageDeviationSlider.setShowTicks(true);
+  ageDeviationSlider.setNumberFormat(G4P.DECIMAL, 2);
+  ageDeviationSlider.setOpaque(true);
+  ageDeviationSlider.addEventHandler(this, "ageDeviationSliderChanged");
+  showPathfindName = new GLabel(window1, 433, 210, 84, 20);
+  showPathfindName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  showPathfindName.setText("Show Pathfind");
+  showPathfindName.setOpaque(false);
+  showPathfindOnButton = new GButton(window1, 420, 240, 40, 20);
+  showPathfindOnButton.setText("on");
+  showPathfindOnButton.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  showPathfindOnButton.addEventHandler(this, "showPathfindOnButtonClicked");
+  showPathfindOffButton = new GButton(window1, 490, 240, 40, 20);
+  showPathfindOffButton.setText("off");
+  showPathfindOffButton.addEventHandler(this, "showPathfindOffButtonClicked");
+  label1 = new GLabel(window1, 427, 270, 96, 20);
   label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  label1.setText("My label");
+  label1.setText("Show Buildings");
   label1.setOpaque(false);
+  showBuildingsOnButton = new GButton(window1, 420, 300, 40, 20);
+  showBuildingsOnButton.setText("on");
+  showBuildingsOnButton.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  showBuildingsOnButton.addEventHandler(this, "showBuildingsOnButtonClicked");
+  showBuildingOffButton = new GButton(window1, 490, 300, 40, 20);
+  showBuildingOffButton.setText("off");
+  showBuildingOffButton.addEventHandler(this, "showBuildingOffButtonClicked");
   window1.loop();
 }
 
@@ -155,4 +325,25 @@ GLabel parkRateName;
 GSlider parkRateSlider; 
 GLabel citySizeName; 
 GSlider citySizeSlider; 
+GLabel immunityRateName; 
+GSlider immunityRateSlider; 
+GLabel populationDensityName; 
+GSlider populationDensitySlider; 
+GLabel gridSizeName; 
+GSlider gridSizeSlider; 
+GLabel timeRateName; 
+GSlider timeRateSlider; 
+GLabel npcSizeName; 
+GLabel houseRateName; 
+GSlider houseRateSlider; 
+GSlider npcSizeSlider; 
+GLabel npcSpeedName; 
+GSlider npcSpeedSlider; 
+GLabel ageDeviationName; 
+GSlider ageDeviationSlider; 
+GLabel showPathfindName; 
+GButton showPathfindOnButton; 
+GButton showPathfindOffButton; 
 GLabel label1; 
+GButton showBuildingsOnButton; 
+GButton showBuildingOffButton; 
