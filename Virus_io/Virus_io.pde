@@ -128,6 +128,8 @@ void startSim(){
 }
 
 void generateBuildings() {
+  
+  buildings = new ArrayList<Building>();
 
   int curr_x = cell_padding;
   int curr_y = cell_padding;
@@ -224,6 +226,10 @@ void switchDay(){
     person.routine.setGoals();
     person.weekend_routine.setGoals();
   }
+}
+
+void resetProgram(){
+  start();
 }
 
 float clamp(float val, float min, float max)

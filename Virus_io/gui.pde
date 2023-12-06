@@ -55,7 +55,7 @@ public void gridSizeSliderChanged(GSlider source, GEvent event) { //_CODE_:gridS
 } //_CODE_:gridSizeSlider:873935:
 
 public void timeRateSliderChanged(GSlider source, GEvent event) { //_CODE_:timeRateSlider:628616:
-  println("timeRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+  sim_speed = timeRateSlider.getValueF();
 } //_CODE_:timeRateSlider:628616:
 
 public void houseRateSliderChanged(GSlider source, GEvent event) { //_CODE_:houseRateSlider:255692:
@@ -63,11 +63,11 @@ public void houseRateSliderChanged(GSlider source, GEvent event) { //_CODE_:hous
 } //_CODE_:houseRateSlider:255692:
 
 public void npcSliderChanged(GSlider source, GEvent event) { //_CODE_:npcSizeSlider:944321:
-  println("npcSizeSlider - GSlider >> GEvent." + event + " @ " + millis());
+  npc_size = npcSizeSlider.getValueF();
 } //_CODE_:npcSizeSlider:944321:
 
 public void npcSpeedSliderChanged(GSlider source, GEvent event) { //_CODE_:npcSpeedSlider:400537:
-  println("npcSpeedSlider - GSlider >> GEvent." + event + " @ " + millis());
+  npc_speed = npcSpeedSlider.getValueF();
 } //_CODE_:npcSpeedSlider:400537:
 
 public void ageDeviationSliderChanged(GSlider source, GEvent event) { //_CODE_:ageDeviationSlider:274232:
@@ -75,19 +75,19 @@ public void ageDeviationSliderChanged(GSlider source, GEvent event) { //_CODE_:a
 } //_CODE_:ageDeviationSlider:274232:
 
 public void showPathfindOnButtonClicked(GButton source, GEvent event) { //_CODE_:showPathfindOnButton:442527:
-  println("pathfindOnButton - GButton >> GEvent." + event + " @ " + millis());
+  draw_pathfinding = true;
 } //_CODE_:showPathfindOnButton:442527:
 
 public void showPathfindOffButtonClicked(GButton source, GEvent event) { //_CODE_:showPathfindOffButton:375236:
-  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+  draw_pathfinding = false;
 } //_CODE_:showPathfindOffButton:375236:
 
 public void showBuildingsOnButtonClicked(GButton source, GEvent event) { //_CODE_:showBuildingsOnButton:978553:
-  println("showBuildingsOnButton - GButton >> GEvent." + event + " @ " + millis());
+  draw_buildings = true;
 } //_CODE_:showBuildingsOnButton:978553:
 
 public void showBuildingOffButtonClicked(GButton source, GEvent event) { //_CODE_:showBuildingOffButton:630229:
-  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+  draw_buildings = false;
 } //_CODE_:showBuildingOffButton:630229:
 
 public void simStartButtonClicked(GButton source, GEvent event) { //_CODE_:simStartButton:276996:
@@ -105,7 +105,7 @@ public void simPauseButtonClicked(GButton source, GEvent event) { //_CODE_:simPa
 } //_CODE_:simPauseButton:467458:
 
 public void button3_click1(GButton source, GEvent event) { //_CODE_:button3:547459:
-  println("button3 - GButton >> GEvent." + event + " @ " + millis());
+  start();
 } //_CODE_:button3:547459:
 
 
