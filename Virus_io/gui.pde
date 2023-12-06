@@ -108,6 +108,10 @@ public void button3_click1(GButton source, GEvent event) { //_CODE_:button3:5474
   start();
 } //_CODE_:button3:547459:
 
+public void virusStartButtonClicked(GButton source, GEvent event) { //_CODE_:virusStartButton:523430:
+  println("virusStartButton - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:virusStartButton:523430:
+
 
 
 // Create all the GUI controls. 
@@ -117,7 +121,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "Window title", 0, 0, 550, 430, JAVA2D);
+  window1 = GWindow.getWindow(this, "Window title", 0, 0, 550, 550, JAVA2D);
   window1.noLoop();
   window1.setActionOnClose(G4P.KEEP_OPEN);
   window1.addDrawHandler(this, "win_draw1");
@@ -199,11 +203,11 @@ public void createGUI(){
   citySizeSlider.setNumberFormat(G4P.DECIMAL, 2);
   citySizeSlider.setOpaque(true);
   citySizeSlider.addEventHandler(this, "citySizeSliderChanged");
-  immunityRateName = new GLabel(window1, 400, 0, 80, 20);
+  immunityRateName = new GLabel(window1, 0, 420, 80, 20);
   immunityRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   immunityRateName.setText("immunity %");
   immunityRateName.setOpaque(true);
-  immunityRateSlider = new GSlider(window1, 400, 20, 150, 50, 10.0);
+  immunityRateSlider = new GSlider(window1, 0, 440, 150, 50, 10.0);
   immunityRateSlider.setShowValue(true);
   immunityRateSlider.setShowLimits(true);
   immunityRateSlider.setLimits(5.0, 0.0, 100.0);
@@ -212,11 +216,11 @@ public void createGUI(){
   immunityRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   immunityRateSlider.setOpaque(true);
   immunityRateSlider.addEventHandler(this, "immunityRateSliderChanged");
-  populationDensityName = new GLabel(window1, 400, 70, 104, 20);
+  populationDensityName = new GLabel(window1, 200, 420, 104, 20);
   populationDensityName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   populationDensityName.setText("population density");
   populationDensityName.setOpaque(false);
-  populationDensitySlider = new GSlider(window1, 400, 90, 150, 50, 10.0);
+  populationDensitySlider = new GSlider(window1, 200, 440, 150, 50, 10.0);
   populationDensitySlider.setShowValue(true);
   populationDensitySlider.setShowLimits(true);
   populationDensitySlider.setLimits(5.0, 0.0, 10.0);
@@ -303,46 +307,54 @@ public void createGUI(){
   ageDeviationSlider.setNumberFormat(G4P.DECIMAL, 2);
   ageDeviationSlider.setOpaque(true);
   ageDeviationSlider.addEventHandler(this, "ageDeviationSliderChanged");
-  showPathfindName = new GLabel(window1, 433, 210, 84, 20);
+  showPathfindName = new GLabel(window1, 433, 140, 84, 20);
   showPathfindName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   showPathfindName.setText("Show Pathfind");
   showPathfindName.setOpaque(false);
-  showPathfindOnButton = new GButton(window1, 420, 240, 40, 20);
+  showPathfindOnButton = new GButton(window1, 420, 170, 40, 20);
   showPathfindOnButton.setText("on");
   showPathfindOnButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   showPathfindOnButton.addEventHandler(this, "showPathfindOnButtonClicked");
-  showPathfindOffButton = new GButton(window1, 490, 240, 40, 20);
+  showPathfindOffButton = new GButton(window1, 490, 170, 40, 20);
   showPathfindOffButton.setText("off");
   showPathfindOffButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   showPathfindOffButton.addEventHandler(this, "showPathfindOffButtonClicked");
-  label1 = new GLabel(window1, 427, 270, 96, 20);
+  label1 = new GLabel(window1, 427, 200, 96, 20);
   label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   label1.setText("Show Buildings");
   label1.setOpaque(false);
-  showBuildingsOnButton = new GButton(window1, 420, 300, 40, 20);
+  showBuildingsOnButton = new GButton(window1, 420, 230, 40, 20);
   showBuildingsOnButton.setText("on");
   showBuildingsOnButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   showBuildingsOnButton.addEventHandler(this, "showBuildingsOnButtonClicked");
-  showBuildingOffButton = new GButton(window1, 490, 300, 40, 20);
+  showBuildingOffButton = new GButton(window1, 490, 230, 40, 20);
   showBuildingOffButton.setText("off");
   showBuildingOffButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   showBuildingOffButton.addEventHandler(this, "showBuildingOffButtonClicked");
-  simulationCode = new GLabel(window1, 435, 330, 80, 20);
+  simulationCode = new GLabel(window1, 435, 260, 80, 20);
   simulationCode.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   simulationCode.setText("simulation");
   simulationCode.setOpaque(false);
-  simStartButton = new GButton(window1, 405, 360, 43, 20);
+  simStartButton = new GButton(window1, 445, 290, 60, 20);
   simStartButton.setText("start");
   simStartButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   simStartButton.addEventHandler(this, "simStartButtonClicked");
-  simPauseButton = new GButton(window1, 454, 360, 43, 20);
+  simPauseButton = new GButton(window1, 445, 320, 60, 20);
   simPauseButton.setText("pause");
   simPauseButton.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   simPauseButton.addEventHandler(this, "simPauseButtonClicked");
-  button3 = new GButton(window1, 504, 360, 43, 20);
+  button3 = new GButton(window1, 445, 350, 60, 20);
   button3.setText("reset");
   button3.setLocalColorScheme(GCScheme.RED_SCHEME);
   button3.addEventHandler(this, "button3_click1");
+  virusStartButton = new GButton(window1, 445, 410, 60, 20);
+  virusStartButton.setText("start");
+  virusStartButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  virusStartButton.addEventHandler(this, "virusStartButtonClicked");
+  virusName = new GLabel(window1, 455, 380, 40, 20);
+  virusName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  virusName.setText("Virus");
+  virusName.setOpaque(false);
   window1.loop();
 }
 
@@ -387,3 +399,5 @@ GLabel simulationCode;
 GButton simStartButton; 
 GButton simPauseButton; 
 GButton button3; 
+GButton virusStartButton; 
+GLabel virusName; 
