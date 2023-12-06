@@ -53,9 +53,9 @@ class NPC{
     this.current_path_node = find_closest_node(this.location);
     PathNode goal_node = find_closest_node(goal_location);
     
-    if(goal_node != this.current_path_node){
+    if(edge_distance(goal_node, this.current_path_node) > 1){
       
-      if(this.target_node == null || this.target_node.location.dist(this.location) < 0.4){
+      if(this.target_node == null || this.target_node.location.dist(this.location) < 0.2){
         
         PathNode closest_cell = this.current_path_node.neighbours.get(int(random(this.current_path_node.neighbours.size()-1)));
         float closest_dist = edge_distance(closest_cell, goal_node);
@@ -63,7 +63,7 @@ class NPC{
         for(PathNode n: this.current_path_node.neighbours){
           float d = edge_distance(goal_node, n);
           
-          if(d < closest_dist){
+          if(d <= closest_dist){
             closest_cell = n;
             closest_dist = d;
           }

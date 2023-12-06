@@ -15,8 +15,12 @@ class PathNode{
     
     fill(50,50,50);
     for(PathNode p: this.neighbours)
-      if(p != null)
+      if(p != null){
+        float d = edge_distance(this, p);
+        
         line(this.location.x*grid_size, this.location.y*grid_size, p.location.x*grid_size, p.location.y*grid_size);
+        
+      }
   }
 
 }
@@ -30,6 +34,9 @@ boolean is_duplicate_node(PathNode p){
 }
 
 float edge_distance(PathNode a, PathNode b){
+  if(a == b)
+    return 0;
+  
   return dist(a.location.x, a.location.y, b.location.x, b.location.y);
 }
 
@@ -52,44 +59,6 @@ PathNode find_closest_node(PVector location){
   }
   
   return closest_node;
-}
-
-ArrayList<PathNode> find_path(PathNode a, PathNode b){
-  
-  ArrayList<PathNode> queue = new ArrayList<PathNode>();
-  
-  queue.add(a);
-  a.explored = true;
-  
-  ArrayList<PathNode> parent_nodes = new ArrayList<PathNode>();
-  
-  while(queue.size() > 0){
-  
-    PathNode node = queue.get(0);
-    queue.remove(0);
-    
-    ArrayList<PathNode> neighbours = node.neighbours;
-    
-    for(PathNode n: neighbours){
-      if(n.explored == false){
-        queue.add(n);
-        n.explored = true;
-        parent_nodes.add(node);
-        if(node == b){ break; }
-      }
-    }
-    
-  }
-  //println(parent_nodes.get(parent_nodes.size()-1) == b);
-  ArrayList<PathNode> path = new ArrayList<PathNode>();
-  
-  for(int i = parent_nodes.size()-1; i >= 0; i--){
-    path.add(parent_nodes.get(i));
-  }
-  
-  resetPathNodes();
-  return path;
-  
 }
 
 boolean is_node_in_arraylist(PathNode p, ArrayList<PathNode> pa){

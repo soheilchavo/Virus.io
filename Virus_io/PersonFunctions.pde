@@ -19,8 +19,7 @@ void draw_hover_text() {
   PVector mouse_coords = get_global_mouse_coords();
   
   for (NPC person : people) {
-    if(mouse_coords.x > person.location.x && mouse_coords.x < person.location.x+npc_size &&
-      mouse_coords.y > person.location.y && mouse_coords.y < person.location.y+npc_size) {
+    if(true) {
         
       textSize(7);
 
