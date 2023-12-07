@@ -13,7 +13,7 @@ class Building {
     this.type = t;
     this.size = s;
     this.col = c;
-    this.sprite = loadImage(p);
+    this.sprite = loadImage("/Sprites/"+p);
   }
   
   //METHODS
