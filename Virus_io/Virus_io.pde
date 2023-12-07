@@ -16,6 +16,8 @@ float population_density = pow((city_size),2)/10;
 
 float hover_margin = 2;
 
+float global_immunity = 0.5;
+
 float time_of_day = 0;
 int day = 0;
 boolean is_weekend;
@@ -25,7 +27,6 @@ int age_deviation = 5;
 int cell_padding = 2;
 
 ArrayList<Building> buildings = new ArrayList<Building>();
-
 
 enum BuildingType { Home, Hospital, Workplace, School, Park, Eatery };
 float[] building_rates = new float[] {0.8, 0.13, 0.2, 0.1, 0.3, 0.2};
@@ -59,6 +60,11 @@ boolean draw_pathfinding = false;
 boolean draw_people = true;
 boolean draw_buildings = true;
 
+boolean virus_started = false;
+
+Virus main_virus;
+
+float virus_spread_area = 56;
 
 void setup() {
   size(600,600);
@@ -97,6 +103,7 @@ void draw() {
     if(draw_people){
       for(NPC p: people){
         p.drawNPC();
+        p.check_infection_spread();
       }
     }
     
@@ -237,6 +244,7 @@ float clamp(float val, float min, float max)
   if (val < min) {
     return min;
   }
+  
   if (val > max) {
     return max;
   }

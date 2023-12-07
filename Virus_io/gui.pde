@@ -43,7 +43,7 @@ public void citySizeSliderChanged(GSlider source, GEvent event) { //_CODE_:cityS
 } //_CODE_:citySizeSlider:359799:
 
 public void immunityRateSliderChanged(GSlider source, GEvent event) { //_CODE_:immunityRateSlider:986202:
-  println("immunityRateSlider - GSlider >> GEvent." + event + " @ " + millis());
+  global_immunity = immunityRateSlider.getValueF()/100;
 } //_CODE_:immunityRateSlider:986202:
 
 public void populationDensitySliderChanged(GSlider source, GEvent event) { //_CODE_:populationDensitySlider:846523:
@@ -109,7 +109,8 @@ public void button3_click1(GButton source, GEvent event) { //_CODE_:button3:5474
 } //_CODE_:button3:547459:
 
 public void virusStartButtonClicked(GButton source, GEvent event) { //_CODE_:virusStartButton:523430:
-  println("virusStartButton - GButton >> GEvent." + event + " @ " + millis());
+  if(!virus_started)
+    startVirus();
 } //_CODE_:virusStartButton:523430:
 
 

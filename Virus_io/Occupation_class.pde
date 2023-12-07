@@ -1,18 +1,21 @@
 class Occupation{
 
   String occupation_name;
-  float work_start_hour;
-  float work_end_hour;
+  float work_start_hour = 0;
+  float work_end_hour = 24;
   
   int avg_age = 40;
   
+  float base_immunity = 0.5;
+  
   Goal[] goals;
   
-  Occupation(String n, float s, float e, int a){
+  Occupation(String n, float s, float e, int a, float b){
     this.occupation_name = n;
     this.work_start_hour = s;
     this.work_end_hour = e;
     this.avg_age = a;
+    this.base_immunity = b;
   }
   
   Routine initializeRoutine(Building h, NPC p){
@@ -25,7 +28,7 @@ class Occupation{
 
 class Doctor extends Occupation{
   Doctor(){
-    super("Doctor", 9, 17, 34);
+    super("Doctor", 9, 17, 34, 0.9);
   }
   
   Routine initializeRoutine(Building h, NPC p){
@@ -40,7 +43,7 @@ class Doctor extends Occupation{
 
 class Teacher extends Occupation{
   Teacher(){
-    super("Teacher", 8, 14, 30);
+    super("Teacher", 8, 14, 30, 0.6);
   }
   
   Routine initializeRoutine(Building h, NPC p){
@@ -59,7 +62,7 @@ class Teacher extends Occupation{
 
 class Student extends Occupation{
   Student(){
-    super("Student", 8, 14, 13);
+    super("Student", 8, 14, 13, 0.8);
   }
   
   Routine initializeRoutine(Building h, NPC p){
@@ -77,7 +80,7 @@ class Student extends Occupation{
 
 class Waiter extends Occupation{
   Waiter(){
-    super("Waiter", 12, 22, 22);
+    super("Waiter", 12, 22, 22, 0.5);
   }
   
   Routine initializeRoutine(Building h, NPC p){
@@ -94,7 +97,7 @@ class Waiter extends Occupation{
 
 class Worker extends Occupation{
   Worker(){
-    super("Worker", 9, 22, 36);
+    super("Worker", 9, 22, 36, 0.45);
   }
   
   Routine initializeRoutine(Building h, NPC p){
@@ -112,7 +115,7 @@ class Worker extends Occupation{
 
 class Homeless extends Occupation{
   Homeless(){
-    super("Unhoused Person", 0, 24, 45);
+    super("Unhoused Person", 0, 24, 45, 0.2);
   }
   
   Routine initializeRoutine(Building h, NPC p){

@@ -15,12 +15,9 @@ class PathNode{
     
     fill(50,50,50);
     for(PathNode p: this.neighbours)
-      if(p != null){
-        float d = edge_distance(this, p);
-        
+      if(p != null)
         line(this.location.x*grid_size, this.location.y*grid_size, p.location.x*grid_size, p.location.y*grid_size);
-        
-      }
+   
   }
 
 }

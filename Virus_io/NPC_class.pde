@@ -18,6 +18,7 @@ class NPC{
   
   PathNode current_path_node;
   PathNode target_node = null;
+  PathNode previous_node;
   ArrayList<PathNode> explored_nodes = new ArrayList<PathNode>();
   
   NPC(Occupation o){
@@ -27,7 +28,7 @@ class NPC{
     this.name = getRandomName();
     this.age = getRandomAge(o);
     
-    this.immunity = getImmunity(this.age);
+    this.immunity = getImmunity(this.age, this.occupation);
     
     this.home = (Home)getRandomTypedBuilding(BuildingType.Home);
     this.location = home.location.copy();
@@ -36,6 +37,20 @@ class NPC{
     this.weekend_routine = createWeekendRoutine(this.home, this);
     
     this.initializeSickRoutine();
+    
+    
+  }
+  
+  void check_infection_spread(){
+    if(this.infected)
+      for(NPC p: people)
+        if(p != this && !p.infected && p.location.dist(this.location) <= virus_spread_area/100)
+          p.calc_sickness_chance();
+  }
+  
+  void calc_sickness_chance(){
+    if(random(1) >= this.immunity)
+      this.infected = true;
   }
   
   void calculate_position(){
@@ -53,22 +68,26 @@ class NPC{
     this.current_path_node = find_closest_node(this.location);
     PathNode goal_node = find_closest_node(goal_location);
     
-    if(edge_distance(goal_node, this.current_path_node) > 1){
+    if(edge_distance(goal_node, this.current_path_node) > 5){
       
       if(this.target_node == null || this.target_node.location.dist(this.location) < 0.2){
         
         PathNode closest_cell = this.current_path_node.neighbours.get(int(random(this.current_path_node.neighbours.size()-1)));
         float closest_dist = edge_distance(closest_cell, goal_node);
         
+        if(this.previous_node == null)
+          this.previous_node = this.current_path_node;
+        
         for(PathNode n: this.current_path_node.neighbours){
           float d = edge_distance(goal_node, n);
           
-          if(d <= closest_dist){
+          if(d <= closest_dist && n != this.previous_node){
             closest_cell = n;
             closest_dist = d;
           }
         }
         
+        this.previous_node = this.target_node;
         this.target_node = closest_cell;
       }
       
@@ -82,14 +101,18 @@ class NPC{
   void drawNPC() {
     
     this.calculate_position();
+    shapeMode(CENTER);
     
     fill(color(239,202,168));
     
     if(this.occupation.occupation_name == "Homeless")
       fill(color(0,0,255));
     
-    if(this.infected)
+    if(this.infected){
+      fill(color(188,34,34, 44));
+      circle(this.location.x*grid_size, this.location.y*grid_size, virus_spread_area);
       fill(color(255,0,0));
+    }
     
     circle(this.location.x*grid_size, this.location.y*grid_size, npc_size);
   }

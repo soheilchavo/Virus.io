@@ -136,9 +136,6 @@ int getRandomAge(Occupation o) {
   return o.avg_age+round(random(-age_deviation, age_deviation));
 }
 
-float getImmunity(int age) {
-  return age/100;
-}
 
 float vectorToBuildingDist(PVector p, Building b) {
   return dist(p.x, p.y, b.location.x, b.location.y);

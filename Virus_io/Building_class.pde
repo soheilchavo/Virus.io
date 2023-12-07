@@ -18,7 +18,7 @@ class Building {
   
   //METHODS
   void drawBuilding() {
-    
+    shapeMode(CORNER);
     tint(255,255);
     if(this.npc_in_building())
       tint(255,60);
@@ -28,13 +28,16 @@ class Building {
   }
   
   boolean npc_in_building(){
-    for(NPC p: people){
-      if(p.location.x > this.location.x && 
-         p.location.x < this.location.x+size[0] &&
-         p.location.y > this.location.y && 
-         p.location.y < this.location.y+size[1])
-         return true;
+    try{
+      for(NPC p: people){
+        if(p.location.x > this.location.x && 
+           p.location.x < this.location.x+size[0] &&
+           p.location.y > this.location.y && 
+           p.location.y < this.location.y+size[1])
+           return true;
+      }
     }
+    catch(Exception e) {}
     return false;
   }
 }
