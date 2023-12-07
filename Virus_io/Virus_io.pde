@@ -101,6 +101,8 @@ void draw() {
       }
     }
     
+    drawRoads();
+    
     if(draw_people){
       for(NPC p: people){
         p.drawNPC();

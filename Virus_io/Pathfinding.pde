@@ -70,3 +70,19 @@ boolean is_node_in_arraylist(PathNode p, ArrayList<PathNode> pa){
    return false;
   
 }
+
+// Function to draw roads based on path nodes
+void drawRoads() {
+  pushStyle();
+  
+  stroke(50);
+  strokeWeight(4);
+
+  for (PathNode p : path_nodes) {
+    for (PathNode c : p.neighbours) {
+      line(p.location.x * grid_size, p.location.y * grid_size, c.location.x * grid_size, c.location.y * grid_size);
+    }
+  }
+  
+  popStyle();
+}
