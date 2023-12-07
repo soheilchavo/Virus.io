@@ -51,7 +51,7 @@ public void populationDensitySliderChanged(GSlider source, GEvent event) { //_CO
 } //_CODE_:populationDensitySlider:846523:
 
 public void gridSizeSliderChanged(GSlider source, GEvent event) { //_CODE_:gridSizeSlider:873935:
-  println("gridSizeSlider - GSlider >> GEvent." + event + " @ " + millis());
+  grid_size = gridSizeSlider.getValueF();
 } //_CODE_:gridSizeSlider:873935:
 
 public void timeRateSliderChanged(GSlider source, GEvent event) { //_CODE_:timeRateSlider:628616:
@@ -109,6 +109,10 @@ public void virusStartButtonClicked(GButton source, GEvent event) { //_CODE_:vir
     startVirus();
 } //_CODE_:virusStartButton:523430:
 
+public void virusSpreadRadiusChanged(GSlider source, GEvent event) { //_CODE_:virusSpreadRadiusSlider:596595:
+  main_virus.spreadArea = virusSpreadRadiusSlider.getValueF();
+} //_CODE_:virusSpreadRadiusSlider:596595:
+
 
 
 // Create all the GUI controls. 
@@ -118,6 +122,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
   surface.setTitle("Sketch Window");
+  togGroup1 = new GToggleGroup();
   window1 = GWindow.getWindow(this, "Window title", 0, 0, 550, 600, JAVA2D);
   window1.noLoop();
   window1.setActionOnClose(G4P.KEEP_OPEN);
@@ -200,11 +205,11 @@ public void createGUI(){
   citySizeSlider.setNumberFormat(G4P.DECIMAL, 2);
   citySizeSlider.setOpaque(true);
   citySizeSlider.addEventHandler(this, "citySizeSliderChanged");
-  immunityRateName = new GLabel(window1, 200, 350, 92, 20);
+  immunityRateName = new GLabel(window1, 200, 280, 92, 20);
   immunityRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   immunityRateName.setText("Base Immunity");
   immunityRateName.setOpaque(true);
-  immunityRateSlider = new GSlider(window1, 200, 370, 150, 50, 10.0);
+  immunityRateSlider = new GSlider(window1, 200, 300, 150, 50, 10.0);
   immunityRateSlider.setShowValue(true);
   immunityRateSlider.setShowLimits(true);
   immunityRateSlider.setLimits(30.0, 0.0, 100.0);
@@ -221,7 +226,7 @@ public void createGUI(){
   populationDensitySlider.setShowValue(true);
   populationDensitySlider.setShowLimits(true);
   populationDensitySlider.setLimits(10.0, 5.0, 12.0);
-  populationDensitySlider.setNbrTicks(10);
+  populationDensitySlider.setNbrTicks(7);
   populationDensitySlider.setShowTicks(true);
   populationDensitySlider.setNumberFormat(G4P.DECIMAL, 2);
   populationDensitySlider.setOpaque(true);
@@ -239,15 +244,15 @@ public void createGUI(){
   gridSizeSlider.setNumberFormat(G4P.DECIMAL, 2);
   gridSizeSlider.setOpaque(true);
   gridSizeSlider.addEventHandler(this, "gridSizeSliderChanged");
-  timeRateName = new GLabel(window1, 421, 153, 108, 20);
+  timeRateName = new GLabel(window1, 200, 420, 108, 20);
   timeRateName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   timeRateName.setText("Simulation Speed");
   timeRateName.setOpaque(false);
-  timeRateSlider = new GSlider(window1, 424, 187, 106, 50, 10.0);
+  timeRateSlider = new GSlider(window1, 200, 440, 150, 50, 10.0);
   timeRateSlider.setShowValue(true);
   timeRateSlider.setShowLimits(true);
-  timeRateSlider.setLimits(1.0, 0.5, 15.0);
-  timeRateSlider.setNbrTicks(10);
+  timeRateSlider.setLimits(1.0, 0.01, 15.0);
+  timeRateSlider.setNbrTicks(15);
   timeRateSlider.setShowTicks(true);
   timeRateSlider.setNumberFormat(G4P.DECIMAL, 2);
   timeRateSlider.setOpaque(true);
@@ -273,7 +278,7 @@ public void createGUI(){
   npcSizeSlider.setShowValue(true);
   npcSizeSlider.setShowLimits(true);
   npcSizeSlider.setLimits(12.0, 1.0, 15.0);
-  npcSizeSlider.setNbrTicks(10);
+  npcSizeSlider.setNbrTicks(14);
   npcSizeSlider.setShowTicks(true);
   npcSizeSlider.setNumberFormat(G4P.DECIMAL, 2);
   npcSizeSlider.setOpaque(true);
@@ -304,51 +309,69 @@ public void createGUI(){
   ageDeviationSlider.setNumberFormat(G4P.DECIMAL, 2);
   ageDeviationSlider.setOpaque(true);
   ageDeviationSlider.addEventHandler(this, "ageDeviationSliderChanged");
-  showPathfindName = new GLabel(window1, 421, 319, 107, 20);
+  showPathfindName = new GLabel(window1, 425, 150, 100, 20);
   showPathfindName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   showPathfindName.setText("Draw Pathfinding");
   showPathfindName.setOpaque(false);
-  showPathfindOnButton = new GButton(window1, 424, 348, 40, 20);
+  showPathfindOnButton = new GButton(window1, 420, 180, 45, 20);
   showPathfindOnButton.setText("on");
   showPathfindOnButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   showPathfindOnButton.addEventHandler(this, "showPathfindOnButtonClicked");
-  showPathfindOffButton = new GButton(window1, 491, 346, 40, 20);
+  showPathfindOffButton = new GButton(window1, 485, 180, 45, 20);
   showPathfindOffButton.setText("off");
   showPathfindOffButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   showPathfindOffButton.addEventHandler(this, "showPathfindOffButtonClicked");
-  label1 = new GLabel(window1, 423, 260, 96, 20);
+  label1 = new GLabel(window1, 427, 90, 96, 20);
   label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   label1.setText("Draw Buildings");
   label1.setOpaque(false);
-  showBuildingsOnButton = new GButton(window1, 422, 291, 40, 20);
+  showBuildingsOnButton = new GButton(window1, 420, 120, 45, 20);
   showBuildingsOnButton.setText("on");
   showBuildingsOnButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   showBuildingsOnButton.addEventHandler(this, "showBuildingsOnButtonClicked");
-  showBuildingOffButton = new GButton(window1, 488, 288, 40, 20);
+  showBuildingOffButton = new GButton(window1, 485, 120, 45, 20);
   showBuildingOffButton.setText("off");
   showBuildingOffButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   showBuildingOffButton.addEventHandler(this, "showBuildingOffButtonClicked");
-  simulationCode = new GLabel(window1, 437, 14, 80, 20);
+  simulationCode = new GLabel(window1, 435, 0, 80, 20);
   simulationCode.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   simulationCode.setText("Simulation");
   simulationCode.setOpaque(false);
-  simStartButton = new GButton(window1, 436, 42, 79, 24);
+  simStartButton = new GButton(window1, 435, 30, 80, 20);
   simStartButton.setText("Start/Reset");
   simStartButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   simStartButton.addEventHandler(this, "simStartButtonClicked");
-  simPauseButton = new GButton(window1, 438, 76, 77, 20);
+  simPauseButton = new GButton(window1, 435, 60, 80, 20);
   simPauseButton.setText("Pause");
   simPauseButton.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   simPauseButton.addEventHandler(this, "simPauseButtonClicked");
-  virusStartButton = new GButton(window1, 426, 414, 89, 25);
+  virusStartButton = new GButton(window1, 430, 240, 90, 30);
   virusStartButton.setText("Release Virus");
   virusStartButton.setLocalColorScheme(GCScheme.CYAN_SCHEME);
   virusStartButton.addEventHandler(this, "virusStartButtonClicked");
+  virusSpreadRadius = new GLabel(window1, 200, 350, 118, 20);
+  virusSpreadRadius.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  virusSpreadRadius.setText("Virus Spread Radius");
+  virusSpreadRadius.setOpaque(false);
+  virusSpreadRadiusSlider = new GSlider(window1, 200, 370, 150, 50, 10.0);
+  virusSpreadRadiusSlider.setShowValue(true);
+  virusSpreadRadiusSlider.setShowLimits(true);
+  virusSpreadRadiusSlider.setLimits(5.0, 0.0, 10.0);
+  virusSpreadRadiusSlider.setNbrTicks(10);
+  virusSpreadRadiusSlider.setShowTicks(true);
+  virusSpreadRadiusSlider.setNumberFormat(G4P.DECIMAL, 2);
+  virusSpreadRadiusSlider.setOpaque(true);
+  virusSpreadRadiusSlider.addEventHandler(this, "virusSpreadRadiusChanged");
+  VirusName = new GLabel(window1, 455, 210, 40, 20);
+  VirusName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  VirusName.setText("Virus");
+  VirusName.setOpaque(false);
   window1.loop();
 }
 
 // Variable declarations 
 // autogenerated do not edit
+GToggleGroup togGroup1; 
 GWindow window1;
 GLabel hospitalRateName; 
 GSlider hospitalRateSlider; 
@@ -388,3 +411,6 @@ GLabel simulationCode;
 GButton simStartButton; 
 GButton simPauseButton; 
 GButton virusStartButton; 
+GLabel virusSpreadRadius; 
+GSlider virusSpreadRadiusSlider; 
+GLabel VirusName; 
