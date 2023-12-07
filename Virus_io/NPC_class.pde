@@ -38,7 +38,6 @@ class NPC{
     
     this.initializeSickRoutine();
     
-    
   }
   
   void check_infection_spread(){
@@ -118,7 +117,7 @@ class NPC{
   }
   
   boolean isMouseHoveredOver(){
-  
+    
     float x_1 = this.location.x*grid_size - hover_margin;
     float x_2 = this.location.x*grid_size + npc_size + hover_margin;
     float y_1 = this.location.y*grid_size - hover_margin;

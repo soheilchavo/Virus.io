@@ -47,12 +47,8 @@ public void immunityRateSliderChanged(GSlider source, GEvent event) { //_CODE_:i
 } //_CODE_:immunityRateSlider:986202:
 
 public void populationDensitySliderChanged(GSlider source, GEvent event) { //_CODE_:populationDensitySlider:846523:
-  println("populationDensitySlider - GSlider >> GEvent." + event + " @ " + millis());
+  population_density = 1/populationDensitySlider.getValueF();
 } //_CODE_:populationDensitySlider:846523:
-
-public void gridSizeSliderChanged(GSlider source, GEvent event) { //_CODE_:gridSizeSlider:873935:
-  println("gridSizeSlider - GSlider >> GEvent." + event + " @ " + millis());
-} //_CODE_:gridSizeSlider:873935:
 
 public void timeRateSliderChanged(GSlider source, GEvent event) { //_CODE_:timeRateSlider:628616:
   sim_speed = timeRateSlider.getValueF();
@@ -71,7 +67,7 @@ public void npcSpeedSliderChanged(GSlider source, GEvent event) { //_CODE_:npcSp
 } //_CODE_:npcSpeedSlider:400537:
 
 public void ageDeviationSliderChanged(GSlider source, GEvent event) { //_CODE_:ageDeviationSlider:274232:
-  println("ageDeviationSlider - GSlider >> GEvent." + event + " @ " + millis());
+  age_deviation = ageDeviationSlider.getValueI();
 } //_CODE_:ageDeviationSlider:274232:
 
 public void showPathfindOnButtonClicked(GButton source, GEvent event) { //_CODE_:showPathfindOnButton:442527:
@@ -105,7 +101,7 @@ public void simPauseButtonClicked(GButton source, GEvent event) { //_CODE_:simPa
 } //_CODE_:simPauseButton:467458:
 
 public void button3_click1(GButton source, GEvent event) { //_CODE_:button3:547459:
-  start();
+  startSim();
 } //_CODE_:button3:547459:
 
 public void virusStartButtonClicked(GButton source, GEvent event) { //_CODE_:virusStartButton:523430:

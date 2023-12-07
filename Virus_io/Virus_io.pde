@@ -12,7 +12,7 @@ float shift_sensitivity = 10;
 float zoom_sensitivity = 0.04;
 float mouse_sensitivity = 1.3;
 
-float population_density = pow((city_size),2)/10;
+float population_density = 10;
 
 float hover_margin = 2;
 
@@ -70,6 +70,7 @@ void setup() {
   size(600,600);
   createGUI();
 }
+
 
 void draw() {
  if(paused == false){
@@ -129,6 +130,7 @@ void draw() {
 }
 
 void startSim(){
+  simOngoing = false;
   generateBuildings();
   generatePeople();
   simOngoing = true;
@@ -209,7 +211,7 @@ void generateBuildings() {
 }
 
 void generatePeople(){
-  num_people = int(city_size*city_size*population_density);
+  num_people = int(pow(city_size,4)/population_density);
   people = new NPC[num_people];
   
   for(int i = 0; i < num_people; i++){
@@ -235,10 +237,6 @@ void switchDay(){
   }
 }
 
-void resetProgram(){
-  start();
-}
-
 float clamp(float val, float min, float max)
 {
   if (val < min) {
@@ -256,27 +254,30 @@ void mouseWheel(MouseEvent event)
   zoom = clamp(zoom - event.getCount()*zoom_sensitivity, 0.1, 4);
 }
 
+void clampOffsets(){
+  x_offset = clamp(x_offset, -500, ceil(city_size)*200);
+  y_offset = clamp(y_offset, -500, ceil(city_size)*200);
+}
+
 void mouseDragged(MouseEvent event){
   x_offset += (-pmouseX+mouseX)*mouse_sensitivity*(1/zoom);
   y_offset += (-pmouseY+mouseY)*mouse_sensitivity*(1/zoom);
   
-  x_offset = clamp(x_offset, -500, 500);
-  y_offset = clamp(y_offset, -500, 500);
+  clampOffsets();
 }
 
 void keyPressed(){
   if(key == 'a')
-    x_offset += shift_sensitivity;
+    x_offset += shift_sensitivity*(1/zoom);
   
   if(key == 'd')
-    x_offset -= shift_sensitivity;
+    x_offset -= shift_sensitivity*(1/zoom);
   
   if(key == 'w')
-    y_offset += shift_sensitivity;
+    y_offset += shift_sensitivity*(1/zoom);
   
   if(key == 's')
-    y_offset -= shift_sensitivity;
-    
-  x_offset = clamp(x_offset, -500, 500);
-  y_offset = clamp(y_offset, -500, 500);
+    y_offset -= shift_sensitivity*(1/zoom);
+  
+  clampOffsets();
 }  
