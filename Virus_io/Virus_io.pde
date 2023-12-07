@@ -12,7 +12,7 @@ float shift_sensitivity = 10;
 float zoom_sensitivity = 0.04;
 float mouse_sensitivity = 1.3;
 
-float population_density = 10;
+float population_density = 0.1;
 
 float hover_margin = 2;
 
@@ -131,6 +131,7 @@ void draw() {
 
 void startSim(){
   simOngoing = false;
+  virus_started = false;
   generateBuildings();
   generatePeople();
   simOngoing = true;
@@ -212,7 +213,7 @@ void generateBuildings() {
 }
 
 void generatePeople(){
-  num_people = int(pow(city_size,4)/population_density);
+  num_people = int(pow(city_size,2)/population_density);
   people = new NPC[num_people];
   
   for(int i = 0; i < num_people; i++){
