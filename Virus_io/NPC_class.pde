@@ -49,13 +49,20 @@ class NPC{
   void check_infection_spread(){
     if(this.infected)
       for(NPC p: people)
-        if(p != this && !p.infected && p.location.dist(this.location) <= virus_spread_area)
+        if(p != this && !p.infected && p.location.dist(this.location) <= virus_spread_area/100)
           p.calc_sickness_chance();
   }
   
+  void become_infected(){
+    this.infected = true;
+    this.days_left_to_be_infected = ceil(5/this.immunity);
+  }
+  
   void calc_sickness_chance(){
+    this.immunity = getImmunity(this.age, this.occupation);
+    
     if(random(1) >= this.immunity+this.natural_immunity){
-      this.infected = true;
+      become_infected();
     }
   }
   
@@ -65,10 +72,16 @@ class NPC{
     
     if(is_weekend)
       c_goal = this.weekend_routine.getCurrentGoal(time_of_day);
-      
-    if(this.infected && this.shows_symptoms)
-      c_goal = this.sick_routine.getCurrentGoal(time_of_day);
     
+    if(this.days_left_to_be_infected <= 0 && random(1) > 0.86){
+        this.infected = false;
+        this.natural_immunity = 1;
+    }
+    
+    if(this.infected && this.shows_symptoms){
+      c_goal = this.sick_routine.getCurrentGoal(time_of_day);
+      println(this.days_left_to_be_infected);
+    }
     PVector goal_location = c_goal.location;
     
     this.current_path_node = find_closest_node(this.location);

@@ -16,7 +16,7 @@ float population_density = 0.1;
 
 float hover_margin = 2;
 
-float global_immunity = 0.5;
+float global_immunity = 3;
 
 float time_of_day = 0;
 int day = 0;
@@ -238,9 +238,14 @@ void switchDay(){
     person.weekend_routine.setGoals();
     person.natural_immunity -= 0.1;
     
-    if(person.infected && person.days_left_to_be_infected <= 0)
-      person.infected = false;
-      person.natural_immunity = 1;
+    if(person.days_left_to_be_infected > 0){
+      person.days_left_to_be_infected -= 1;
+    }
+    if(person.infected && random(1) < 0.8){
+      
+      person.shows_symptoms = true;
+      
+    }
   }
 }
 

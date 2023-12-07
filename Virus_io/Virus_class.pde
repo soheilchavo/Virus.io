@@ -8,7 +8,7 @@ class Virus {
 
 void startVirus(){
   virus_started = true;
-  people[int(random(people.length-1))].infected = true;
+  people[int(random(people.length-1))].become_infected();
   main_virus = new Virus(virus_spread_area);
 }
 

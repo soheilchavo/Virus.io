@@ -207,7 +207,7 @@ public void createGUI(){
   immunityRateSlider = new GSlider(window1, 200, 370, 150, 50, 10.0);
   immunityRateSlider.setShowValue(true);
   immunityRateSlider.setShowLimits(true);
-  immunityRateSlider.setLimits(5.0, 0.0, 100.0);
+  immunityRateSlider.setLimits(30.0, 0.0, 100.0);
   immunityRateSlider.setNbrTicks(10);
   immunityRateSlider.setShowTicks(true);
   immunityRateSlider.setNumberFormat(G4P.DECIMAL, 2);
@@ -246,7 +246,7 @@ public void createGUI(){
   timeRateSlider = new GSlider(window1, 424, 187, 106, 50, 10.0);
   timeRateSlider.setShowValue(true);
   timeRateSlider.setShowLimits(true);
-  timeRateSlider.setLimits(1.0, 0.5, 6.0);
+  timeRateSlider.setLimits(1.0, 0.5, 15.0);
   timeRateSlider.setNbrTicks(10);
   timeRateSlider.setShowTicks(true);
   timeRateSlider.setNumberFormat(G4P.DECIMAL, 2);
