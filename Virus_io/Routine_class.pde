@@ -12,6 +12,7 @@ class Goal {
   
   Goal(Building b, float s, float e){
     
+    //Randomly offsets the goal location so everyone isn't on top of each other
     this.location = new PVector(
       b.location.x + b.size[0]/3 + random(-b.size[0]/4, b.size[0]/4), 
       b.location.y + b.size[1]/3 +  random(-b.size[1]/4, b.size[1]/4)
@@ -25,6 +26,7 @@ class Goal {
     this.duration = e-s;
   }
   
+  // Constructor for variable goals
   Goal(Building[] v_goals, float s, float e){
     this.variable_buildings = v_goals;
     this.variable_goal = true;
@@ -32,6 +34,7 @@ class Goal {
     this.end_time = e;
   }
   
+  // Sets random goals at the start of each day
   void setGoal(){
     if(this.variable_goal){
       Building b = variable_buildings[round(random(0, variable_buildings.length-1))];
@@ -68,31 +71,36 @@ class Routine {
   }
   
   Goal getCurrentGoal(float t){
-    
     Goal target_goal = this.goals[0];
-    
     for(Goal g: this.goals){
       if((t >= g.start_time) && (t <= g.end_time)){
         return g;
       }
     }
-    
     return target_goal;
-  
   }
   
 }
 
+// Weekend routine, same for everyone but random for each person, except for unhoused people who don't go home
 Routine createWeekendRoutine(Building home, NPC p){
   
   Building eatery = findClosestBuilding(p.home.location, BuildingType.Eatery);
   Building park = findClosestBuilding(p.home.location, BuildingType.Park);
   
-  return new Routine(p, new Goal[] { 
-    new Goal(home, 0, 11), 
-    new Goal(new Building[] { home, eatery, park }, 11, 13), 
-    new Goal(new Building[] { home, eatery, park }, 13, 16),
-    new Goal(new Building[] { home, eatery, park }, 16, 18),
-    new Goal(new Building[] { home, eatery, park }, 18, 19),
-    new Goal(home, 19, 24)});
+  if(p.occupation.occupation_name != "Unhoused Person")
+    return new Routine(p, new Goal[] { 
+      new Goal(home, 0, 11), 
+      new Goal(new Building[] { home, eatery, park }, 11, 13), 
+      new Goal(new Building[] { home, eatery, park }, 13, 16),
+      new Goal(new Building[] { home, eatery, park }, 16, 18),
+      new Goal(new Building[] { home, eatery, park }, 18, 19),
+      new Goal(home, 19, 24)});
+  
+  
+  return new Routine(p, new Goal[] {
+      new Goal(new Building[] { home, eatery, park }, 0, 13), 
+      new Goal(new Building[] { home, eatery, park }, 13, 16),
+      new Goal(new Building[] { home, eatery, park }, 16, 18),
+      new Goal(new Building[] { home, eatery, park }, 18, 24) });
 }

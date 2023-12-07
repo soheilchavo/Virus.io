@@ -1,18 +1,20 @@
 class Virus {
   float spreadArea;
+  float strength;
   
-  Virus(float s){
-    this.spreadArea = s;
+  Virus(float sa, float st){
+    this.spreadArea = sa;
+    this.strength = st;
   }
 }
 
 void startVirus(){
   virus_started = true;
-  people[int(random(people.length-1))].become_infected();
-  main_virus = new Virus(virus_spread_area);
+  people[int(random(people.length-1))].become_infected(); // Randomly chooses someone to be infected
+  main_virus = new Virus(virus_spread_area, virus_strength);
 }
 
-float getImmunity(int age, Occupation o) {
-  //println((1/global_immunity)*((age/100)+o.base_immunity)/2);
-  return (1/global_immunity)*((age/100)+o.base_immunity)/2;
+// Generates an immunity based on a person's stats
+float getImmunity(NPC p) {
+  return (1/global_immunity)*((p.age/100)+p.occupation.base_immunity)/2;
 }
