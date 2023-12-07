@@ -9,8 +9,13 @@ class NPC{
   Routine weekend_routine;
   Routine sick_routine;
   
+  boolean shows_symptoms;
+  
   boolean infected;
   float immunity;
+  
+  boolean immune = false;
+  int days_left_till_immunity;
   
   Home home;
   
@@ -20,6 +25,8 @@ class NPC{
   PathNode target_node = null;
   PathNode previous_node;
   ArrayList<PathNode> explored_nodes = new ArrayList<PathNode>();
+  
+  int days_left_to_be_infected;
   
   NPC(Occupation o){
     
@@ -48,8 +55,10 @@ class NPC{
   }
   
   void calc_sickness_chance(){
-    if(random(1) >= this.immunity)
+    if(random(1) >= this.immunity){
       this.infected = true;
+      this.days_left_to_be_infected = int((1/this.immunity)*5);
+    }
   }
   
   void calculate_position(){
@@ -59,7 +68,7 @@ class NPC{
     if(is_weekend)
       c_goal = this.weekend_routine.getCurrentGoal(time_of_day);
       
-    if(this.infected)
+    if(this.infected && this.shows_symptoms)
       c_goal = this.sick_routine.getCurrentGoal(time_of_day);
     
     PVector goal_location = c_goal.location;

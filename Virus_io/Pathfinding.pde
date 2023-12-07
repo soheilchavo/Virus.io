@@ -44,18 +44,21 @@ void resetPathNodes(){
 
 PathNode find_closest_node(PVector location){
   
-  float closest_dist = Float.POSITIVE_INFINITY;
-  PathNode closest_node = path_nodes.get(0);
-  
-  for(PathNode p: path_nodes){
-    float local_dist = location.dist(p.location);
-    if(local_dist < closest_dist){
-      closest_dist = local_dist;
-      closest_node = p;
+  if(simOngoing){
+    float closest_dist = Float.POSITIVE_INFINITY;
+    PathNode closest_node = path_nodes.get(0);
+    
+    for(PathNode p: path_nodes){
+      float local_dist = location.dist(p.location);
+      if(local_dist < closest_dist){
+        closest_dist = local_dist;
+        closest_node = p;
+      }
     }
+    
+    return closest_node;
   }
-  
-  return closest_node;
+  return null;
 }
 
 boolean is_node_in_arraylist(PathNode p, ArrayList<PathNode> pa){
