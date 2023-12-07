@@ -236,17 +236,11 @@ void switchDay(){
   for(NPC person: people){
     person.routine.setGoals();
     person.weekend_routine.setGoals();
-    
-    person.days_left_to_be_infected -= 1;
-    person.days_left_till_immunity -= 1;
-    
-    if(person.immune && person.days_left_till_immunity <= 0)
-      person.immune = false;
+    person.natural_immunity -= 0.1;
     
     if(person.infected && person.days_left_to_be_infected <= 0)
       person.infected = false;
-      person.days_left_till_immunity = int((1/person.immunity)*5);
-      person.immune = true;
+      person.natural_immunity = 1;
   }
 }
 

@@ -14,8 +14,7 @@ class NPC{
   boolean infected;
   float immunity;
   
-  boolean immune = false;
-  int days_left_till_immunity;
+  float natural_immunity = 0;
   
   Home home;
   
@@ -50,14 +49,13 @@ class NPC{
   void check_infection_spread(){
     if(this.infected)
       for(NPC p: people)
-        if(p != this && !p.infected && p.location.dist(this.location) <= virus_spread_area/100)
+        if(p != this && !p.infected && p.location.dist(this.location) <= virus_spread_area)
           p.calc_sickness_chance();
   }
   
   void calc_sickness_chance(){
-    if(random(1) >= this.immunity){
+    if(random(1) >= this.immunity+this.natural_immunity){
       this.infected = true;
-      this.days_left_to_be_infected = int((1/this.immunity)*5);
     }
   }
   
