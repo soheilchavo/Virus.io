@@ -14,6 +14,9 @@ class NPC{
   boolean infected;
   boolean cured;
   
+  boolean wearing_mask;
+  boolean vaccinated;
+  
   float immunity;
   float natural_immunity = 0; // Built up after they're cured
   
@@ -49,10 +52,17 @@ class NPC{
   
   // Check if they're infecting anybody else
   void check_infection_spread(){
-    if(this.infected)
-      for(NPC p: people)
-        if(p != this && !p.infected && p.location.dist(this.location) <= main_virus.spreadArea)
-          p.calc_sickness_chance();
+    if(this.infected){
+      for(NPC p: people){
+        if(p != this && !p.infected && p.location.dist(this.location) <= main_virus.spreadArea){
+          if(this.wearing_mask)
+            if(random(1) > mask_effectiveness)
+              p.calc_sickness_chance();
+          else
+            p.calc_sickness_chance();
+        }
+      }
+    }
   }
   
   void become_infected(){
@@ -69,7 +79,12 @@ class NPC{
   // Chance they'll get sick upon contact
   void calc_sickness_chance(){
     this.immunity = getImmunity(this);
-    if(random(1) >= (this.immunity+this.natural_immunity)*(1/main_virus.strength))
+    
+    float vaccine_weight = 1;
+    if(this.vaccinated)
+      vaccine_weight = (1-vaccine_effectiveness);
+    
+    if(random(1) >= vaccine_weight*(this.immunity+this.natural_immunity)*(1/main_virus.strength))
       become_infected();
   }
   
@@ -79,11 +94,18 @@ class NPC{
     // Current Goal
     Goal c_goal = this.routine.getCurrentGoal(time_of_day);
     
-    if(is_weekend) //Switch to weekend goal
+    //Switch to weekend goal
+    if(is_weekend) 
       c_goal = this.weekend_routine.getCurrentGoal(time_of_day);
     
-    if(this.infected && this.shows_symptoms){ // Switch to sick routine
+    // Switch to sick routine
+    if(this.infected && this.shows_symptoms){ 
       c_goal = this.sick_routine.getCurrentGoal(time_of_day);
+    }
+    
+    // Chooses whether a person stays home or not because of the virus, either by chance or by quarantine mandate
+    if(virus_started && (quarantine_mandate || random(1) > 0.8) && this.occupation.occupation_name != "Unhoused Person"){
+      c_goal = this.routine.getCurrentGoal(0);
     }
     
     PVector goal_location = c_goal.location;
@@ -133,14 +155,14 @@ class NPC{
     
     fill(color(239,202,168));
     
-    if(this.occupation.occupation_name == "Homeless")
-      fill(color(0,0,255));
-    
     if(this.infected){
       fill(color(188,34,34, 44));
       circle(this.location.x*grid_size, this.location.y*grid_size, main_virus.spreadArea*50);
       fill(color(255,0,0));
     }
+    
+    if(this.vaccinated && !this.infected)
+      fill(color(40, 67, 230));
     
     if(this.selected){
       stroke(255,0,0); strokeWeight(2); }
@@ -148,6 +170,10 @@ class NPC{
       stroke(0,0,0); strokeWeight(1);}
       
     circle(this.location.x*grid_size, this.location.y*grid_size, npc_size);
+    
+    fill(255);
+    if(this.wearing_mask)
+      rect(this.location.x*grid_size-4, this.location.y*grid_size, npc_size-4, npc_size/2);
   }
   
   void initializeSickRoutine(){

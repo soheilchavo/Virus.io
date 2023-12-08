@@ -68,6 +68,13 @@ NPC selected_npc = null;
 float centerX;
 float centerY;
 
+boolean mask_mandate;
+boolean vaccine_mandate;
+boolean quarantine_mandate;
+
+float mask_effectiveness = 0.5;
+float vaccine_effectiveness = 0.5;
+
 void setup() {
   size(600, 600);
   centerX = width / 2.0;
@@ -118,6 +125,10 @@ void draw() {
       if(virus_started && n_infected == 0){
         WinConditionLabel.setText("Virus eradicated, reset to start new sim");
       }
+      
+      if(virus_started && n_infected == people.length){
+        WinConditionLabel.setText("Everyone is infected, reset to start new sim");
+      }
 
       if (draw_pathfinding) {
         for (PathNode p : path_nodes) {
@@ -142,9 +153,9 @@ void draw() {
       popMatrix(); // Goes back to untranslated screen
 
       //Draw time of day text
-      fill(0);
+      fill(255);
       textSize(12);
-      text(days[day] + ", time of day: " + str(time_of_day) + ", zoom: " + zoom, 5, 11);
+      text(days[day] + ", time of day: " + str(time_of_day).substring(0,3) + ", zoom: " + zoom, 5, 11);
       time_of_day += 0.01*sim_speed;
 
       //If the end of the hour is reached
@@ -259,6 +270,9 @@ void generatePeople() {
 
   for (int i = 0; i < num_people; i++) {
     people[i] = new NPC(getRandomOccupation());
+    
+    if(random(1) > 0.95)
+      people[i].vaccinated = true;
   }
 }
 
@@ -282,6 +296,13 @@ void switchDay() {
     person.weekend_routine.setGoals(); // Sets weekend goals (only works if it is weekend)
 
     person.natural_immunity -= 0.1; // Takes down natural immunity (is reset after being cured)
+
+    // Wears a mask today if there is a mandate or they randomly want to
+    if(mask_mandate || random(1) > 0.7)
+      person.wearing_mask = true;
+    
+    if(vaccine_mandate)
+      person.vaccinated = true;
 
     if (person.days_left_to_be_cured > 0)
       person.days_left_to_be_cured -= 1;

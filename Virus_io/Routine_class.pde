@@ -71,6 +71,7 @@ class Routine {
   }
   
   Goal getCurrentGoal(float t){
+    
     Goal target_goal = this.goals[0];
     for(Goal g: this.goals){
       if((t >= g.start_time) && (t <= g.end_time)){
