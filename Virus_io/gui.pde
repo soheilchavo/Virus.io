@@ -448,7 +448,7 @@ public void createGUI(){
   MaskEffectivnessSlider = new GSlider(window1, 0, 650, 150, 50, 10.0);
   MaskEffectivnessSlider.setShowValue(true);
   MaskEffectivnessSlider.setShowLimits(true);
-  MaskEffectivnessSlider.setLimits(5.0, 0.0, 10.0);
+  MaskEffectivnessSlider.setLimits(0.5, 0.0, 1.0);
   MaskEffectivnessSlider.setNbrTicks(10);
   MaskEffectivnessSlider.setShowTicks(true);
   MaskEffectivnessSlider.setNumberFormat(G4P.DECIMAL, 2);
