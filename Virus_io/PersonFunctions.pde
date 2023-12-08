@@ -5,30 +5,11 @@ String getRandomName() {
   return name;
 }
 
-PVector get_global_mouse_coords(){
-  
+// Untranslated Mouse coords
+PVector getGlobalMouseCoords(){
   float mouse_x = (mouseX-x_offset)/zoom;
   float mouse_y = (mouseY-y_offset)/zoom;
-
   return new PVector(mouse_x, mouse_y);
-  
-}
-
-void draw_hover_text() {
-
-  PVector mouse_coords = get_global_mouse_coords();
-  
-  for (NPC person : people) {
-    if(true) {
-        
-      textSize(7);
-
-      String textstr = person.name + ", " + person.age + " year old " + person.occupation.occupation_name;
-      
-      fill(0);
-      text(textstr, person.location.x*grid_size, person.location.y*grid_size);
-    }
-  }
 }
 
 int weightedRandom(float[] rates) {
@@ -67,13 +48,12 @@ int weightedRandom(float[] rates) {
   return round(random(rates.length-1));
 }
 
-float sumOfRates() {
+// Returns the sum of all building rates (used for random functions)
+float sumOfBuildingRates() {
   float sum = 0;
-
   for (float f : building_rates) {
     sum += f;
   }
-
   return sum;
 }
 
@@ -81,11 +61,12 @@ ArrayList<Building> createRandomBuildings() {
 
   ArrayList<Building> new_b = new ArrayList<Building>();
   
+  // Itterates through all building types, then generates a number (min 1) of buildings based on the user set rates 
   for (int t = 0; t < b_type_order.length; t++) {
     
     BuildingType type = b_type_order[t];
     
-    for (int i = 0; i < ceil((building_rates[t]/sumOfRates())*(city_size*city_size/1.5)); i++) {
+    for (int i = 0; i < ceil((building_rates[t]/sumOfBuildingRates())*(pow(city_size,2)/1.5)); i++) {
 
       HashMap<BuildingType, Building> type_to_object_hash = new HashMap<BuildingType, Building>();
 
@@ -104,13 +85,14 @@ ArrayList<Building> createRandomBuildings() {
 
 Occupation getRandomOccupation() {
 
+  // Gets a random building type (not home)
   BuildingType b_type = BuildingType.Home;
-
   while (b_type == BuildingType.Home) {
     int random_index = weightedRandom(building_rates);
     b_type = b_type_order[random_index];
   }
 
+  // Gets the correlated occupation for the building, i.e hospital -> doctor
   Occupation o = new Occupation();
 
   HashMap<BuildingType, Occupation> building_to_occupation_hash = new HashMap<BuildingType, Occupation>();
@@ -123,6 +105,7 @@ Occupation getRandomOccupation() {
 
   o = building_to_occupation_hash.get(b_type);
 
+  // Randomly chooses between student and teacher (since schools have both occupations)
   if (b_type == BuildingType.School) {
     if (random(0, 1) <= 0.9) {
       o = new Student();
@@ -135,7 +118,6 @@ Occupation getRandomOccupation() {
 int getRandomAge(Occupation o) {
   return o.avg_age+round(random(-age_deviation, age_deviation));
 }
-
 
 float vectorToBuildingDist(PVector p, Building b) {
   return dist(p.x, p.y, b.location.x, b.location.y);
@@ -158,6 +140,7 @@ Building findClosestBuilding(PVector p, BuildingType btype) {
   return closest_b;
 }
 
+// Returns all buildings of a certain type
 ArrayList<Building> getAllTypedBuildings(BuildingType t) {
 
   ArrayList<Building> r = new ArrayList<Building>();
@@ -170,6 +153,7 @@ ArrayList<Building> getAllTypedBuildings(BuildingType t) {
   return r;
 }
 
+// Returns a random type of building
 Building getRandomTypedBuilding(BuildingType t) {
   ArrayList<Building> allTypedBuildings = getAllTypedBuildings(t);
   return allTypedBuildings.get(int(random(0, allTypedBuildings.size())));

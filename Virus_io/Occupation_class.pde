@@ -6,7 +6,7 @@ class Occupation{
   
   int avg_age = 40;
   
-  float base_immunity = 0.5;
+  float base_immunity = 0.5; 
   
   Goal[] goals;
   

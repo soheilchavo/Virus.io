@@ -31,6 +31,7 @@ boolean is_duplicate_node(PathNode p){
 }
 
 float edge_distance(PathNode a, PathNode b){
+  
   if(a == b)
     return 0;
   
@@ -42,10 +43,13 @@ void resetPathNodes(){
     p.explored = false;
 }
 
+// Returns the closest path node to a given PVector
 PathNode find_closest_node(PVector location){
   
-  if(simOngoing){
+  if(simOngoing){ // Extra saftey, sometimes this function would be called as the program was resetting, which would cause a null pointer
+    
     float closest_dist = Float.POSITIVE_INFINITY;
+    
     PathNode closest_node = path_nodes.get(0);
     
     for(PathNode p: path_nodes){
@@ -58,15 +62,13 @@ PathNode find_closest_node(PVector location){
     
     return closest_node;
   }
+  
   return null;
 }
 
 boolean is_node_in_arraylist(PathNode p, ArrayList<PathNode> pa){
-  
   for(PathNode i: pa)
     if(p == i)
       return true;
-      
    return false;
-  
 }
