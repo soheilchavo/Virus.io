@@ -43,7 +43,7 @@ public void citySizeSliderChanged(GSlider source, GEvent event) { //_CODE_:cityS
 } //_CODE_:citySizeSlider:359799:
 
 public void immunityRateSliderChanged(GSlider source, GEvent event) { //_CODE_:immunityRateSlider:986202:
-  global_immunity = immunityRateSlider.getValueF()/100;
+  global_immunity = immunityRateSlider.getValueF();
 } //_CODE_:immunityRateSlider:986202:
 
 public void populationDensitySliderChanged(GSlider source, GEvent event) { //_CODE_:populationDensitySlider:846523:
@@ -242,7 +242,7 @@ public void createGUI(){
   immunityRateSlider = new GSlider(window1, 200, 300, 150, 50, 10.0);
   immunityRateSlider.setShowValue(true);
   immunityRateSlider.setShowLimits(true);
-  immunityRateSlider.setLimits(30.0, 0.0, 100.0);
+  immunityRateSlider.setLimits(0.5, 0.0, 1.0);
   immunityRateSlider.setNbrTicks(10);
   immunityRateSlider.setShowTicks(true);
   immunityRateSlider.setNumberFormat(G4P.DECIMAL, 2);
@@ -476,6 +476,10 @@ public void createGUI(){
   QuarintineLabel.setText("Mandate Quarantine");
   QuarintineLabel.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   QuarintineLabel.addEventHandler(this, "QuarantineButtonClicked");
+  WinConditionLabel = new GLabel(window2, 170, 210, 160, 30);
+  WinConditionLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  WinConditionLabel.setText("Virus eradicated, reset to start new sim");
+  WinConditionLabel.setOpaque(false);
   window1.loop();
   window2.loop();
 }
@@ -544,3 +548,4 @@ GLabel GovernmentActionsLabel;
 GButton MaskButtonLabel; 
 GButton VaccnineLabel; 
 GButton QuarintineLabel; 
+GLabel WinConditionLabel; 

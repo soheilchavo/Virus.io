@@ -18,5 +18,5 @@ void startVirus(){
 
 // Generates an immunity based on a person's stats
 float getImmunity(NPC p) {
-  return (1/global_immunity)*((p.age/100)+p.occupation.base_immunity)/2;
+  return global_immunity*((p.age/100)+p.occupation.base_immunity)/2;
 }

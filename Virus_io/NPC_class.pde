@@ -59,7 +59,11 @@ class NPC{
     this.cured = false;
     this.has_been_infected = true;
     this.infected = true;
-    this.days_left_to_be_cured = ceil(main_virus.recoverySpeed/this.immunity);
+    this.days_left_to_be_cured = ceil(this.immunity+this.natural_immunity/main_virus.recoverySpeed);
+    
+    if(random(1) > 0.3)
+      this.shows_symptoms = true;
+      
   }
   
   // Chance they'll get sick upon contact
@@ -111,9 +115,10 @@ class NPC{
         
         this.previous_node = this.target_node;
         this.target_node = closest_cell;
-      }
       
+      }
       goal_location = this.target_node.location;
+      
     }
     
     // Linearly interpolate to goal
