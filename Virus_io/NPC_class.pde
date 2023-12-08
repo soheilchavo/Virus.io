@@ -55,11 +55,11 @@ class NPC{
     if(this.infected){
       for(NPC p: people){
         if(p != this && !p.infected && p.location.dist(this.location) <= main_virus.spreadArea){
-          if(this.wearing_mask)
-            if(random(1) > mask_effectiveness)
-              p.calc_sickness_chance();
-          else
-            p.calc_sickness_chance();
+          if(this.wearing_mask){
+            if(random(1) >= mask_effectiveness)
+              p.calc_sickness_chance();}
+          else{
+            p.calc_sickness_chance();}
         }
       }
     }
@@ -69,9 +69,9 @@ class NPC{
     this.cured = false;
     this.has_been_infected = true;
     this.infected = true;
-    this.days_left_to_be_cured = ceil(this.immunity+this.natural_immunity/main_virus.recoverySpeed);
+    this.days_left_to_be_cured = min(10, ceil(this.immunity+this.natural_immunity/main_virus.recoverySpeed));
     
-    if(random(1) > 0.3)
+    if(random(1) > 0.55)
       this.shows_symptoms = true;
       
   }
@@ -84,7 +84,7 @@ class NPC{
     if(this.vaccinated)
       vaccine_weight = (1-vaccine_effectiveness);
     
-    if(random(1) >= vaccine_weight*(this.immunity+this.natural_immunity)*(1/main_virus.strength))
+    if(random(1) >= vaccine_weight*(this.immunity+(this.natural_immunity/2))*(1/main_virus.strength))
       become_infected();
   }
   
@@ -104,10 +104,9 @@ class NPC{
     }
     
     // Chooses whether a person stays home or not because of the virus, either by chance or by quarantine mandate
-    if(virus_started && (quarantine_mandate || random(1) > 0.8) && this.occupation.occupation_name != "Unhoused Person"){
+    if(virus_started && quarantine_mandate && this.occupation.occupation_name != "Unhoused Person"){
       c_goal = this.routine.getCurrentGoal(0);
     }
-    
     PVector goal_location = c_goal.location;
     
     this.current_path_node = find_closest_node(this.location);
@@ -117,7 +116,7 @@ class NPC{
     if(edge_distance(goal_node, this.current_path_node) > 5){
       
       // If we need to switch to the next node in the path
-      if(this.target_node == null || this.target_node.location.dist(this.location) < 0.2){
+      if(current_path_node.neighbours.size() > 0 && this.target_node == null || this.target_node.location.dist(this.location) < 0.2){
         
         // The closest cell out of the neighbours to the goal
         PathNode closest_cell = this.current_path_node.neighbours.get(int(random(this.current_path_node.neighbours.size()-1)));
@@ -195,6 +194,9 @@ class NPC{
     String statText = this.name + period_text + this.age + " year old " + 
       this.occupation.occupation_name + period_text + conditional_text + 
       " infected" + period_text + " immunity of " + immunity_string;
+      
+    if(this.infected)
+      statText += ", sick days left: " + this.days_left_to_be_cured;
       
     fill(255);
     stroke(255);

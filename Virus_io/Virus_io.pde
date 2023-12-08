@@ -271,7 +271,7 @@ void generatePeople() {
   for (int i = 0; i < num_people; i++) {
     people[i] = new NPC(getRandomOccupation());
     
-    if(random(1) > 0.95)
+    if(random(1) > 0.97)
       people[i].vaccinated = true;
   }
 }
@@ -298,7 +298,7 @@ void switchDay() {
     person.natural_immunity -= 0.1; // Takes down natural immunity (is reset after being cured)
 
     // Wears a mask today if there is a mandate or they randomly want to
-    if(mask_mandate || random(1) > 0.7)
+    if(mask_mandate || random(1) > 0.9)
       person.wearing_mask = true;
     
     if(vaccine_mandate)
@@ -315,7 +315,7 @@ void switchDay() {
     }
 
     //Randomly decides if a person shows symptoms or not (decides whether they go to the hospital)
-    if (person.infected && random(1) < 0.92)
+    if (person.infected && random(1) < 0.8)
       person.shows_symptoms = true;
   }
 }
@@ -379,4 +379,5 @@ void keyPressed() {
     y_offset -= shift_sensitivity*(1/zoom);
 
   clampOffsets();
+  
 }  

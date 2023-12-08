@@ -50,10 +50,6 @@ public void populationDensitySliderChanged(GSlider source, GEvent event) { //_CO
   population_density = 1/populationDensitySlider.getValueF();
 } //_CODE_:populationDensitySlider:846523:
 
-public void gridSizeSliderChanged(GSlider source, GEvent event) { //_CODE_:gridSizeSlider:873935:
-  grid_size = gridSizeSlider.getValueF();
-} //_CODE_:gridSizeSlider:873935:
-
 public void timeRateSliderChanged(GSlider source, GEvent event) { //_CODE_:timeRateSlider:628616:
   sim_speed = timeRateSlider.getValueF();
 } //_CODE_:timeRateSlider:628616:
@@ -273,24 +269,11 @@ public void createGUI(){
   populationDensitySlider.setNumberFormat(G4P.DECIMAL, 2);
   populationDensitySlider.setOpaque(true);
   populationDensitySlider.addEventHandler(this, "populationDensitySliderChanged");
-  gridSizeName = new GLabel(window1, 0, 490, 67, 20);
-  gridSizeName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  gridSizeName.setText("Grid Size");
-  gridSizeName.setOpaque(false);
-  gridSizeSlider = new GSlider(window1, 0, 510, 150, 50, 10.0);
-  gridSizeSlider.setShowValue(true);
-  gridSizeSlider.setShowLimits(true);
-  gridSizeSlider.setLimits(5.0, 0.0, 10.0);
-  gridSizeSlider.setNbrTicks(10);
-  gridSizeSlider.setShowTicks(true);
-  gridSizeSlider.setNumberFormat(G4P.DECIMAL, 2);
-  gridSizeSlider.setOpaque(true);
-  gridSizeSlider.addEventHandler(this, "gridSizeSliderChanged");
-  timeRateName = new GLabel(window1, 0, 560, 108, 20);
+  timeRateName = new GLabel(window1, 1, 492, 108, 20);
   timeRateName.setTextAlign(GAlign.LEFT, GAlign.TOP);
   timeRateName.setText("Simulation Speed");
   timeRateName.setOpaque(false);
-  timeRateSlider = new GSlider(window1, 0, 580, 150, 50, 10.0);
+  timeRateSlider = new GSlider(window1, 0, 510, 150, 50, 10.0);
   timeRateSlider.setShowValue(true);
   timeRateSlider.setShowLimits(true);
   timeRateSlider.setLimits(1.0, 0.01, 15.0);
@@ -398,7 +381,7 @@ public void createGUI(){
   virusSpreadRadiusSlider = new GSlider(window1, 200, 300, 150, 50, 10.0);
   virusSpreadRadiusSlider.setShowValue(true);
   virusSpreadRadiusSlider.setShowLimits(true);
-  virusSpreadRadiusSlider.setLimits(1.0, 0.0, 10.0);
+  virusSpreadRadiusSlider.setLimits(1.5, 0.0, 10.0);
   virusSpreadRadiusSlider.setNbrTicks(10);
   virusSpreadRadiusSlider.setShowTicks(true);
   virusSpreadRadiusSlider.setNumberFormat(G4P.DECIMAL, 2);
@@ -414,7 +397,7 @@ public void createGUI(){
   RecoverySpeedSlider = new GSlider(window1, 200, 440, 150, 50, 10.0);
   RecoverySpeedSlider.setShowValue(true);
   RecoverySpeedSlider.setShowLimits(true);
-  RecoverySpeedSlider.setLimits(1.0, 1.0, 10.0);
+  RecoverySpeedSlider.setLimits(4.0, 1.0, 10.0);
   RecoverySpeedSlider.setNbrTicks(9);
   RecoverySpeedSlider.setShowTicks(true);
   RecoverySpeedSlider.setNumberFormat(G4P.DECIMAL, 2);
@@ -431,13 +414,13 @@ public void createGUI(){
   VirusStrengthSlider = new GSlider(window1, 200, 370, 150, 50, 10.0);
   VirusStrengthSlider.setShowValue(true);
   VirusStrengthSlider.setShowLimits(true);
-  VirusStrengthSlider.setLimits(0.5, 0.0, 1.0);
+  VirusStrengthSlider.setLimits(0.85, 0.0, 1.0);
   VirusStrengthSlider.setNbrTicks(10);
   VirusStrengthSlider.setShowTicks(true);
   VirusStrengthSlider.setNumberFormat(G4P.DECIMAL, 2);
   VirusStrengthSlider.setOpaque(true);
   VirusStrengthSlider.addEventHandler(this, "VirusStrengthSliderChanged");
-  MaskLabel = new GLabel(window1, 0, 630, 110, 20);
+  MaskLabel = new GLabel(window1, 0, 560, 110, 20);
   MaskLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   MaskLabel.setText("Mask Effectiveness");
   MaskLabel.setOpaque(false);
@@ -445,7 +428,7 @@ public void createGUI(){
   VaccineLabel.setTextAlign(GAlign.CENTER, GAlign.TOP);
   VaccineLabel.setText("Vaccine Effectiveness");
   VaccineLabel.setOpaque(false);
-  MaskEffectivnessSlider = new GSlider(window1, 0, 650, 150, 50, 10.0);
+  MaskEffectivnessSlider = new GSlider(window1, 0, 580, 150, 50, 10.0);
   MaskEffectivnessSlider.setShowValue(true);
   MaskEffectivnessSlider.setShowLimits(true);
   MaskEffectivnessSlider.setLimits(0.5, 0.0, 1.0);
@@ -463,7 +446,7 @@ public void createGUI(){
   VaccineEffectivenessSlider.setNumberFormat(G4P.DECIMAL, 2);
   VaccineEffectivenessSlider.setOpaque(true);
   VaccineEffectivenessSlider.addEventHandler(this, "VaccineEffectivenessChanged");
-  window2 = GWindow.getWindow(this, "Statistics", 1270, 430, 350, 250, JAVA2D);
+  window2 = GWindow.getWindow(this, "Statistics", 1000, 340, 350, 250, JAVA2D);
   window2.noLoop();
   window2.setActionOnClose(G4P.KEEP_OPEN);
   window2.addDrawHandler(this, "win_draw2");
@@ -543,8 +526,6 @@ GLabel immunityRateName;
 GSlider immunityRateSlider; 
 GLabel populationDensityName; 
 GSlider populationDensitySlider; 
-GLabel gridSizeName; 
-GSlider gridSizeSlider; 
 GLabel timeRateName; 
 GSlider timeRateSlider; 
 GLabel npcSizeName; 
