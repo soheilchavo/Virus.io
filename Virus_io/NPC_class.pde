@@ -12,6 +12,7 @@ class NPC{
   boolean shows_symptoms;
   
   boolean infected;
+  boolean cured;
   
   float immunity;
   float natural_immunity = 0; // Built up after they're cured
@@ -26,6 +27,7 @@ class NPC{
   int days_left_to_be_cured; // Number of days it takes to be cured
   
   boolean selected = false;
+  boolean has_been_infected = false;
   
   NPC(Occupation o){
     
@@ -49,19 +51,21 @@ class NPC{
   void check_infection_spread(){
     if(this.infected)
       for(NPC p: people)
-        if(p != this && !p.infected && p.location.dist(this.location) <= virus_spread_area)
+        if(p != this && !p.infected && p.location.dist(this.location) <= main_virus.spreadArea)
           p.calc_sickness_chance();
   }
   
   void become_infected(){
+    this.cured = false;
+    this.has_been_infected = true;
     this.infected = true;
-    this.days_left_to_be_cured = ceil(5/this.immunity);
+    this.days_left_to_be_cured = ceil(main_virus.recoverySpeed/this.immunity);
   }
   
   // Chance they'll get sick upon contact
   void calc_sickness_chance(){
     this.immunity = getImmunity(this);
-    if(random(1) >= this.immunity+this.natural_immunity)
+    if(random(1) >= (this.immunity+this.natural_immunity)*(1/main_virus.strength))
       become_infected();
   }
   
@@ -73,12 +77,6 @@ class NPC{
     
     if(is_weekend) //Switch to weekend goal
       c_goal = this.weekend_routine.getCurrentGoal(time_of_day);
-    
-    // Become cured! Extra random statement is to add a bit more variety in when they become cured
-    if(this.days_left_to_be_cured <= 0 && random(1) > 0.86){
-        this.infected = false;
-        this.natural_immunity = 1;
-    }
     
     if(this.infected && this.shows_symptoms){ // Switch to sick routine
       c_goal = this.sick_routine.getCurrentGoal(time_of_day);
@@ -158,14 +156,18 @@ class NPC{
     String conditional_text = "not"; // prefix for being "not" infected / infected
     if(this.infected)
       conditional_text = "";
+      
+    String immunity_string = str(this.immunity+this.natural_immunity);
     
+    immunity_string = immunity_string.substring(0, int(clamp(immunity_string.length(),0,4)));
+      
     String statText = this.name + period_text + this.age + " year old " + 
       this.occupation.occupation_name + period_text + conditional_text + 
-      " infected" + period_text + " immunity of " + str(this.immunity+this.natural_immunity).substring(0, 4);
+      " infected" + period_text + " immunity of " + immunity_string;
       
     fill(255);
     stroke(255);
-    rect(this.location.x*grid_size, this.location.y*grid_size-10, statText.length()*5.9, 11); 
+    rect(this.location.x*grid_size, this.location.y*grid_size-10, statText.length()*6, 11); 
     
     fill(0);
     stroke(0);

@@ -7,8 +7,10 @@ String getRandomName() {
 
 // Untranslated Mouse coords
 PVector getGlobalMouseCoords(){
-  float mouse_x = (mouseX-x_offset)/zoom;
-  float mouse_y = (mouseY-y_offset)/zoom;
+  
+  float mouse_x = (mouseX/zoom)-x_offset;
+  float mouse_y = (mouseY/zoom)-y_offset;
+  
   return new PVector(mouse_x, mouse_y);
 }
 

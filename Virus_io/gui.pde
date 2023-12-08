@@ -114,15 +114,17 @@ public void virusSpreadRadiusChanged(GSlider source, GEvent event) { //_CODE_:vi
 } //_CODE_:virusSpreadRadiusSlider:596595:
 
 public void RecoverySpeedSliderChanged(GSlider source, GEvent event) { //_CODE_:RecoverySpeedSlider:956314:
-  println("RecoverySpeedSlider - GSlider >> GEvent." + event + " @ " + millis());
+  main_virus.recoverySpeed = RecoverySpeedSlider.getValueF();
 } //_CODE_:RecoverySpeedSlider:956314:
 
 public void VirusCureButtonPressed(GButton source, GEvent event) { //_CODE_:VirusCureButton:518334:
-  println("VirusCureButton - GButton >> GEvent." + event + " @ " + millis());
+  for(NPC p: people){
+    p.infected = false;
+  }  
 } //_CODE_:VirusCureButton:518334:
 
 public void VirusStrengthSliderChanged(GSlider source, GEvent event) { //_CODE_:VirusStrengthSlider:811345:
-  println("VirusStrengthSlider - GSlider >> GEvent." + event + " @ " + millis());
+  main_virus.strength = VirusStrengthSlider.getValueF();
 } //_CODE_:VirusStrengthSlider:811345:
 
 synchronized public void win_draw2(PApplet appc, GWinData data) { //_CODE_:window2:673029:
@@ -151,7 +153,7 @@ public void createGUI(){
   G4P.setMouseOverEnabled(false);
   surface.setTitle("Sketch Window");
   togGroup1 = new GToggleGroup();
-  window1 = GWindow.getWindow(this, "Controls", 0, 0, 580, 600, JAVA2D);
+  window1 = GWindow.getWindow(this, "Controls", 70, 230, 580, 600, JAVA2D);
   window1.noLoop();
   window1.setActionOnClose(G4P.KEEP_OPEN);
   window1.addDrawHandler(this, "win_draw1");
@@ -398,7 +400,10 @@ public void createGUI(){
   RecoverSpeedLabel.setText("Recovery Speed");
   RecoverSpeedLabel.setOpaque(false);
   RecoverySpeedSlider = new GSlider(window1, 200, 520, 150, 50, 10.0);
-  RecoverySpeedSlider.setLimits(5.0, 10.0, 1.0);
+  RecoverySpeedSlider.setShowValue(true);
+  RecoverySpeedSlider.setShowLimits(true);
+  RecoverySpeedSlider.setLimits(1.0, 1.0, 10.0);
+  RecoverySpeedSlider.setShowTicks(true);
   RecoverySpeedSlider.setNumberFormat(G4P.DECIMAL, 2);
   RecoverySpeedSlider.setOpaque(true);
   RecoverySpeedSlider.addEventHandler(this, "RecoverySpeedSliderChanged");
@@ -411,11 +416,14 @@ public void createGUI(){
   VirusStrengthLabel.setText("Virus Strength");
   VirusStrengthLabel.setOpaque(false);
   VirusStrengthSlider = new GSlider(window1, 200, 440, 150, 50, 10.0);
+  VirusStrengthSlider.setShowValue(true);
+  VirusStrengthSlider.setShowLimits(true);
   VirusStrengthSlider.setLimits(0.5, 0.0, 1.0);
+  VirusStrengthSlider.setShowTicks(true);
   VirusStrengthSlider.setNumberFormat(G4P.DECIMAL, 2);
   VirusStrengthSlider.setOpaque(true);
   VirusStrengthSlider.addEventHandler(this, "VirusStrengthSliderChanged");
-  window2 = GWindow.getWindow(this, "Statistics", 600, 0, 350, 250, JAVA2D);
+  window2 = GWindow.getWindow(this, "Statistics", 1270, 430, 350, 250, JAVA2D);
   window2.noLoop();
   window2.setActionOnClose(G4P.KEEP_OPEN);
   window2.addDrawHandler(this, "win_draw2");
@@ -435,23 +443,23 @@ public void createGUI(){
   Percentage_Cured.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   Percentage_Cured.setText("Percentage Cured:");
   Percentage_Cured.setOpaque(false);
-  label2 = new GLabel(window2, 10, 110, 80, 20);
-  label2.setText("0%");
-  label2.setLocalColorScheme(GCScheme.CYAN_SCHEME);
-  label2.setOpaque(false);
+  PercentageCuredValue = new GLabel(window2, 10, 110, 80, 20);
+  PercentageCuredValue.setText("0%");
+  PercentageCuredValue.setLocalColorScheme(GCScheme.CYAN_SCHEME);
+  PercentageCuredValue.setOpaque(false);
   InHospital = new GLabel(window2, 10, 140, 120, 20);
   InHospital.setText("Hospital Capacity:");
   InHospital.setOpaque(false);
-  label3 = new GLabel(window2, 10, 160, 80, 20);
-  label3.setText("0%");
-  label3.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
-  label3.setOpaque(false);
+  HospitalCapacityValue = new GLabel(window2, 10, 160, 80, 20);
+  HospitalCapacityValue.setText("0%");
+  HospitalCapacityValue.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  HospitalCapacityValue.setOpaque(false);
   AvgImmunity = new GLabel(window2, 10, 190, 120, 20);
   AvgImmunity.setText("Average Immunity:");
   AvgImmunity.setOpaque(false);
-  label4 = new GLabel(window2, 10, 210, 80, 20);
-  label4.setText("0%");
-  label4.setOpaque(false);
+  AverageImmunityValue = new GLabel(window2, 10, 210, 80, 20);
+  AverageImmunityValue.setText("0%");
+  AverageImmunityValue.setOpaque(false);
   GovernmentActionsLabel = new GLabel(window2, 210, 10, 80, 20);
   GovernmentActionsLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   GovernmentActionsLabel.setText("Actions:");
@@ -527,11 +535,11 @@ GLabel VirusStats;
 GLabel PercentageInfected; 
 GLabel PercentageInfectedValue; 
 GLabel Percentage_Cured; 
-GLabel label2; 
+GLabel PercentageCuredValue; 
 GLabel InHospital; 
-GLabel label3; 
+GLabel HospitalCapacityValue; 
 GLabel AvgImmunity; 
-GLabel label4; 
+GLabel AverageImmunityValue; 
 GLabel GovernmentActionsLabel; 
 GButton MaskButtonLabel; 
 GButton VaccnineLabel; 

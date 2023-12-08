@@ -59,14 +59,17 @@ boolean draw_buildings = true;
 
 boolean virus_started = false;
 
-Virus main_virus;
-float virus_spread_area = 1; // How far the virus can reach to spread
-float virus_strength = 0.5; // How fast the virus can spread
+Virus main_virus = new Virus(0,0,0);
 
 NPC selected_npc = null;
 
+float centerX;
+float centerY;
+
 void setup() {
   size(600,600);
+  centerX = width / 2.0;
+  centerY = height / 2.0;
   createGUI();
 }
 
@@ -81,14 +84,34 @@ void draw() {
     pushMatrix(); // Required for translating the screen
     
     // Zooming
-    float centerX = width / 2.0;
-    float centerY = height / 2.0;
-    translate(centerX, centerY);
     scale(zoom);
-    
     // Translating left and right
-    translate(-centerX, -centerY);
     translate(x_offset, y_offset);
+    
+    //Update stats window
+    float n_infected = 0;
+    float n_cured = 0;
+    float hospital_cap = 0;
+    float sum_immunity = 0;
+    
+    for(NPC p: people){
+      
+      sum_immunity += p.immunity+p.natural_immunity;
+      
+      if(p.infected){
+        n_infected++;
+        if(p.shows_symptoms)
+          hospital_cap++;
+      }  
+        
+      if(p.cured)
+        n_cured++;
+    }
+    
+    PercentageInfectedValue.setText(str(round(100*(n_infected/people.length))) + "%");
+    PercentageCuredValue.setText(str(round(100*(n_cured/people.length))) + "%");
+    HospitalCapacityValue.setText(str(hospital_cap));
+    AverageImmunityValue.setText(str(round(sum_immunity/people.length)));
     
     if(draw_pathfinding){
       for(PathNode p: path_nodes){
@@ -125,7 +148,7 @@ void draw() {
     //Draw time of day text
     fill(0);
     textSize(12);
-    text(days[day] + ", time of day: " + str(time_of_day), 5,11);
+    text(days[day] + ", time of day: " + str(time_of_day) + ", zoom: " + zoom, 5,11);
     time_of_day += 0.01*sim_speed;
     
     //If the end of the hour is reached
@@ -136,6 +159,7 @@ void draw() {
     if(time_of_day >= 24){
       switchDay();
     }
+    
   }
  }
 }
@@ -266,8 +290,15 @@ void switchDay(){
     if(person.days_left_to_be_cured > 0)
       person.days_left_to_be_cured -= 1;
     
+    // Become cured! Extra random statement is to add a bit more variety in when they become cured
+    if(person.has_been_infected && person.days_left_to_be_cured <= 0 && random(1) > 0.5){
+        person.infected = false;
+        person.natural_immunity = 1;
+        person.cured = true;
+    }
+    
     //Randomly decides if a person shows symptoms or not (decides whether they go to the hospital)
-    if(person.infected && random(1) < 0.8)
+    if(person.infected && random(1) < 0.92)
       person.shows_symptoms = true;
     
   }
@@ -305,11 +336,10 @@ void mousePressed(){
   
   for(NPC p: people){
     PVector l = p.location;
-    if(selected_npc == null && l.x*grid_size > mouse_coords.x && l.x*grid_size < mouse_coords.x+npc_size&&
-      l.y*grid_size > mouse_coords.y && l.y*grid_size < mouse_coords.y+npc_size){
+    if(selected_npc == null && l.x*grid_size > mouse_coords.x && l.x*grid_size < mouse_coords.x+npc_size*zoom &&
+      l.y*grid_size > mouse_coords.y && l.y*grid_size < mouse_coords.y+npc_size*zoom){
         selected_npc = p;
         p.selected = true;
-        p.drawNPC();
     }
     else{
       p.selected = false;
