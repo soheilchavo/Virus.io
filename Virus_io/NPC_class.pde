@@ -144,35 +144,38 @@ class NPC{
     
     // Linearly interpolate to goal
     float t = npc_speed*min(1, (time_of_day-c_goal.start_time)/(c_goal.duration/4));
-    this.location.lerp(goal_location, t);
+    
+    this.location.lerp(goal_location, t*2);
   }
   
   void drawNPC() {
     
-    this.calculate_position();
-    shapeMode(CENTER);
-    
-    fill(color(239,202,168));
-    
-    if(this.infected){
-      fill(color(188,34,34, 44));
-      circle(this.location.x*grid_size, this.location.y*grid_size, main_virus.spreadArea*50);
-      fill(color(255,0,0));
-    }
-    
-    if(this.vaccinated && !this.infected)
-      fill(color(40, 67, 230));
-    
-    if(this.selected){
-      stroke(255,0,0); strokeWeight(2); }
-    else{
-      stroke(0,0,0); strokeWeight(1);}
+    if(simOngoing){
+      this.calculate_position();
+      shapeMode(CENTER);
       
-    circle(this.location.x*grid_size, this.location.y*grid_size, npc_size);
-    
-    fill(255);
-    if(this.wearing_mask)
-      rect(this.location.x*grid_size-4, this.location.y*grid_size, npc_size-4, npc_size/2);
+      fill(color(239,202,168));
+      
+      if(this.infected){
+        fill(color(188,34,34, 44));
+        circle(this.location.x*grid_size, this.location.y*grid_size, main_virus.spreadArea*50);
+        fill(color(255,0,0));
+      }
+      
+      if(this.vaccinated && !this.infected)
+        fill(color(40, 67, 230));
+      
+      if(this.selected){
+        stroke(255,0,0); strokeWeight(2); }
+      else{
+        stroke(0,0,0); strokeWeight(1);}
+        
+      circle(this.location.x*grid_size, this.location.y*grid_size, npc_size);
+      
+      fill(255);
+      if(this.wearing_mask)
+        rect(this.location.x*grid_size-4, this.location.y*grid_size, npc_size-4, npc_size/2);
+    }
   }
   
   void initializeSickRoutine(){

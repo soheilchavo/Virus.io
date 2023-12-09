@@ -83,91 +83,89 @@ void setup() {
 }
 
 void draw() {
-
-  if (paused == false) {
-
+  
+  pushMatrix(); // Required for translating the screen
+  // Zooming
+  scale(zoom);
+  // Translating left and right
+  translate(x_offset, y_offset);
+  
+  if (!paused && simOngoing) {
     background(90);
+    time_of_day += 0.01*sim_speed;
+    //Update stats window
+    float n_infected = 0;
+    float n_cured = 0;
+    float hospital_cap = 0;
+    float sum_immunity = 0;
 
-    // If the simulation has started
-    if (simOngoing) {
-      pushMatrix(); // Required for translating the screen
+    for (NPC p : people) {
 
-      // Zooming
-      scale(zoom);
-      // Translating left and right
-      translate(x_offset, y_offset);
+      sum_immunity += p.immunity+p.natural_immunity;
 
-      //Update stats window
-      float n_infected = 0;
-      float n_cured = 0;
-      float hospital_cap = 0;
-      float sum_immunity = 0;
+      if (p.infected) {
+        n_infected++;
+        if (p.shows_symptoms)
+          hospital_cap++;
+      }  
 
-      for (NPC p : people) {
+      if (p.cured)
+        n_cured++;
+    }
 
-        sum_immunity += p.immunity+p.natural_immunity;
+    PercentageInfectedValue.setText(str(round(100*(n_infected/people.length))) + "%");
+    PercentageCuredValue.setText(str(round(100*(n_cured/people.length))) + "%");
+    HospitalCapacityValue.setText(str(hospital_cap));
+    AverageImmunityValue.setText(str(sum_immunity/people.length));
 
-        if (p.infected) {
-          n_infected++;
-          if (p.shows_symptoms)
-            hospital_cap++;
-        }  
+    if(virus_started && n_infected == 0){
+      WinConditionLabel.setText("Virus eradicated, reset to start new sim");
+    }
+    
+    if(virus_started && n_infected == people.length){
+      WinConditionLabel.setText("Everyone is infected, reset to start new sim");
+    }
 
-        if (p.cured)
-          n_cured++;
-      }
-
-      PercentageInfectedValue.setText(str(round(100*(n_infected/people.length))) + "%");
-      PercentageCuredValue.setText(str(round(100*(n_cured/people.length))) + "%");
-      HospitalCapacityValue.setText(str(hospital_cap));
-      AverageImmunityValue.setText(str(sum_immunity/people.length));
-
-      if(virus_started && n_infected == 0){
-        WinConditionLabel.setText("Virus eradicated, reset to start new sim");
-      }
-      
-      if(virus_started && n_infected == people.length){
-        WinConditionLabel.setText("Everyone is infected, reset to start new sim");
-      }
-
-      if (draw_pathfinding) {
-        for (PathNode p : path_nodes) {
-          p.draw_node();
-        }
-      }
-
-      if (draw_buildings) {
-        for (Building b : buildings) {
-          b.drawBuilding();
-        }
-      }
-
-      for (NPC p : people) {
-        p.drawNPC();
-        p.check_infection_spread();
-      }
-
-      if (selected_npc != null)
-        selected_npc.displayInfo();
-
-      popMatrix(); // Goes back to untranslated screen
-
-      //Draw time of day text
-      fill(255);
-      textSize(12);
-      text(days[day] + ", time of day: " + str(time_of_day).substring(0,3) + ", zoom: " + zoom, 5, 11);
-      time_of_day += 0.01*sim_speed;
-
-      //If the end of the hour is reached
-      if (time_of_day-floor(time_of_day) >= 0.6) {
-        time_of_day = floor(time_of_day)+1;
-      }
-
-      if (time_of_day >= 24) {
-        switchDay();
+    if (draw_pathfinding) {
+      for (PathNode p : path_nodes) {
+        p.draw_node();
       }
     }
+
+    if (draw_buildings) {
+      for (Building b : buildings) {
+        b.drawBuilding();
+      }
+    }
+
+    for (NPC p : people) {
+      p.drawNPC();
+      p.check_infection_spread();
+    }
+
+    if (selected_npc != null){
+      selected_npc.displayInfo();
+
+    }
+    
+    //Draw time of day text
+    fill(255);
+    textSize(23);
+    text(days[day] + ", time of day: " + str(time_of_day).substring(0,4) + ", zoom: " + zoom, 5, 11);
+    
+    //If the end of the hour is reached
+    if (time_of_day-floor(time_of_day) >= 0.6) {
+      time_of_day = floor(time_of_day)+1;
+    }
+  
+    if (time_of_day >= 24) {
+      switchDay();
+    }
+    
   }
+  
+  popMatrix(); // Goes back to untranslated screen
+
 }
 
 void startSim() {
@@ -176,6 +174,7 @@ void startSim() {
   
   simOngoing = false;
   virus_started = false;
+  
   generateBuildings();
   generatePeople();
   simOngoing = true;
@@ -193,51 +192,48 @@ void generateBuildings() {
 
   //Set of random buildings based on city size
   ArrayList<Building> new_buildings = createRandomBuildings();
+  int n_buildings = new_buildings.size();
 
-  // Stores the biggest buildings in the array to create consistent path nodes afterwards
-  int[] largest_ys = new int[city_size];
+  int largest_y = 0;
+  int max_y = 0;
 
-  for (int y = 0; y < city_size; y++) {
+  for(int i = 0; i < n_buildings; i++){
+    
+    int index = int(random(new_buildings.size()-1));
+    
+    Building b = new_buildings.get(index);
+    new_buildings.remove(index); // Removes it from the list to ensure it's not duplicated
+    
+    b.location = new PVector(curr_x, curr_y);
 
-    curr_x = cell_padding;
-    int largest_y = 0; // biggest building in the y axis
+    largest_y = (int) max(largest_y, b.size[1]); // Picks the biggest y between the current largest and this building's size
+    max_y = (int) max(largest_y, max_y); // Picks the biggest y
+    
+    buildings.add(b);
 
-    for (int x = 0; x < city_size; x++) {
-
-      int index = round(random(new_buildings.size()-1)); // Gets random new building
-
-      if (index != 0) { // Saftey check
-
-        Building b = new_buildings.get(index);
-        new_buildings.remove(index); // Removes it from the list to ensure it's not duplicated
-
-        b.location = new PVector(curr_x, curr_y);
-
-        largest_y = (int) max(largest_y, b.size[1]); // Picks the biggest y between the current largest and this building's size
-        buildings.add(b);
-
-        curr_x += b.size[0]+cell_padding*2;
-      }
+    curr_x += b.size[0]+cell_padding*2;
+    
+    if(curr_x >= 0.56*city_size*grid_size){
+      curr_x = cell_padding;
+      curr_y += largest_y + cell_padding*2;
+      largest_y = 0;
     }
-
-    largest_ys[y] = largest_y;
-    curr_y += largest_y + cell_padding*2;
+    
   }
-
+  
   float pad = cell_padding/2; // Padding for Pathfinding nodes
 
   //Draw nodes per building corner (up, down, left, right)
   for (int i = 0; i < buildings.size(); i++) {
 
-    curr_y = largest_ys[floor(i/city_size)]; // Gets largest y for it's row
     Building b = buildings.get(i);
 
     // The coords for the four corners of the building in pvector form
     PVector[] path_locations = new PVector[] { 
       new PVector(b.location.x-pad, b.location.y-pad), 
       new PVector(b.location.x+b.size[0]+pad, b.location.y-pad), 
-      new PVector(b.location.x-pad, b.location.y+curr_y+pad), 
-      new PVector(b.location.x+b.size[0]+pad, b.location.y+curr_y+pad), 
+      new PVector(b.location.x-pad, b.location.y+max_y+pad), 
+      new PVector(b.location.x+b.size[0]+pad, b.location.y+max_y+pad), 
     };
 
     //Add the corner path nodes to the path nodes arraylist
@@ -298,6 +294,7 @@ void switchDay() {
     person.natural_immunity -= 0.1; // Takes down natural immunity (is reset after being cured)
 
     // Wears a mask today if there is a mandate or they randomly want to
+    person.wearing_mask = false;
     if(mask_mandate || random(1) > 0.9)
       person.wearing_mask = true;
     
@@ -347,21 +344,26 @@ void mouseDragged(MouseEvent event) {
 }
 
 void mousePressed() {
-  PVector mouse_coords = getGlobalMouseCoords();
-  selected_npc = null;
-
-  for (NPC p : people) {
-    PVector l = p.location;
-    if (selected_npc == null && l.x*grid_size > mouse_coords.x && l.x*grid_size < mouse_coords.x+npc_size*zoom &&
-      l.y*grid_size > mouse_coords.y && l.y*grid_size < mouse_coords.y+npc_size*zoom) {
-      selected_npc = p;
-      p.selected = true;
-    } else {
-      p.selected = false;
-      if (selected_npc == p) { 
-        selected_npc = null;
+  
+  if(simOngoing){
+  
+    PVector mouse_coords = getGlobalMouseCoords();
+    selected_npc = null;
+  
+    for (NPC p : people) {
+      PVector l = p.location;
+      if (selected_npc == null && l.x*grid_size > mouse_coords.x && l.x*grid_size < mouse_coords.x+npc_size*zoom &&
+        l.y*grid_size > mouse_coords.y && l.y*grid_size < mouse_coords.y+npc_size*zoom) {
+        selected_npc = p;
+        p.selected = true;
+      } else {
+        p.selected = false;
+        if (selected_npc == p) { 
+          selected_npc = null;
+        }
       }
     }
+    
   }
 }
 

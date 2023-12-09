@@ -33,12 +33,12 @@ ArrayList<Building> createRandomBuildings() {
   float s = sumOfBuildingRates();
   
   // Itterates through all building types, then generates a number (min 1) of buildings based on the user set rates 
-  for (int t = 0; t < b_type_order.length; t++) {
+  for (int t = 0; t < 6; t++) {
     
     BuildingType type = b_type_order[t];
     
-    for (int i = 0; i < max(1,ceil((building_rates[t]/s)*city_size*city_size)); i++) {
-
+    for (int i = 0; i < ceil((building_rates[t]/s)*city_size*city_size)+1; i++) {
+      
       HashMap<BuildingType, Building> type_to_object_hash = new HashMap<BuildingType, Building>();
 
       type_to_object_hash.put(BuildingType.Hospital, new Hospital(new PVector(0, 0)));
@@ -51,6 +51,7 @@ ArrayList<Building> createRandomBuildings() {
       new_b.add(type_to_object_hash.get(type));
     }
   }
+  
   return new_b;
 }
 
@@ -120,7 +121,6 @@ ArrayList<Building> getAllTypedBuildings(BuildingType t) {
     if (b.type == t)
       r.add(b);
   }
-
   return r;
 }
 

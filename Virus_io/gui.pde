@@ -276,7 +276,7 @@ public void createGUI(){
   timeRateSlider = new GSlider(window1, 0, 510, 150, 50, 10.0);
   timeRateSlider.setShowValue(true);
   timeRateSlider.setShowLimits(true);
-  timeRateSlider.setLimits(1.0, 0.01, 15.0);
+  timeRateSlider.setLimits(1.0, 0.05, 40.0);
   timeRateSlider.setNbrTicks(15);
   timeRateSlider.setShowTicks(true);
   timeRateSlider.setNumberFormat(G4P.DECIMAL, 2);
