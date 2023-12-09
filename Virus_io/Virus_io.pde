@@ -379,6 +379,12 @@ void keyPressed() {
 
   if (key == 's')
     y_offset -= shift_sensitivity*(1/zoom);
+    
+  if (key == '=' || key == 'o')
+    zoom += zoom_sensitivity;
+  
+  if (key == '_' || key == 'i')
+    zoom -= zoom_sensitivity;
 
   clampOffsets();
   
