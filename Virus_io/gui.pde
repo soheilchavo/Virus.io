@@ -63,7 +63,7 @@ public void npcSliderChanged(GSlider source, GEvent event) { //_CODE_:npcSizeSli
 } //_CODE_:npcSizeSlider:944321:
 
 public void npcSpeedSliderChanged(GSlider source, GEvent event) { //_CODE_:npcSpeedSlider:400537:
-  npc_speed = npcSpeedSlider.getValueF()/10;
+  npc_speed = npcSpeedSlider.getValueF();
 } //_CODE_:npcSpeedSlider:400537:
 
 public void ageDeviationSliderChanged(GSlider source, GEvent event) { //_CODE_:ageDeviationSlider:274232:

@@ -30,13 +30,14 @@ float sumOfBuildingRates() {
 ArrayList<Building> createRandomBuildings() {
 
   ArrayList<Building> new_b = new ArrayList<Building>();
+  float s = sumOfBuildingRates();
   
   // Itterates through all building types, then generates a number (min 1) of buildings based on the user set rates 
   for (int t = 0; t < b_type_order.length; t++) {
     
     BuildingType type = b_type_order[t];
     
-    for (int i = 0; i < ceil((building_rates[t]/sumOfBuildingRates())*(pow(city_size,2)/1.5)); i++) {
+    for (int i = 0; i < max(1,ceil((building_rates[t]/s)*city_size*city_size)); i++) {
 
       HashMap<BuildingType, Building> type_to_object_hash = new HashMap<BuildingType, Building>();
 
