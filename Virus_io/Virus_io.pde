@@ -143,15 +143,11 @@ void draw() {
       p.check_infection_spread();
     }
 
-    if (selected_npc != null){
-      selected_npc.displayInfo();
-
-    }
     
     //Draw time of day text
     fill(255);
     textSize(23);
-    text(days[day] + ", time of day: " + str(time_of_day).substring(0,4) + ", zoom: " + zoom, 5, 11);
+    text(days[day] + ", time of day: " + str(time_of_day).substring(0,4) + ", zoom: " + str(zoom).substring(0,min(str(zoom).length(), 4)) + "x", 5, 23);
     
     //If the end of the hour is reached
     if (time_of_day-floor(time_of_day) >= 0.6) {
@@ -162,10 +158,14 @@ void draw() {
       switchDay();
     }
     
+    
   }
   
   popMatrix(); // Goes back to untranslated screen
-
+  
+  if (selected_npc != null){
+    displayInfo();
+  }
 }
 
 void startSim() {
@@ -317,6 +317,42 @@ void switchDay() {
   }
 }
 
+
+void displayInfo(){
+  
+  float rect_size = -200;
+  
+  fill(255);
+  stroke(255);
+  rect(width, 0, rect_size, 120); 
+  
+  fill(0);
+  stroke(0);
+  textSize(12);
+  
+  text(selected_npc.name, width+rect_size+7, 10);
+  text(selected_npc.age + " years old", width+rect_size+7, 25);
+  text("Occupation: " + selected_npc.occupation.occupation_name, width+rect_size+7, 40);
+  text("Immunity: " + selected_npc.immunity, width+rect_size+7, 55);
+  text("Natural Immuntiy: " + selected_npc.natural_immunity, width+rect_size+7, 70);
+  
+  try{
+    text("Goal: " + selected_npc.current_goal.target_building.typestring, width+rect_size+7, 85);
+  } catch(Exception e) {}
+  
+  String infected_text = "Not infected"; // prefix for being "not" infected / infected
+  if(selected_npc.infected) {
+    infected_text = "Infected"; 
+    fill(255,0,0); 
+  }
+  
+  text(infected_text, width+rect_size+7, 100);
+  
+  fill(0); 
+  if(selected_npc.infected)
+    text("Sick Days Left: " + selected_npc.days_left_to_be_cured, width+rect_size+7, 115);
+}
+
 float clamp(float val, float min, float max) {
   if (val < min) 
     return min;
@@ -332,8 +368,9 @@ void mouseWheel(MouseEvent event)
 
 // Restricts user from going out of bounds 
 void clampOffsets() {
-  x_offset = clamp(x_offset, -500, ceil(city_size)*200);
-  y_offset = clamp(y_offset, -500, ceil(city_size)*200);
+  zoom = clamp(zoom, 0.25, 3);
+  x_offset = clamp(x_offset, -2000*zoom, ceil(city_size)*2000*zoom);
+  y_offset = clamp(y_offset, -2000*zoom, ceil(city_size)*2000*zoom);
 }
 
 void mouseDragged(MouseEvent event) {
@@ -343,7 +380,7 @@ void mouseDragged(MouseEvent event) {
   clampOffsets();
 }
 
-void mousePressed() {
+void mouseReleased() {
   
   if(simOngoing){
   
@@ -352,8 +389,8 @@ void mousePressed() {
   
     for (NPC p : people) {
       PVector l = p.location;
-      if (selected_npc == null && l.x*grid_size > mouse_coords.x && l.x*grid_size < mouse_coords.x+npc_size*zoom &&
-        l.y*grid_size > mouse_coords.y && l.y*grid_size < mouse_coords.y+npc_size*zoom) {
+      if (selected_npc == null && l.x*grid_size > mouse_coords.x && l.x*grid_size < mouse_coords.x+npc_size*2*zoom &&
+        l.y*grid_size > mouse_coords.y && l.y*grid_size < mouse_coords.y+npc_size*2*zoom) {
         selected_npc = p;
         p.selected = true;
       } else {

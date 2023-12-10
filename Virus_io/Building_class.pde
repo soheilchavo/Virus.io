@@ -5,11 +5,14 @@ class Building {
   BuildingType type;
   PImage sprite;
   
+  String typestring;
+  
   Building(PVector l, BuildingType t, float[] s, String p){
     this.location = l;
     this.type = t;
     this.size = s;
     this.sprite = loadImage("/Sprites/"+p);
+    this.typestring = p.substring(0, p.length()-4);
   }
   
   void drawBuilding() {

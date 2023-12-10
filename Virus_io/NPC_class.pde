@@ -32,6 +32,8 @@ class NPC{
   boolean selected = false;
   boolean has_been_infected = false;
   
+  Goal current_goal;
+  
   NPC(Occupation o){
     
     this.occupation = o;
@@ -69,7 +71,7 @@ class NPC{
     this.cured = false;
     this.has_been_infected = true;
     this.infected = true;
-    this.days_left_to_be_cured = min(10, ceil(this.immunity+this.natural_immunity/main_virus.recoverySpeed));
+    this.days_left_to_be_cured = min(10, ceil((this.immunity+this.natural_immunity)/main_virus.recoverySpeed));
     
     if(random(1) > 0.55)
       this.shows_symptoms = true;
@@ -104,10 +106,12 @@ class NPC{
     }
     
     // Chooses whether a person stays home or not because of the virus, either by chance or by quarantine mandate
-    if(virus_started && quarantine_mandate && this.occupation.occupation_name != "Unhoused Person"){
+    if(virus_started && !infected && quarantine_mandate && this.occupation.occupation_name != "Unhoused Person"){
       c_goal = this.routine.getCurrentGoal(0);
     }
+    
     PVector goal_location = c_goal.location;
+    this.current_goal = c_goal;
     
     this.current_path_node = find_closest_node(this.location);
     PathNode goal_node = find_closest_node(goal_location);
@@ -181,34 +185,6 @@ class NPC{
   void initializeSickRoutine(){
     Building b = (Hospital) findClosestBuilding(this.home.location, BuildingType.Hospital);
     sick_routine = new Routine(this, new Goal[] { new Goal(b, 0, 24)});
-  }
-  
-  void displayInfo(){
-    
-    String period_text = ", ";
-    String conditional_text = "not"; // prefix for being "not" infected / infected
-    if(this.infected)
-      conditional_text = "";
-      
-    String immunity_string = str(this.immunity+this.natural_immunity);
-    
-    immunity_string = immunity_string.substring(0, int(clamp(immunity_string.length(),0,4)));
-      
-    String statText = this.name + period_text + this.age + " year old " + 
-      this.occupation.occupation_name + period_text + conditional_text + 
-      " infected" + period_text + " immunity of " + immunity_string;
-      
-    if(this.infected)
-      statText += ", sick days left: " + this.days_left_to_be_cured;
-      
-    fill(255);
-    stroke(255);
-    rect(this.location.x*grid_size, this.location.y*grid_size-10, statText.length()*6, 11); 
-    
-    fill(0);
-    stroke(0);
-    textSize(12);
-    text(statText, this.location.x*grid_size, this.location.y*grid_size);
   }
   
 }
